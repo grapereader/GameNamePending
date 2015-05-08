@@ -5,8 +5,8 @@ define(function() {
         All world updating, player management, networking, etc should be
         contained in or dispatched from here.
     */
-    var GameManager = Class.extend({
-        init: function(game, scene) {
+    var GameManager = Class({
+        constructor: function(game, scene) {
             this.game = game;
             this.scene = scene;
 

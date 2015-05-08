@@ -3,8 +3,8 @@ define(function() {
         All objects designed to translate around the view must extend
         this class.
     */
-    var ViewObject = Class.extend({
-        init: function(scene) {
+    var ViewObject = Class({
+        constructor: function(scene) {
             this.scene = scene;
 
             this.x = 0;

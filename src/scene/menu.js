@@ -1,13 +1,14 @@
 define(["scene/scene", "scene/gameplay"], function(Scene, Gameplay) {
-    var Menu = Scene.extend({
-        init: function(game) {
-            this._super(game, 2);
+    var Menu = Class(Scene, {
+        constructor: function(game) {
+            Menu.$super.call(this, game, 2);
             console.log("Running menu scene...");
             console.log("Menu scene initialized");
 
         },
         update: function() {
-            this._super();
+            Menu.$superp.update.call(this);
+            
             this.game.changeScene(new Gameplay(this.game));
         }
     });

@@ -1,7 +1,7 @@
 define(["globals", "scene/menu", "util/helpers", "load/sheetparser"], function(Globals, Menu, Helpers, SheetParser) {
 
-var Game = Class.extend({
-    init: function() {
+var Game = Class({
+    constructor: function() {
         PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
         this.gameWidth = Math.min(document.documentElement.offsetWidth - (document.documentElement.offsetWidth / 5), 1200);

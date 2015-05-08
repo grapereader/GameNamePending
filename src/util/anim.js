@@ -1,8 +1,7 @@
 define(function() {
 
-    var Animation = Class.extend({
-
-        init: function(namespace, animFrames, sprite) {
+    var Animation = Class({
+        constructor: function(namespace, animFrames, sprite) {
             this.elapsed = 0;
             this.animFrames = animFrames;
             this.activeFrame = 0;

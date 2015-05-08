@@ -5,8 +5,8 @@ define(function() {
         It is the ViewObject's responsibility to translate itself in
         accordance with the values in this class.
     */
-    var View = Class.extend({
-        init: function(game, x, y, width, height) {
+    var View = Class({
+        constructor: function(game, x, y, width, height) {
             this.game = game;
 
             this.x = x;

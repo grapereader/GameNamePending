@@ -5,8 +5,8 @@ define(["view/view"], function(View) {
 
         Renders from 0-n layers, with the nth layer on top.
     */
-    var Scene = Class.extend({
-        init: function(game, layers) {
+    var Scene = Class({
+        constructor: function(game, layers) {
             this.game = game;
 
             this.layers = [];
