@@ -13,3 +13,10 @@ After XAMPP is up and running, you have 2 options:
 2. (more config) set up an apache alias to point to another location where the local repo is located.
 
 Then, while the web server is running, simply navigate to http://localhost/folder-of-repo
+
+## Additional reading
+We use RequireJS for splitting the code up into multiple files. The documentation for that system can be found here: http://requirejs.org/docs/api.html
+
+We use the JSFace class system. Usage can be found here: https://github.com/tnhu/jsface
+
+UnderscoreJS is currently available as well. Although, it may be removed if it finds no use. Its documentation can be found here: http://underscorejs.org/
