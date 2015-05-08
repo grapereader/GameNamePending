@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/styles.css" />
+    <title class="!{GAME_NAME}"></title>
+</head>
+
+<body>
+
+<div class="table center">
+    <div class="row">
+        <div class="cell">
+            <h1 class="!{GAME_NAME}"></h1>
+        </div>
+    </div>
+    <div class="row shadow">
+        <div class="cell">
+            <div class="table">
+                <div class="row">
+                    <div class="cell span-2" id="canvas-wrapper">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="cell">
+            <h2>Welcome to <span class="!{GAME_NAME}"></span>!</h2>
+            <div>
+                A roguelike using Javascript + HTML5
+            </div>
+        </div>
+    </div>
+</div>
+<script src="src/lib/class.js"></script>
+<script src="src/pixi/pixi.dev.js"></script>
+<script src="src/lib/underscore.js"></script>
+<script data-main="src/main" src="src/require.js"></script>
+</body>
+</html>
