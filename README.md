@@ -1,2 +1,2 @@
-# FeudalFinance
-Idle game with RTS elements
+# GameNamePending
+An awesome new Roguelike written in Javascript.
