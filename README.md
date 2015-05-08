@@ -19,4 +19,6 @@ We use RequireJS for splitting the code up into multiple files. The documentatio
 
 We use the JSFace class system. Usage can be found here: https://github.com/tnhu/jsface
 
+JSFace has a lot more features than we need. Being familiar with basic class declaration and inheritance is good enough for our purposes.
+
 UnderscoreJS is currently available as well. Although, it may be removed if it finds no use. Its documentation can be found here: http://underscorejs.org/
