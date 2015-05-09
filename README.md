@@ -22,3 +22,7 @@ We use the JSFace class system. Usage can be found here: https://github.com/tnhu
 JSFace has a lot more features than we need. Being familiar with basic class declaration and inheritance is good enough for our purposes.
 
 UnderscoreJS is currently available as well. Although, it may be removed if it finds no use. Its documentation can be found here: http://underscorejs.org/
+
+The graphics library used is called PixiJS. We use version 3.
+The docs for this version are located here: http://pixijs.github.io/docs/PIXI.html
+The source can be found here: https://github.com/GoodBoyDigital/pixi.js/
