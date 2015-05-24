@@ -2,6 +2,8 @@
     Original SpriteSheetParser by Chad Engler
     Modified May 1 2015 Seth Traverse
     Now uses namespaces in the global texture cache to group frames to the resource
+
+    Namespace is just the .sheet file name without the extension.
 */
 define(["../util/helpers"], function(Helpers) {
 

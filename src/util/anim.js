@@ -1,6 +1,24 @@
 define(function() {
 
     var Animation = Class({
+        /**
+            Relatively extensible animation framework
+
+            namespace - Namespace of spritesheet (see sheetparser)
+            animFrames - Big data structure containing the frames and fps of each animation
+                Best explained by example:
+                {
+                    "ranged-right": {flip: "ranged-left"}, <- Flipping other animations horizontally is allowed
+                    "ranged-left": {
+                        "frames": ["ranged-left-0", "ranged-left-1", "ranged-left-2", "ranged-left-3"], <- These are frames in the namespace
+                        "fps": 5 <- Each animation has its own fps
+                    }
+                }
+                Note: The animBuilder inside "helpers" makes this quicker and less painful.
+                --> "ranged-left": Helpers.animBuilder("ranged-left", frameCount, fps)
+                
+            sprite - The sprite that gets anim textures applied to it
+        */
         constructor: function(namespace, animFrames, sprite) {
             this.elapsed = 0;
             this.animFrames = animFrames;
@@ -26,7 +44,9 @@ define(function() {
                 }
             }
         },
-
+        /**
+            Set the current animation, as defined in the animFrames object
+        */
         setAnimation: function(animId) {
             if (this.activeAnimation !== animId) {
                 this.activeAnimation = animId;
@@ -34,7 +54,10 @@ define(function() {
                 this.changed = true;
             }
         },
-
+        /**
+            Must be called every frame for the animation to work.
+            Returns the texture currently applied to the sprite.
+        */
         stepAnimation: function(deltaTime) {
             this.elapsed += deltaTime;
             this.changed = false;
