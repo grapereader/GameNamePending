@@ -3,7 +3,7 @@
     Modified May 1 2015 Seth Traverse
     Now uses namespaces in the global texture cache to group frames to the resource
 */
-define(function() {
+define(["../util/helpers"], function(Helpers) {
 
     return function (resource, next)
     {
@@ -31,7 +31,7 @@ define(function() {
             var frames = json.frames;
 
             //Create namespace for this spritesheet
-            var namespace = resource.name;
+            var namespace = Helpers.getFileNameFromPath(resource.name).replace(".sheet", "");
             PIXI.utils.TextureCache[namespace] = {};
 
             for (var i in frames)

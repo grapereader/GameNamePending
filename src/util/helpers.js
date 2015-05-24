@@ -18,6 +18,9 @@ define(function() {
         },
         sprite: function(name) {
             return spriteDir + name;
+        },
+        getFileNameFromPath: function(path) {
+            return path.replace(/^.*[\\\/]/, '');
         }
     };
 });
