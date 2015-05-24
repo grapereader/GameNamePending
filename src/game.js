@@ -1,11 +1,13 @@
-define(["globals", "scene/menu", "util/helpers", "load/sheetparser"], function(Globals, Menu, Helpers, SheetParser) {
+define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyboard"], function(Globals, Menu, Helpers, SheetParser, KeyboardInput) {
 
 var Game = Class({
     constructor: function() {
         PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
-        this.gameWidth = Math.min(document.documentElement.offsetWidth - (document.documentElement.offsetWidth / 5), 1200);
-        this.gameHeight = Math.min(document.documentElement.offsetHeight - (document.documentElement.offsetHeight / 5), 700);
+        var docWidth = document.documentElement.offsetWidth;
+        var docHeight = document.documentElement.offsetHeight;
+        this.gameWidth = Math.min(docWidth - (docWidth / 5), 1200);
+        this.gameHeight = Math.min(docHeight - (docHeight / 5), 700);
         this.renderer = PIXI.autoDetectRenderer(this.gameWidth, this.gameHeight, {antialiasing: false});
 
         this.lastUpdate = Date.now();
@@ -15,6 +17,8 @@ var Game = Class({
         this.fps = 0;
 
         document.getElementById("canvas-wrapper").appendChild(this.renderer.view);
+
+        this.keyboard = new KeyboardInput(window);
 
         console.log("Created new game instance.");
     },
