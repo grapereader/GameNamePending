@@ -1,8 +1,8 @@
 define(["entity"], function(Entity) {
 
     var Enemy = Class(Entity, {
-        constructor: function(scene) {
-            Enemy.$super.call(this, scene);
+        constructor: function(gameManager) {
+            Enemy.$super.call(this, gameManager);
         },
         update: function() {
             Enemy.$superp.update.call(this);
