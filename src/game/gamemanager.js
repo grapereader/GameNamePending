@@ -1,4 +1,4 @@
-define(function() {
+define(["entity/player"], function(Player) {
     /**
         This is the meat of the game logic.
 
@@ -12,8 +12,11 @@ define(function() {
 
             var self = this;
 
+            this.player = new Player(this);
+            this.scene.addObject(this.player.container, 1);
         },
         update: function() {
+            this.player.update();
         }
     });
 

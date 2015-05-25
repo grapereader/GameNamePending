@@ -1,4 +1,4 @@
-define(["item"], function(Item) {
+define(["item/item"], function(Item) {
 
     var Armour = Class(Item, {
         constructor: function(id, name, description, rarity, affixes, armourType, armour) {

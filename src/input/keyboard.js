@@ -16,7 +16,7 @@ define(function() {
             //This will work for now though.
 
             element.addEventListener("keydown", function(e) {
-                if (keys.indexOf(e.keyCode) == -1) self.keys.push(e.keyCode);
+                if (self.keys.indexOf(e.keyCode) == -1) self.keys.push(e.keyCode);
             });
 
             element.addEventListener("keyup", function(e) {
@@ -24,7 +24,7 @@ define(function() {
             });
         },
         isKeyDown: function(keyCode) {
-            return keys.indexOf(keyCode) != -1;
+            return this.keys.indexOf(keyCode) != -1;
         }
     });
 

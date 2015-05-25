@@ -16,7 +16,7 @@ define(function() {
                 }
                 Note: The animBuilder inside "helpers" makes this quicker and less painful.
                 --> "ranged-left": Helpers.animBuilder("ranged-left", frameCount, fps)
-                
+
             sprite - The sprite that gets anim textures applied to it
         */
         constructor: function(namespace, animFrames, sprite) {
@@ -40,7 +40,7 @@ define(function() {
                 }
                 this.animData[anim].speed = 1000 / this.animFrames[source].fps;
                 for (var i = 0; i < this.animFrames[source].frames.length; i++) {
-                    this.animData[anim].textures[i] = PIXI.TextureCache[namespace][this.animFrames[source].frames[i]];
+                    this.animData[anim].textures[i] = PIXI.utils.TextureCache[namespace][this.animFrames[source].frames[i]];
                 }
             }
         },
@@ -75,7 +75,7 @@ define(function() {
             var animData = this.animData[this.activeAnimation];
             var texture = animData.textures[this.activeFrame];
             if (this.changed) {
-                this.sprite.setTexture(texture);
+                this.sprite.texture = texture;
                 this.sprite.scale.x = (animData.flip ? -1 : 1) * Math.abs(this.sprite.scale.x);
             }
             return texture;

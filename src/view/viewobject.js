@@ -13,7 +13,7 @@ define(function() {
             this.sx = 0;
             this.sy = 0;
 
-            this.container = new PIXI.DisplayObjectContainer();
+            this.container = new PIXI.Container();
 
             this.autoResize = false;
         },

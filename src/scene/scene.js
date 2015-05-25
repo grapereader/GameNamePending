@@ -11,7 +11,7 @@ define(["view/view"], function(View) {
 
             this.layers = [];
             for (var i = 0; i < layers; i++) {
-                this.layers.push(new PIXI.Container());
+                this.layers.push([]);
             }
 
             this.view = new View(game, 0, 0, game.gameWidth, game.gameHeight);
@@ -23,11 +23,9 @@ define(["view/view"], function(View) {
             If the object is not yet in a layer, sets the object's layer.
         */
         setLayer: function(object, toLayer) {
-            if (object.layer !== undefined) {
-                this.layers[object.layer].removeChild(object);
-            }
+            this.removeObject(object);
             object.layer = toLayer;
-            this.layers[toLayer].addChild(object);
+            this.layers[toLayer].push(object);
 
         },
         /**
@@ -42,7 +40,8 @@ define(["view/view"], function(View) {
         */
         removeObject: function(object) {
             if (object.layer !== undefined) {
-                this.layers[object.layer].removeChild(object);
+                var layer = this.layers[object.layer];
+                layer.splice(layer.indexOf(object), 1);
             }
         },
         /**
@@ -51,7 +50,10 @@ define(["view/view"], function(View) {
         render: function(renderer) {
             var len = this.layers.length;
             for (var i = 0; i < len; i++) {
-                renderer.render(this.layers[i]);
+                var len2 = this.layers[i].length;
+                for (var j = 0; j < len2; j++) {
+                    renderer.render(this.layers[i][j]);
+                }
             }
         },
         /**
