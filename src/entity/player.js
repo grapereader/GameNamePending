@@ -59,8 +59,8 @@ define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers,
             this.walk(dx, dy);
 
             this.gameManager.scene.view.move(
-                this.x - this.gameManager.game.gameWidth / 2,
-                this.y - this.gameManager.game.gameHeight / 2
+                this.x + (this.width / 2) - this.gameManager.game.gameWidth / 2,
+                this.y + (this.height / 2) - this.gameManager.game.gameHeight / 2
             );
         },
         createSprite: function() {
