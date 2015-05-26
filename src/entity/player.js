@@ -1,8 +1,8 @@
 define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function(Entity, Helpers, Animation, Inventory) {
 
     var Player = Class(Entity, {
-        constructor: function(gameManager) {
-            Player.$super.call(this, gameManager, saveData);
+        constructor: function(gameManager, saveData) {
+            Player.$super.call(this, gameManager);
 
             this.inventory = new Inventory(16, saveData.inventory, {});
 

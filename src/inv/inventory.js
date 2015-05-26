@@ -33,4 +33,6 @@ define(function() {
         }
     });
 
+    return Inventory;
+
 });
