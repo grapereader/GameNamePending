@@ -9,9 +9,9 @@ define(["view/view"], function(View) {
         constructor: function(game, layers) {
             this.game = game;
 
-            this.layers = [];
+            this.root = new PIXI.Container();
             for (var i = 0; i < layers; i++) {
-                this.layers.push([]);
+                this.root.addChild(new PIXI.Container());
             }
 
             this.view = new View(game, 0, 0, game.gameWidth, game.gameHeight);
@@ -25,7 +25,7 @@ define(["view/view"], function(View) {
         setLayer: function(object, toLayer) {
             this.removeObject(object);
             object.layer = toLayer;
-            this.layers[toLayer].push(object);
+            this.root.getChildAt(toLayer).addChild(object);
 
         },
         /**
@@ -40,21 +40,15 @@ define(["view/view"], function(View) {
         */
         removeObject: function(object) {
             if (object.layer !== undefined) {
-                var layer = this.layers[object.layer];
-                layer.splice(layer.indexOf(object), 1);
+                var layer = root.getChildAt(object.layer);
+                layer.removeChild(object);
             }
         },
         /**
             Render all layers with the renderer
         */
         render: function(renderer) {
-            var len = this.layers.length;
-            for (var i = 0; i < len; i++) {
-                var len2 = this.layers[i].length;
-                for (var j = 0; j < len2; j++) {
-                    renderer.render(this.layers[i][j]);
-                }
-            }
+            renderer.render(this.root);
         },
         /**
             Should be called every loop to update the View object.
