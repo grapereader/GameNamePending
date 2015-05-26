@@ -1,4 +1,4 @@
-define(["entity/player", "item/manager"], function(Player, ItemManager) {
+define(["entity/player", "item/manager", "util/helpers"], function(Player, ItemManager, Helpers) {
     /**
         This is the meat of the game logic.
 
@@ -16,6 +16,11 @@ define(["entity/player", "item/manager"], function(Player, ItemManager) {
 
             this.player = new Player(this);
             this.scene.addObject(this.player.container, 1);
+
+            var tempBG = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("temp_bg.jpg")]);
+            tempBG.width = game.gameWidth;
+            tempBG.height = game.gameHeight;
+            this.scene.addObject(tempBG, 0);
         },
         update: function() {
             this.player.update();
