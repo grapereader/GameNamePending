@@ -19,12 +19,6 @@ define(function() {
 
             var self = this;
 
-            //This needs to be expanded to use the 'key' property when available
-            //since "apparently" keyCode is deprecated. Unfortunately, we still need to
-            //be able to fall back to keyCode since the key property is pretty
-            //young and not supported everywhere...
-            //This will work for now though.
-
             element.addEventListener("keydown", function(e) {
                 var k = self.getCode(e);
                 if (self.keys.indexOf(k) == -1) self.keys.push(k);
