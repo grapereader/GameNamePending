@@ -4,21 +4,19 @@ define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers,
         constructor: function(gameManager) {
             Player.$super.call(this, gameManager);
 
-            this.baseSprite = this.createSprite();
-            this.handsSprite = this.createSprite();
-            this.legsSprite = this.createSprite();
-            this.chestSprite = this.createSprite();
-            this.headSprite = this.createSprite();
-            this.feetSprite = this.createSprite();
-            this.itemSprite = this.createSprite();
+            this.sprites = {
+                "base": this.createSprite(),
+                "hands": this.createSprite(),
+                "legs": this.createSprite(),
+                "chest": this.createSprite(),
+                "head": this.createSprite(),
+                "feet": this.createSprite(),
+                "item": this.createSprite()
+            };
 
-            this.addChild(this.baseSprite);
-            this.addChild(this.handsSprite);
-            this.addChild(this.legsSprite);
-            this.addChild(this.feetSprite);
-            this.addChild(this.chestSprite);
-            this.addChild(this.headSprite);
-            this.addChild(this.itemSprite);
+            for (s in this.sprites) {
+                this.addChild(this.sprites[s]);
+            }
             this.setSize(64, 64);
 
             this.walkSpeed = 4;
@@ -43,7 +41,7 @@ define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers,
                 "walk-down" : Helpers.animBuilder("walk-down", 4, actionSpeed)
             };
 
-            this.addAnimationLayer(new Animation("male-race-1", anims, this.baseSprite));
+            this.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
             this.setAnimation("stand-down");
         },
         update: function() {
