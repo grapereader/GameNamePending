@@ -17,19 +17,22 @@ define(function() {
         },
         /**
             Move an item to target inventory, swapping if required and allowed
+
+            Returns false on failure, true on success
         */
         moveItem: function(srcIndex, targetInv, targetIndex) {
-            if (targetIndex < 0 || targetIndex >= targetInv.items.length) return;
-            if (srcIndex < 0 || srcIndex >= this.items.length) return;
-            if (targetInv.write === false) return;
+            if (targetIndex < 0 || targetIndex >= targetInv.items.length) return false;
+            if (srcIndex < 0 || srcIndex >= this.items.length) return false;
+            if (targetInv.write === false) return false;
 
             var otherItem = targetInv.items[targetIndex];
 
             //There is an item in the target spot, but it can't be removed, so fail.
-            if (otherItem !== false && !targetInv.read) return;
+            if (otherItem !== false && !targetInv.read) return false;
 
             targetInv.items[targetIndex] = this.items[srcIndex];
             this.items[srcIndex] = otherItem;
+            return true;
         }
     });
 
