@@ -1,43 +1,14 @@
 define(function() {
 
-    var KEY_CODES = {
-        "Digit0": 0x30,
-        "Digit1": 0x31,
-        "Digit2": 0x32,
-        "Digit3": 0x33,
-        "Digit4": 0x34,
-        "Digit5": 0x35,
-        "Digit6": 0x36,
-        "Digit7": 0x37,
-        "Digit8": 0x38,
-        "Digit9": 0x39,
-        "KeyA": 0x41,
-        "KeyB": 0x42,
-        "KeyC": 0x43,
-        "KeyD": 0x44,
-        "KeyE": 0x45,
-        "KeyF": 0x46,
-        "KeyG": 0x47,
-        "KeyH": 0x48,
-        "KeyI": 0x49,
-        "KeyJ": 0x4A,
-        "KeyK": 0x4B,
-        "KeyL": 0x4C,
-        "KeyM": 0x4D,
-        "KeyN": 0x4E,
-        "KeyO": 0x4F,
-        "KeyP": 0x50,
-        "KeyQ": 0x51,
-        "KeyR": 0x52,
-        "KeyS": 0x53,
-        "KeyT": 0x54,
-        "KeyU": 0x55,
-        "KeyV": 0x56,
-        "KeyW": 0x57,
-        "KeyX": 0x58,
-        "KeyY": 0x59,
-        "KeyZ": 0x5A
-    };
+    var KEY_CODES = {};
+
+    for (var k = 0x30; k <= 0x39; k++) {
+        KEY_CODES["Digit" + String.fromCharCode(k)] = k;
+    }
+
+    for (var k = 0x41; k <= 0x5A; k++) {
+        KEY_CODES["Key" + String.fromCharCode(k)] = k;
+    }
 
     var KeyboardInput = Class({
         /**
