@@ -45,8 +45,8 @@ define(function() {
                 if (inventory.items[i] === false) continue;
                 var x = i % 4;
                 var y = Math.floor(i / 4);
-                var item = new Item(gameManager, inventory.items[i], 0, 0);
-                this.container.addChild(item);
+                var item = new InventoryItem(gameManager, inventory.items[i], 0, 0);
+                this.container.addChild(item.sprite);
                 this.items.push(item);
                 //Move to instead of set so we get a swaggin animnation on open.
                 //This could be really bad for functionality. :P We shall see

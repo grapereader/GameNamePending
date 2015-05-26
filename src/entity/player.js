@@ -46,6 +46,10 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
             var testWeapon = gameManager.itemManager.generateWeapon();
             this.animGroup.addAnimationLayer(new Animation(testWeapon.framesNamespace, anims, this.sprites["item"]));
 
+            for (var i = 0; i < this.inventory.items.length; i++) {
+                this.inventory.items[i] = testWeapon;
+            }
+
             this.animGroup.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
             this.animGroup.setAnimation("stand-down");
         },
