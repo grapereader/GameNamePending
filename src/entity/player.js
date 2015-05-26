@@ -42,10 +42,10 @@ define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers,
             };
 
             var testWeapon = gameManager.itemManager.generateWeapon();
-            this.addAnimationLayer(new Animation(testWeapon.framesNamespace, anims, this.sprites["item"]));
+            this.animGroup.addAnimationLayer(new Animation(testWeapon.framesNamespace, anims, this.sprites["item"]));
 
-            this.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
-            this.setAnimation("stand-down");
+            this.animGroup.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
+            this.animGroup.setAnimation("stand-down");
         },
         update: function() {
             Player.$superp.update.call(this);
