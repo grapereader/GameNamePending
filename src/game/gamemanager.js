@@ -10,11 +10,29 @@ define(["entity/player", "item/manager", "util/helpers"], function(Player, ItemM
             this.game = game;
             this.scene = scene;
 
+            //Temp save data for testing. This will be loaded from JSON/Database.
+            var saveData = {
+                saveName: "Test Save",
+                characterName: "Joe",
+                repeats: 0,
+                inventory: false,
+                chest: false,
+                equip: {
+                    head: false,
+                    chest: false,
+                    legs: false,
+                    feet: false,
+                    hands: false,
+                    item: false
+                },
+                map: false //False here can mean player is currently in lobby
+            }
+
             var self = this;
 
             this.itemManager = new ItemManager();
 
-            this.player = new Player(this);
+            this.player = new Player(this, saveData);
             this.scene.addObject(this.player.container, 1);
 
             var tempBG = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("temp_bg.jpg")]);

@@ -1,8 +1,10 @@
-define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers, Animation) {
+define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function(Entity, Helpers, Animation, Inventory) {
 
     var Player = Class(Entity, {
         constructor: function(gameManager) {
-            Player.$super.call(this, gameManager);
+            Player.$super.call(this, gameManager, saveData);
+
+            this.inventory = new Inventory(16, saveData.inventory, {});
 
             this.sprites = {
                 "base": this.createSprite(),
