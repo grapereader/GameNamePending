@@ -1,8 +1,8 @@
 define(["item/item"], function(Item) {
 
     var Armour = Class(Item, {
-        constructor: function(id, name, description, rarity, affixes, armourType, armour) {
-            Armour.$super.call(this, Item.TYPES.ARMOUR, id, name, description, rarity, affixes);
+        constructor: function(name, description, rarity, affixes, framesNamespace, armourType, armour) {
+            Armour.$super.call(this, Item.TYPES.ARMOUR, name, description, rarity, affixes, framesNamespace);
             this.armourType = armourType;
             this.armour = armour;
         }

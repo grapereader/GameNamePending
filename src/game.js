@@ -31,6 +31,7 @@ var Game = Class({
         var loader = new PIXI.loaders.Loader();
         loader
             .add(Helpers.sprite("players/male-race-1/male-race-1.sheet"))
+            .add(Helpers.sprite("items/ironsword/ironsword.sheet"))
             .add(Helpers.sprite("world/tiles-1/tiles-1.sheet"))
             .add(Helpers.sprite("blank.png"))
             .after(SheetParser)

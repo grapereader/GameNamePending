@@ -41,6 +41,9 @@ define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers,
                 "walk-down" : Helpers.animBuilder("walk-down", 4, actionSpeed)
             };
 
+            var testWeapon = gameManager.itemManager.generateWeapon();
+            this.addAnimationLayer(new Animation(testWeapon.framesNamespace, anims, this.sprites["item"]));
+
             this.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
             this.setAnimation("stand-down");
         },

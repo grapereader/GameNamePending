@@ -1,4 +1,4 @@
-define(["../lib/heap"], function(Heap) {
+define(["lib/heap"], function(Heap) {
 
     var Node = Class({
         constructor: function(x, y, c) {
