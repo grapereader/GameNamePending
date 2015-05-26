@@ -50,10 +50,10 @@ define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers,
             var kb = this.gameManager.game.keyboard;
             var dx = 0;
             var dy = 0;
-            if (kb.isKeyDown(0x57)) dy = -this.walkSpeed;
-            if (kb.isKeyDown(0x53)) dy = this.walkSpeed;
-            if (kb.isKeyDown(0x41)) dx = -this.walkSpeed;
-            if (kb.isKeyDown(0x44)) dx = this.walkSpeed;
+            if (kb.isKeyDown(0x57)) dy = -this.walkSpeed; //W
+            if (kb.isKeyDown(0x53)) dy = this.walkSpeed;  //S
+            if (kb.isKeyDown(0x41)) dx = -this.walkSpeed; //A
+            if (kb.isKeyDown(0x44)) dx = this.walkSpeed;  //D
             this.walk(dx, dy);
 
             this.gameManager.scene.view.move(
