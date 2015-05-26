@@ -1,0 +1,49 @@
+define(["tile/tile", "util/helpers", "util/anim"], function(tile, Helpers, Animation) {
+	var Door = Class(Tile, {
+        constructor: function(gamemanager) {
+            Door.$super.call(this, gameManager.scene);
+            this.gameManager = gameManager;
+            this.isShut = true;
+            this.isClippable = true;
+            
+            this.openSprite = this.createSprite();
+            this.closedSprite = this.createSprite();
+            this.setSize(64,64); 
+            var doorSpeed = 4;
+            var anims = {
+                "open": Helpers.animBuilder("open", 2, doorSpeed),
+                "close": Helpers.animBuilder("close", 2, doorSpeed)
+            }
+
+        },
+ 
+        update: function(){
+        	Door.$superp.update.call(this);
+        }
+        /**
+            Function that opens and closes the door
+        */
+        use: function(){
+            this.isShut = !this.isShut;
+            this.isClippable = !this.isClippable;
+            this.gameManager.pathfindingMatrix
+
+        }
+
+        createSprite: function() {
+            var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("blank.png")]);
+            sprite.scale.x = 2;
+            sprite.scale.y = 2;
+            sprite.anchor.x = 0.5;
+            sprite.anchor.y = 0.5;
+
+            sprite.x = 32;
+            sprite.y = 32;
+
+            return sprite;
+        }
+    });
+
+    return Door;
+
+});
