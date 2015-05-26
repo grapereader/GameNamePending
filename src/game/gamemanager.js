@@ -21,9 +21,13 @@ define(["entity/player", "item/manager", "util/helpers"], function(Player, ItemM
             tempBG.width = game.gameWidth;
             tempBG.height = game.gameHeight;
             this.scene.addObject(tempBG, 0);
+
+            this.fpsText = new PIXI.Text("FPS", {font : "24px Arial"});
+            this.scene.addObject(this.fpsText, 9);
         },
         update: function() {
             this.player.update();
+            this.fpsText.text = "FPS: " + this.game.fps;
         }
     });
 
