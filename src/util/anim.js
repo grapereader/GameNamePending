@@ -19,13 +19,15 @@ define(function() {
 
             sprite - The sprite that gets anim textures applied to it
         */
-        constructor: function(namespace, animFrames, sprite) {
+        constructor: function(namespace, animFrames, sprite, loop) {
             this.elapsed = 0;
             this.animFrames = animFrames;
             this.activeFrame = 0;
             this.activeAnimation = "";
             this.changed = false;
             this.sprite = sprite;
+            this.loop = loop === undefined ? true : loop;
+            this.finished = false;
 
             this.animData = {};
 
@@ -50,9 +52,13 @@ define(function() {
         setAnimation: function(animId) {
             if (this.activeAnimation !== animId) {
                 this.activeAnimation = animId;
-                this.activeFrame = 0;
-                this.changed = true;
+                this.reset();
             }
+        },
+        reset: function() {
+            this.activeFrame = 0;
+            this.changed = true;
+            this.finished = false;
         },
         /**
             Must be called every frame for the animation to work.
@@ -68,7 +74,11 @@ define(function() {
                 this.activeFrame++;
 
                 if (this.activeFrame >= this.animData[this.activeAnimation].textures.length) {
-                    this.activeFrame = 0;
+                    if (this.loop) {
+                        this.activeFrame = 0;
+                    } else {
+                        this.finished = true;
+                    }
                 }
             }
 
