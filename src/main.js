@@ -9,10 +9,5 @@ define(["game", "globals"], function(Game, Globals) {
     }
 
     var game = new Game();
-    var stage = new PIXI.Stage(0x123456);
-    var gameContainer = new PIXI.DisplayObjectContainer();
-    stage.addChild(gameContainer);
-    game.changeScene(stage)
-    //console.log(game.currentScene);
     game.run();
 });
