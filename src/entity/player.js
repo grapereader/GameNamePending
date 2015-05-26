@@ -58,13 +58,10 @@ define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers,
             if (kb.isKeyDown(0x44)) dx = this.walkSpeed;
             this.walk(dx, dy);
 
-            console.log(this.container.width + ", " + this.container.height);
-/*
             this.gameManager.scene.view.move(
                 this.x - this.gameManager.game.gameWidth / 2,
                 this.y - this.gameManager.game.gameHeight / 2
             );
-*/
         },
         createSprite: function() {
             var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("blank.png")]);
