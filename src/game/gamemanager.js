@@ -1,4 +1,4 @@
-define(["entity/player", "item/manager", "util/helpers", "gui/inventory"], function(Player, ItemManager, Helpers, InventoryScreen) {
+define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window"], function(Player, ItemManager, Helpers, InventoryScreen, Window) {
     /**
         This is the meat of the game logic.
 
@@ -43,16 +43,16 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory"], funct
             this.fpsText = new PIXI.Text("FPS", {font : "24px Arial"});
             this.scene.addObject(this.fpsText, 9);
 
-            this.testGui = new InventoryScreen(this, this.player.inventory);
-            this.scene.addObject(this.testGui.container, 8);
-            this.testGui.container.x = 32;
-            this.testGui.container.y = 32;
+            this.testInv = new InventoryScreen(this, this.player.inventory);
+            this.testGui = new Window(300, 300, "Inventory");
+            this.testGui.container.addChild(this.testInv.container);
+            this.scene.addObject(this.testGui.rootContainer, 8);
         },
         update: function() {
             this.player.update();
             this.fpsText.text = "FPS: " + this.game.fps;
 
-            this.testGui.update();
+            this.testInv.update();
         }
     });
 
