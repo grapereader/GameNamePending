@@ -1,6 +1,6 @@
-define(["tile/tile", "util/helpers", "util/anim"], function(tile, Helpers, Animation) {
+define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Animation) {
 	var Door = Class(Tile, {
-        constructor: function(gamemanager) {
+        constructor: function(gameManager) {
             Door.$super.call(this, gameManager.scene);
             this.gameManager = gameManager;
             this.isShut = true;
@@ -14,16 +14,14 @@ define(["tile/tile", "util/helpers", "util/anim"], function(tile, Helpers, Anima
                 "open": Helpers.animBuilder("open", 2, doorSpeed),
                 "close": Helpers.animBuilder("close", 2, doorSpeed)
             }
-            this.addAnimationLayer(new Animation("door", anims, this.baseSprite));
+            this.currentAnimation = new Animation("door", anims, this.baseSprite);
         },
  
         update: function(){
         	Door.$superp.update.call(this);
-            if(this.isAnimated){
+            if(!this.currentAnimation.isFinished){
                 var delta = this.gameManager.game.deltaTime;
-                for (var i = 0; i < this.animations.length; i++) {
-                    this.animations[i].stepAnimation(delta);
-                }
+                currentAnimation.stepAnimation(delta);
             }
 
         },
@@ -31,16 +29,16 @@ define(["tile/tile", "util/helpers", "util/anim"], function(tile, Helpers, Anima
             Function that opens and closes the door
         */
         use: function(){
-            if(this.isShut){
-                this.setAnimation("open");
-                this.isAnimated = true;
+            if(this.currentAnimation.isFinished){
+                if(this.isShut){
+                    this.currentAnimation.setAnimation("open");
+                }
+                else{
+                    this.currentAnimation.setAnimation("close");
+                }
+                this.isShut=!this.isShut;
+                this.isClippable = !this.isClippable;
             }
-            else{
-                this.setAnimation("close");
-                this.isAnimated = true;
-            }
-            this.isShut=!this.isShut;
-            this.isClippable = !this.isClippable;
         },
         createSprite: function() {
             var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("blank.png")]);
