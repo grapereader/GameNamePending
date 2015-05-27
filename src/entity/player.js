@@ -16,6 +16,9 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
                 "item": this.createSprite()
             };
 
+            this.x = 64;
+            this.y = 64;
+
             for (s in this.sprites) {
                 this.addChild(this.sprites[s]);
             }

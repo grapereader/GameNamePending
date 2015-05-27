@@ -3,7 +3,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
         constructor: function(gameManager) {
             Path.$super.call(this, gameManager);
             this.gameManager = gameManager;
-            this.clippable = true;
+            this.clipping = false;
             this.tileSprite = this.createSprite("wood1");
             this.addChild(this.tileSprite);
         },

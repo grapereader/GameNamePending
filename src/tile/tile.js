@@ -4,10 +4,10 @@ define(["view/viewobject", "util/helpers"], function(ViewObject,Helpers) {
         constructor: function(gameManager) {
             Tile.$super.call(this, gameManager.scene);
             this.gameManager = gameManager;
-            this.clippable = true;
+            this.clipping = true;
             this.animations = [];
         },
-        
+
         update: function(){
         	Tile.$superp.update.call(this);
         },

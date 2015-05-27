@@ -4,11 +4,11 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             Door.$super.call(this, gameManager.scene);
             this.gameManager = gameManager;
             this.isShut = true;
-            this.isClippable = false;
+            this.clipping = false;
             this.isAnimated = false;
             this.openSprite = this.createSprite();
             this.closedSprite = this.createSprite();
-            this.setSize(64,64); 
+            this.setSize(64,64);
             var doorSpeed = 4;
             var anims = {
                 "open": Helpers.animBuilder("open", 2, doorSpeed),
@@ -16,7 +16,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             }
             this.currentAnimation = new Animation("door", anims, this.baseSprite);
         },
- 
+
         update: function(){
         	Door.$superp.update.call(this);
             if(!this.currentAnimation.isFinished){

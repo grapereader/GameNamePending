@@ -3,7 +3,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
         constructor: function(gameManager) {
             Wall.$super.call(this, gameManager);
             this.gameManager = gameManager;
-            this.clippable = false;
+            this.clipping = true;
             this.tileSprite = this.createSprite("rock3");
             this.addChild(this.tileSprite);
         },
