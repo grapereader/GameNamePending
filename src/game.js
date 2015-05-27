@@ -34,6 +34,7 @@ var Game = Class({
             .add(Helpers.sprite("items/ironsword/ironsword.sheet"))
             .add(Helpers.sprite("world/tiles-1/tiles-1.sheet"))
             .add(Helpers.sprite("blank.png"))
+            .add(Helpers.sprite("placeholder.png"))
             .add(Helpers.sprite("temp_bg.jpg"))
             .after(SheetParser)
             .once("complete", function() {
