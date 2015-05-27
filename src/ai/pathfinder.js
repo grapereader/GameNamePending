@@ -10,15 +10,15 @@ define(["lib/heap"], function(Heap) {
     });
 
     var Grid = Class({
-        constructor: function(board) {
-            this.board = board;
+        constructor: function(tileGrid) {
+            this.tileGrid = tileGrid;
 
-            this.nodes = new Array(board.length);
+            this.nodes = new Array(tileGrid.length);
 
-            for (var y = 0; y < board.length; y++) {
-                this.nodes[y] = new Array(board[y].length);
-                for (var x = 0; x < board[y].length; x++) {
-                    this.nodes[y][x] = new Node(x, y, board[y][x].clipping);
+            for (var y = 0; y < tileGrid.length; y++) {
+                this.nodes[y] = new Array(tileGrid[y].length);
+                for (var x = 0; x < tileGrid[y].length; x++) {
+                    this.nodes[y][x] = new Node(x, y, tileGrid[y][x].clipping);
                 }
             }
         },
