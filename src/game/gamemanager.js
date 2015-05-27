@@ -1,5 +1,5 @@
 
-define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window","board/board"], function(Player, ItemManager, Helpers, InventoryScreen, Window,Board) {
+define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window","board/board", "entity/enemy"], function(Player, ItemManager, Helpers, InventoryScreen, Window, Board, Enemy) {
     /**
         This is the meat of the game logic.
 
@@ -33,6 +33,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             this.itemManager = new ItemManager();
             this.board = new Board(this,20,11);
+            this.board.addEnemy(new Enemy(this, 5, 5, 1, 1, 1, {}, "male-race-1"));
 
             this.player = new Player(this, saveData);
             this.scene.addObject(this.player.container, 1);

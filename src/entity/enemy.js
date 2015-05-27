@@ -1,7 +1,7 @@
-define(["entity/entity", "util/timer", "ai/pathfinder"], function(Entity, Timer, Pathfinder) {
+define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/anim"], function(Entity, Timer, Pathfinder, Helpers, Animation) {
 
     var Enemy = Class(Entity, {
-        constructor: function(gameManager, homeX, homeY, damage, attackSpeed, walkSpeed, dropMap) {
+        constructor: function(gameManager, homeX, homeY, damage, attackSpeed, walkSpeed, dropMap, spritesheet) {
             Enemy.$super.call(this, gameManager);
             this.damage = damage;
             this.attackSpeed = attackSpeed;
@@ -10,6 +10,34 @@ define(["entity/entity", "util/timer", "ai/pathfinder"], function(Entity, Timer,
 
             this.homeX = this.x = homeX;
             this.homeY = this.y = homeY;
+
+            this.sprite = Helpers.createSprite();
+
+            this.x *= 64;
+            this.y *= 64;
+
+            var standSpeed = 2;
+            var actionSpeed = 5;
+
+            var anims = {
+                "stand-left": Helpers.animBuilder("stand-left", 2, standSpeed),
+                "stand-right": {flip: "stand-left"},
+                "stand-up" : Helpers.animBuilder("stand-up", 2, standSpeed),
+                "stand-down": Helpers.animBuilder("stand-down", 2, standSpeed),
+
+                "use-left": Helpers.animBuilder("use-left", 4, actionSpeed),
+                "use-right": {flip: "use-left"},
+                "use-up": Helpers.animBuilder("use-up", 4, actionSpeed),
+                "use-down": Helpers.animBuilder("use-down", 4, actionSpeed),
+
+                "walk-left" : Helpers.animBuilder("walk-left", 4, actionSpeed),
+                "walk-right" : {flip: "walk-left"},
+                "walk-up" : Helpers.animBuilder("walk-up", 4, actionSpeed),
+                "walk-down" : Helpers.animBuilder("walk-down", 4, actionSpeed)
+            };
+
+            this.animGroup.addAnimationLayer(new Animation(spritesheet, anims, this.sprite));
+            this.animGroup.setAnimation("stand-down");
 
             this.currentPath = null;
 

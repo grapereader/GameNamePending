@@ -7,13 +7,13 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
             this.inventory = new Inventory(16, saveData.inventory, {});
 
             this.sprites = {
-                "base": this.createSprite(),
-                "hands": this.createSprite(),
-                "legs": this.createSprite(),
-                "chest": this.createSprite(),
-                "head": this.createSprite(),
-                "feet": this.createSprite(),
-                "item": this.createSprite()
+                "base": Helpers.createSprite(),
+                "hands": Helpers.createSprite(),
+                "legs": Helpers.createSprite(),
+                "chest": Helpers.createSprite(),
+                "head": Helpers.createSprite(),
+                "feet": Helpers.createSprite(),
+                "item": Helpers.createSprite()
             };
 
             this.x = 64;
@@ -72,18 +72,6 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
                 this.x + (this.width / 2) - this.gameManager.game.gameWidth / 2,
                 this.y + (this.height / 2) - this.gameManager.game.gameHeight / 2
             );
-        },
-        createSprite: function() {
-            var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("blank.png")]);
-            sprite.scale.x = 2;
-            sprite.scale.y = 2;
-            sprite.anchor.x = 0.5;
-            sprite.anchor.y = 0.5;
-
-            sprite.x = 32;
-            sprite.y = 32;
-
-            return sprite;
         }
     });
 
