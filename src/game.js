@@ -80,6 +80,8 @@ var Game = Class({
         var now = Date.now();
         this.deltaTime = now - this.lastUpdate;
         this.lastUpdate = now;
+
+        if (this.deltaTime > 100) this.deltaTime = 100;
     }
 });
 
