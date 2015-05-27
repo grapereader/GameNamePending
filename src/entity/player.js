@@ -1,8 +1,10 @@
-define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers, Animation) {
+define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function(Entity, Helpers, Animation, Inventory) {
 
     var Player = Class(Entity, {
-        constructor: function(gameManager) {
+        constructor: function(gameManager, saveData) {
             Player.$super.call(this, gameManager);
+
+            this.inventory = new Inventory(16, saveData.inventory, {});
 
             this.sprites = {
                 "base": this.createSprite(),
@@ -42,10 +44,14 @@ define(["entity/entity", "util/helpers", "util/anim"], function(Entity, Helpers,
             };
 
             var testWeapon = gameManager.itemManager.generateWeapon();
-            this.addAnimationLayer(new Animation(testWeapon.framesNamespace, anims, this.sprites["item"]));
+            this.animGroup.addAnimationLayer(new Animation(testWeapon.framesNamespace, anims, this.sprites["item"]));
 
-            this.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
-            this.setAnimation("stand-down");
+            for (var i = 0; i < this.inventory.items.length; i++) {
+                this.inventory.items[i] = testWeapon;
+            }
+
+            this.animGroup.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
+            this.animGroup.setAnimation("stand-down");
         },
         update: function() {
             Player.$superp.update.call(this);
