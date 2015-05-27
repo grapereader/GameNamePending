@@ -10,8 +10,8 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
 
             this.animGroup = new AnimGroup();
         },
-        update: function() {
-            Entity.$superp.update.call(this);
+        update: function(transform) {
+            Entity.$superp.update.call(this, transform);
 
             var delta = this.gameManager.game.deltaTime;
 

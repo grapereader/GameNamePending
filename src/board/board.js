@@ -43,7 +43,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
         },
         addEnemy: function(e) {
             this.enemies.push(e);
-            this.enemyContainer.addChild(e.sprite);
+            this.enemyContainer.addChild(e.container);
         },
         setTile: function(x,y,tile){
             this.grid[x][y] = tile;

@@ -12,6 +12,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             this.homeY = this.y = homeY;
 
             this.sprite = Helpers.createSprite();
+            this.addChild(this.sprite);
 
             this.x *= 64;
             this.y *= 64;
@@ -71,7 +72,8 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             });
         },
         update: function() {
-            Enemy.$superp.update.call(this);
+            Enemy.$superp.update.call(this, false);
+
             var delta = this.gameManager.game.deltaTime;
             this.aiTimer.update(delta);
 
