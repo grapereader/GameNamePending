@@ -28,6 +28,14 @@ define(function() {
                 var k = self.getCode(e);
                 self.keys.splice(self.keys.indexOf(k), 1);
             });
+
+            element.addEventListener("blur", function(e) {
+                self.keys = [];
+            });
+
+            element.addEventListener("focusout", function(e) {
+                self.keys = [];
+            })
         },
         getCode: function(keyEvent) {
             if (keyEvent.code === undefined || !(keyEvent.code in KEY_CODES)) {
