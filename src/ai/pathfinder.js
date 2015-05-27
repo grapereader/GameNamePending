@@ -86,7 +86,7 @@ define(["lib/heap"], function(Heap) {
             var open = new Heap(function(a, b) {
                 return a.f - b.f;
             });
-            var grid = new Grid(board);
+            var grid = new Grid(board.grid);
             var start = grid.getNodeAt(x, y);
             var dest = grid.getNodeAt(dx, dy);
 
