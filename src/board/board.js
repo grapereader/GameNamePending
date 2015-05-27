@@ -3,12 +3,12 @@ define(["tile/tile","tile/wall","tile/path","tile/door"], function(Tile,Wall,Pat
 		constructor: function(gameManager,boardWidth,boardHeight){
 			this.gameManager = gameManager;
 			this.gridWidth = boardWidth;
-			this.gridHeight = boardHeight;			
+			this.gridHeight = boardHeight;
             this.tiles = {
                 "wall": 0,
                 "path": 1,
                 "door": 2
-            };			
+            };
 			this.grid = this.initializeGrid(this.gridWidth,this.gridHeight);
 		},
 		initializeGrid: function(width,height){
@@ -28,7 +28,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door"], function(Tile,Wall,Pat
                     	temp = new Door(this.gameManager);
                     	break;
                     }
-                         
+
                     temp.tileSprite.x = i * temp.tileSprite.width;
                     temp.tileSprite.y = j * temp.tileSprite.height;
                     grid[i][j] = temp;
