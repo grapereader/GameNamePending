@@ -28,7 +28,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
                     	break;
                     }
                     temp.tileSprite.x = i * temp.tileSprite.width;
-                    temp.tileSprite.y = j * temp.tileSprite.height;                    
+                    temp.tileSprite.y = j * temp.tileSprite.height;
                     grid[i][j] = temp;
                     this.addChild(temp.tileSprite);
                 }
