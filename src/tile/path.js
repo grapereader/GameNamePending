@@ -5,7 +5,6 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.gameManager = gameManager;
             this.clipping = false;
             this.tileSprite = this.createSprite("wood1");
-            this.addChild(this.tileSprite);
         },
         update: function(){
         	Path.$superp.update.call(this);

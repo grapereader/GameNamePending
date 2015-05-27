@@ -1,9 +1,11 @@
-define(["tile/tile","tile/wall","tile/path","tile/door"], function(Tile,Wall,Path,Door) {
-    var Board = Class({
+define(["tile/tile","tile/wall","tile/path","tile/door","view/ViewObject"], function(Tile,Wall,Path,Door,ViewObject) {
+    var Board = Class(ViewObject,{
         constructor: function(gameManager,boardWidth,boardHeight){
+            Board.$super.call(this, gameManager.scene);
             this.gameManager = gameManager;
             this.gridWidth = boardWidth;
             this.gridHeight = boardHeight;
+            this.container = new PIXI.Container();
             this.tiles = {
                 "wall": 0,
                 "path": 1,
@@ -26,8 +28,9 @@ define(["tile/tile","tile/wall","tile/path","tile/door"], function(Tile,Wall,Pat
                     	break;
                     }
                     temp.tileSprite.x = i * temp.tileSprite.width;
-                    temp.tileSprite.y = j * temp.tileSprite.height;
+                    temp.tileSprite.y = j * temp.tileSprite.height;                    
                     grid[i][j] = temp;
+                    this.addChild(temp.tileSprite);
                 }
             }
             return grid;
@@ -36,6 +39,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door"], function(Tile,Wall,Pat
             this.grid[x][y] = tile;
         },
         update: function(){
+            Board.$superp.update.call(this);
             for(var i = 0; i < this.gridWidth; i++){
                 for(var j = 0; j < this.gridHeight; j++){
                     this.grid[i][j].update();

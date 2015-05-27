@@ -33,10 +33,10 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             this.itemManager = new ItemManager();
             this.board = new Board(this,20,11);
-            this.addTilesToScene();
 
             this.player = new Player(this, saveData);
             this.scene.addObject(this.player.container, 1);
+            this.scene.addObject(this.board.container,0);
 
             //var tempBG = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("temp_bg.jpg")]);
             //tempBG.width = game.gameWidth;
@@ -57,13 +57,6 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             this.testInv.update();
             this.fpsText.text = "FPS: " + this.game.fps;
         },
-        addTilesToScene: function() {
-            for(var i = 0;i < this.board.gridWidth;i++){
-                for(var j = 0;j < this.board.gridHeight;j++){
-                    this.scene.addObject(this.board.grid[i][j].container,0);
-                }
-            }
-        }
     });
 
     return GameManager;
