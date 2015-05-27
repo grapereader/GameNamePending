@@ -55,6 +55,22 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
                 this.dy = dy;
                 //console.log("Moving " + dx + ", " + dy);
             }
+        },
+        tileX: {
+            get: function() {
+                return Math.floor(this.x / 64);
+            },
+            set: function(x) {
+                this.x = x * 64;
+            }
+        },
+        tileY: {
+            get: function() {
+                return Math.floor(this.y / 64);
+            },
+            set: function(y) {
+                this.y = y * 64;
+            }
         }
     });
 
