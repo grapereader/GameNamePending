@@ -10,15 +10,15 @@ define(["lib/heap"], function(Heap) {
     });
 
     var Grid = Class({
-        constructor: function(baseGrid) {
-            this.baseGrid = baseGrid;
+        constructor: function(board) {
+            this.board = board;
 
-            this.nodes = new Array(baseGrid.length);
+            this.nodes = new Array(board.length);
 
-            for (var y = 0; y < baseGrid.length; y++) {
-                this.nodes[y] = new Array(baseGrid[y].length);
-                for (var x = 0; x < baseGrid[y].length; x++) {
-                    this.nodes[y][x] = new Node(x, y, baseGrid[y][x]);
+            for (var y = 0; y < board.length; y++) {
+                this.nodes[y] = new Array(board[y].length);
+                for (var x = 0; x < board[y].length; x++) {
+                    this.nodes[y][x] = new Node(x, y, board[y][x].clipping);
                 }
             }
         },
@@ -82,11 +82,11 @@ define(["lib/heap"], function(Heap) {
         constructor: function() {
 
         },
-        getPath: function(x, y, dx, dy, baseGrid) {
+        getPath: function(x, y, dx, dy, board) {
             var open = new Heap(function(a, b) {
                 return a.f - b.f;
             });
-            var grid = new Grid(baseGrid);
+            var grid = new Grid(board);
             var start = grid.getNodeAt(x, y);
             var dest = grid.getNodeAt(dx, dy);
 
