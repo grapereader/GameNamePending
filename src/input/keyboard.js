@@ -30,11 +30,11 @@ define(function() {
             });
 
             element.addEventListener("blur", function(e) {
-                self.keys = {};
+                self.keys = [];
             });
 
             element.addEventListener("focusout", function(e) {
-                self.keys = {};
+                self.keys = [];
             })
         },
         getCode: function(keyEvent) {
