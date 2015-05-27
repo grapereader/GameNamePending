@@ -21,6 +21,18 @@ define(function() {
         },
         getFileNameFromPath: function(path) {
             return path.replace(/^.*[\\\/]/, '');
+        },
+        createSprite: function() {
+            var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[this.sprite("blank.png")]);
+            sprite.scale.x = 2;
+            sprite.scale.y = 2;
+            sprite.anchor.x = 0.5;
+            sprite.anchor.y = 0.5;
+
+            sprite.x = 32;
+            sprite.y = 32;
+
+            return sprite;
         }
     };
 });

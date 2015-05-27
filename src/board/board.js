@@ -5,12 +5,18 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
             this.gameManager = gameManager;
             this.gridWidth = boardWidth;
             this.gridHeight = boardHeight;
-            this.container = new PIXI.Container();
+            //A little layering here to separate enemies from the tiles
+            this.tileContainer = new PIXI.Container();
+            this.enemyContainer = new PIXI.Container();
+            this.addChild(this.tileContainer);
+            this.addChild(this.enemyContainer);
+
             this.tiles = {
                 "wall": 0,
                 "path": 1,
                 "door": 2
             };
+            this.enemies = [];
             this.grid = this.initializeGrid(this.gridWidth,this.gridHeight);
         },
         initializeGrid: function(width,height){
@@ -30,10 +36,14 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
                     temp.tileSprite.x = i * temp.tileSprite.width;
                     temp.tileSprite.y = j * temp.tileSprite.height;
                     grid[i][j] = temp;
-                    this.addChild(temp.tileSprite);
+                    this.tileContainer.addChild(temp.tileSprite);
                 }
             }
             return grid;
+        },
+        addEnemy: function(e) {
+            this.enemies.push(e);
+            this.enemyContainer.addChild(e.container);
         },
         setTile: function(x,y,tile){
             this.grid[x][y] = tile;
@@ -44,6 +54,10 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
                 for(var j = 0; j < this.gridHeight; j++){
                     this.grid[i][j].update();
                 }
+            }
+
+            for (var i = 0; i < this.enemies.length; i++) {
+                this.enemies[i].update();
             }
         }
         /**

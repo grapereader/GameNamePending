@@ -10,8 +10,8 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
 
             this.animGroup = new AnimGroup();
         },
-        update: function() {
-            Entity.$superp.update.call(this);
+        update: function(transform) {
+            Entity.$superp.update.call(this, transform);
 
             var delta = this.gameManager.game.deltaTime;
 
@@ -54,6 +54,22 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
                 this.dx = dx;
                 this.dy = dy;
                 //console.log("Moving " + dx + ", " + dy);
+            }
+        },
+        tileX: {
+            get: function() {
+                return Math.floor(this.x / 64);
+            },
+            set: function(x) {
+                this.x = x * 64;
+            }
+        },
+        tileY: {
+            get: function() {
+                return Math.floor(this.y / 64);
+            },
+            set: function(y) {
+                this.y = y * 64;
             }
         }
     });
