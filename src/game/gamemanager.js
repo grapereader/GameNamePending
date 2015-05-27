@@ -32,7 +32,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             var self = this;
 
             this.itemManager = new ItemManager();
-            this.board = new Board(this,20,10);
+            this.board = new Board(this,20,11);
             this.addTilesToScene();
 
             this.player = new Player(this, saveData);
@@ -53,7 +53,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
         },
         update: function() {
             this.player.update();
-            //this.board.update();
+            this.board.update();
             this.testInv.update();
             this.fpsText.text = "FPS: " + this.game.fps;
         },

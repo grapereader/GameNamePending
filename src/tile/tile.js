@@ -10,10 +10,6 @@ define(["view/viewobject", "util/helpers"], function(ViewObject,Helpers) {
         
         update: function(){
         	Tile.$superp.update.call(this);
-            var delta = this.gameManager.game.deltaTime;
-        	for (var i = 0; i < this.animations.length; i++) {
-                this.animations[i].stepAnimation(delta);
-            }
         },
         createSprite: function(spriteLocation) {
             var sprite = new PIXI.Sprite(PIXI.utils.TextureCache["tiles-1"][spriteLocation]);

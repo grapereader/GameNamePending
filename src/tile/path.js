@@ -1,7 +1,7 @@
 define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Animation) {
 	var Path = Class(Tile, {
         constructor: function(gameManager) {
-            Path.$super.call(this, gameManager.scene);
+            Path.$super.call(this, gameManager);
             this.gameManager = gameManager;
             this.clippable = true;
             this.tileSprite = this.createSprite("wood1");
