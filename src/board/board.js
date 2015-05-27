@@ -1,4 +1,4 @@
-define(["tile/tile","tile/wall","tile/path","tile/door","view/ViewObject"], function(Tile,Wall,Path,Door,ViewObject) {
+define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], function(Tile,Wall,Path,Door,ViewObject) {
     var Board = Class(ViewObject,{
         constructor: function(gameManager,boardWidth,boardHeight){
             Board.$super.call(this, gameManager.scene);
