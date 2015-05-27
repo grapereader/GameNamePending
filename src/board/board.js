@@ -1,20 +1,20 @@
 define(["tile/tile","tile/wall","tile/path","tile/door"], function(Tile,Wall,Path,Door) {
-	var Board = Class({
-		constructor: function(gameManager,boardWidth,boardHeight){
-			this.gameManager = gameManager;
-			this.gridWidth = boardWidth;
-			this.gridHeight = boardHeight;
+    var Board = Class({
+        constructor: function(gameManager,boardWidth,boardHeight){
+            this.gameManager = gameManager;
+            this.gridWidth = boardWidth;
+            this.gridHeight = boardHeight;
             this.tiles = {
                 "wall": 0,
                 "path": 1,
                 "door": 2
             };
-			this.grid = this.initializeGrid(this.gridWidth,this.gridHeight);
-		},
-		initializeGrid: function(width,height){
+            this.grid = this.initializeGrid(this.gridWidth,this.gridHeight);
+        },
+        initializeGrid: function(width,height){
             var grid = new Array(width);
-			for(var i = 0;i < width;i++){
-				grid[i] = new Array(height);
+            for(var i = 0;i < width;i++){
+                grid[i] = new Array(height);
                 for(var j = 0;j < height;j++){
                 	var temp;
                     switch(i%2){
@@ -35,21 +35,21 @@ define(["tile/tile","tile/wall","tile/path","tile/door"], function(Tile,Wall,Pat
                 }
             }
             return grid;
-		},
-		setTile: function(x,y,tile){
-			this.grid[x][y] = tile;
-		},
+        },
+        setTile: function(x,y,tile){
+            this.grid[x][y] = tile;
+        },
         update: function(){
-			for(var i = 0; i < this.gridWidth; i++){
+            for(var i = 0; i < this.gridWidth; i++){
                 for(var j = 0; j < this.gridHeight; j++){
                     this.grid[i][j].update();
                 }
             }
         }
-		/**
+        /**
 
-		*/
+        */
 
-	});
-	return Board;
+    });
+    return Board;
 });
