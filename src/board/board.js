@@ -17,18 +17,14 @@ define(["tile/tile","tile/wall","tile/path","tile/door"], function(Tile,Wall,Pat
                 grid[i] = new Array(height);
                 for(var j = 0;j < height;j++){
                 	var temp;
-                    switch(i%2){
-                    	case this.tiles.wall:
+                    switch(i==0||i==width-1||j==0||j==height-1){
+                    	case true:
                     	temp = new Wall(this.gameManager);
                     	break;
-                    	case this.tiles.path:
+                    	case false:
                     	temp = new Path(this.gameManager);
                     	break;
-                    	case this.tiles.door:
-                    	temp = new Door(this.gameManager);
-                    	break;
                     }
-
                     temp.tileSprite.x = i * temp.tileSprite.width;
                     temp.tileSprite.y = j * temp.tileSprite.height;
                     grid[i][j] = temp;
