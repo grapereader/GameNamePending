@@ -6,6 +6,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.isShut = true;
             this.clipping = false;
             this.isAnimated = false;
+            this.tileType = "Door";
             this.openSprite = this.createSprite();
             this.closedSprite = this.createSprite();
             this.setSize(64,64);

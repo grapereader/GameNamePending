@@ -13,6 +13,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
                 "path": 1,
                 "door": 2
             };
+
             this.enemies = [];
             this.grid = this.initializeGrid(this.gridWidth,this.gridHeight);
         },
@@ -44,6 +45,14 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
         },
         setTile: function(x,y,tile){
             this.grid[x][y] = tile;
+        },
+        //Creates Room at coordinates x,y down and to the right.
+        addRoom: function(x,y,room){
+            for(var i = x; i < x+room.width; i++){
+                for(var j = y; j < y+room.height; j++){
+                    this.setTile(i,j,room.grid[i][j]);
+                }
+            }
         },
         update: function(){
             Board.$superp.update.call(this);

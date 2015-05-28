@@ -4,8 +4,8 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             Wall.$super.call(this, gameManager);
             this.gameManager = gameManager;
             this.clipping = true;
+            this.tileType = "Wall";
             this.tileSprite = this.createSprite("rock3");
-            this.addChild(this.tileSprite);
         },
         update: function(){
         	Wall.$superp.update.call(this);
