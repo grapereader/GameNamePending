@@ -66,6 +66,13 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
             if (kb.isKeyDown("KeyS")) dy = this.walkSpeed;
             if (kb.isKeyDown("KeyA")) dx = -this.walkSpeed;
             if (kb.isKeyDown("KeyD")) dx = this.walkSpeed;
+
+            if (dx !== 0 && dy !== 0) {
+                //Makes hypotenusal speed the same as leg speed
+                dx /= 1.41;
+                dy /= 1.41;
+            }
+
             this.walk(dx, dy);
 
             this.gameManager.scene.view.move(
