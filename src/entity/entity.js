@@ -10,8 +10,8 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
 
             this.animGroup = new AnimGroup();
         },
-        update: function(transform) {
-            Entity.$superp.update.call(this, transform);
+        update: function() {
+            Entity.$superp.update.call(this);
 
             var delta = this.gameManager.game.deltaTime;
 
@@ -34,6 +34,9 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
 
             this.x += cx;
             this.y += cy;
+
+            this.tileX = Math.floor(this.x / 64);
+            this.tileY = Math.floor(this.y / 64);
         },
         /**
             Preferred way to move the entity, since it sets the corresponding animation.
@@ -54,22 +57,6 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
                 this.dx = dx;
                 this.dy = dy;
                 //console.log("Moving " + dx + ", " + dy);
-            }
-        },
-        tileX: {
-            get: function() {
-                return Math.floor(this.x / 64);
-            },
-            set: function(x) {
-                this.x = x * 64;
-            }
-        },
-        tileY: {
-            get: function() {
-                return Math.floor(this.y / 64);
-            },
-            set: function(y) {
-                this.y = y * 64;
             }
         }
     });

@@ -15,18 +15,18 @@ define(["lib/heap"], function(Heap) {
 
             this.nodes = new Array(tileGrid.length);
 
-            for (var y = 0; y < tileGrid.length; y++) {
-                this.nodes[y] = new Array(tileGrid[y].length);
-                for (var x = 0; x < tileGrid[y].length; x++) {
-                    this.nodes[y][x] = new Node(x, y, tileGrid[y][x].clipping);
+            for (var x = 0; x < tileGrid.length; x++) {
+                this.nodes[x] = new Array(tileGrid[x].length);
+                for (var y = 0; y < tileGrid[x].length; y++) {
+                    this.nodes[x][y] = new Node(x, y, tileGrid[x][y].clipping);
                 }
             }
         },
         getNodeAt: function(x, y) {
-            return this.nodes[y][x];
+            return this.nodes[x][y];
         },
         walkableAt: function(x, y) {
-            if (y >= this.nodes.length || y < 0 || x >= this.nodes[y].length || x < 0) return false;
+            if (x >= this.nodes.length || x < 0 || y >= this.nodes[x].length || y < 0) return false;
             return !this.getNodeAt(x, y).c;
         },
         getNeighbors: function(x, y) {

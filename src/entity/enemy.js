@@ -8,8 +8,8 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             this.walkSpeed = walkSpeed;
             this.dropMap = dropMap;
 
-            this.homeX = this.x = homeX;
-            this.homeY = this.y = homeY;
+            this.homeX = this.tileX = this.x = homeX;
+            this.homeY = this.tileY = this.y = homeY;
 
             this.sprite = Helpers.createSprite();
             this.addChild(this.sprite);
@@ -46,7 +46,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             this.aiTimer = new Timer(100, function() {
                 //We use a random distribution to spread out the AI logic
                 //across the enemies so performance is more balanced
-                if (Math.random() > 0.8) {
+                if (Math.random() > 0.7) {
                     var target = self.gameManager.player;
 
                     var targetX = target.tileX;
@@ -72,20 +72,21 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             });
         },
         update: function() {
-            Enemy.$superp.update.call(this, false);
+            Enemy.$superp.update.call(this);
 
             var delta = this.gameManager.game.deltaTime;
             this.aiTimer.update(delta);
 
             if (this.currentPath != null && this.currentPath.length > 0) {
                 var next = this.currentPath[0];
-
-                if (tileX == next.x && tileY == next.y) {
+                if (this.tileX == next[0] && this.tileY == next[1]) {
                     this.currentPath.splice(0, 1);
                 }
 
-                this.dx = (next.x - tileX) * speed * delta;
-                this.dy = (next.y - tileY) * speed * delta;
+                this.walk(
+                    (next[0] - this.tileX) * this.walkSpeed * (delta / 17),
+                    (next[1] - this.tileY) * this.walkSpeed * (delta / 17)
+                );
             }
         }
     });

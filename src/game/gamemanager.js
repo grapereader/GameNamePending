@@ -37,7 +37,8 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             this.player = new Player(this, saveData);
             this.scene.addObject(this.player.container, 1);
-            this.scene.addObject(this.board.container,0);
+            this.scene.addObject(this.board.container, 0);
+            this.scene.addObject(this.board.enemyContainer, 1);
 
             //var tempBG = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("temp_bg.jpg")]);
             //tempBG.width = game.gameWidth;

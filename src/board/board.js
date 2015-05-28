@@ -5,11 +5,8 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
             this.gameManager = gameManager;
             this.gridWidth = boardWidth;
             this.gridHeight = boardHeight;
-            //A little layering here to separate enemies from the tiles
-            this.tileContainer = new PIXI.Container();
+            //Must get added to the root scene above the main container.
             this.enemyContainer = new PIXI.Container();
-            this.addChild(this.tileContainer);
-            this.addChild(this.enemyContainer);
 
             this.tiles = {
                 "wall": 0,
@@ -36,7 +33,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
                     temp.tileSprite.x = i * temp.tileSprite.width;
                     temp.tileSprite.y = j * temp.tileSprite.height;
                     grid[i][j] = temp;
-                    this.tileContainer.addChild(temp.tileSprite);
+                    this.addChild(temp.tileSprite);
                 }
             }
             return grid;
