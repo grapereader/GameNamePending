@@ -1,5 +1,5 @@
 
-define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window","board/board", "entity/enemy","tile/wall","tile/path","tile/door","board/room"], function(Player, ItemManager, Helpers, InventoryScreen, Window, Board, Enemy, Wall, Path, Door, Room) {
+define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window","board/board", "entity/enemy","board/levelgenerator"], function(Player, ItemManager, Helpers, InventoryScreen, Window, Board, Enemy, LevelGenerator) {
     /**
         This is the meat of the game logic.
 
@@ -30,11 +30,9 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             }
             
             var self = this;
-
+            this.levelgenerator = new LevelGenerator(this);
+            this.board = this.levelgenerator.getBoard();
             this.itemManager = new ItemManager();
-            this.board = new Board(this,30,30);
-
-            this.board.addRoom(10,10,this.createTestRoom());
             this.board.addEnemy(new Enemy(this, 5, 5, 1, 1, 1, {}, "male-race-1"));
 
             this.player = new Player(this, saveData);
@@ -62,44 +60,9 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             this.fpsText.text = "FPS: " + this.game.fps;
         },
 
-        /**
-            Use for testing room templates
-        */
-        createTestRoom: function(){
-            var width = 5;
-            var height = 5;
-            this.grid = new Array(width);
-            for(var i = 0;i < width;i++){
-                this.grid[i] = new Array(height);
-                for(var j = 0;j < height;j++){
-                    var temp;
-                    
-                    if(i==Math.floor(width/2)&&j==0||i==0&&j==Math.floor(height/2)){
-                        temp = new Door(this);
-                    }
-                    else if(i==0||j==0||i==width-1||j==height-1){
-                        temp = new Wall(this);
-                    }
-                    else{
-                        temp = new Path(this);
-                    }
-                    temp.tileSprite.x = i * temp.tileSprite.width;
-                    temp.tileSprite.y = j * temp.tileSprite.height;
-                    this.grid[i][j] = temp.toJSON();                    
-                }
-            }
-            var room = {                
-                width: width,
-                height: height,
-                entrances: 0b1111,
-                entranceLocations: [[1,0],[0,1],[2,1],[1,2]],
-                grid: this.grid
-            };
-            var r = new Room(this);
 
-            r.fromJSON(JSON.stringify(room));
-            return r;
-        }
+
+
     });
 
     return GameManager;
