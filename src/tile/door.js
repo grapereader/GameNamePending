@@ -3,27 +3,28 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
         constructor: function(gameManager) {
             Door.$super.call(this, gameManager.scene);
             this.gameManager = gameManager;
-            this.isShut = true;
+            this.isShut = false;
             this.clipping = false;
             this.isAnimated = false;
             this.tileType = "Door";
-            this.openSprite = this.createSprite();
-            this.closedSprite = this.createSprite();
-            this.setSize(64,64);
+            this.openSprite = this.createSprite("logs");
+            this.closedSprite = this.createSprite("logs");
             var doorSpeed = 4;
-            var anims = {
+            /**var anims = {
                 "open": Helpers.animBuilder("open", 2, doorSpeed),
                 "close": Helpers.animBuilder("close", 2, doorSpeed)
             }
-            this.currentAnimation = new Animation("door", anims, this.baseSprite);
+            this.currentAnimation = new Animation("door", anims, this.baseSprite);**/
+            this.tileSprite = this.closedSprite;
         },
 
         update: function(){
         	Door.$superp.update.call(this);
-            if(!this.currentAnimation.isFinished){
+        },
+            /**if(!this.currentAnimation.isFinished){
                 var delta = this.gameManager.game.deltaTime;
                 currentAnimation.stepAnimation(delta);
-            }
+            }8/
 
         },
         /**
@@ -41,18 +42,6 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
                 this.isClippable = !this.isClippable;
             }
         },
-        createSprite: function() {
-            var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("blank.png")]);
-            sprite.scale.x = 2;
-            sprite.scale.y = 2;
-            sprite.anchor.x = 0.5;
-            sprite.anchor.y = 0.5;
-
-            sprite.x = 32;
-            sprite.y = 32;
-
-            return sprite;
-        }
     });
 
     return Door;

@@ -3,7 +3,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
     var Room = Class({
         constructor: function(gameManager){
             this.gameManager = gameManager;
-            this.entrances = 0000; //binary number with the bits set in order based on if there is an entrance on the top,right,bottom,left.
+            this.entrances = 0b0000; //binary number with the bits set in order based on if there is an entrance on the top,right,bottom,left.
             this.entranceLocations = []; //Array composed of sets of coordinates representing the X offset from the left and then the Y offset from the top.
             this.width = 0;
             this.height = 0;
@@ -24,8 +24,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
         },
 
         parseJSONTile: function(tileInfo){
-            var info = JSON.parse(tileInfo);
-            switch(info.type){
+            switch(tileInfo.type){
                 case "Wall":
                     var temp = new Wall(this.gameManager);                            
                 break;
@@ -42,7 +41,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
         toJSON: function(){
             var tiles = new Array(width);
             for(var i = 0; i < width;i++){
-                tiles[i]new Array(height);
+                tiles[i] = new Array(height);
                 for(var j = 0; j < height; j++){
                     tiles[i][j]=grid[i][j].toJSON();
                 }
@@ -62,11 +61,17 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
             this.entranceLocations = info.entranceLocations;
             this.width = info.width;
             this.height = info.height;
-            this.grid = info.grid;
-            
+            this.grid = new Array(info.width);
+            for(var i = 0; i < info.width;i++){
+                this.grid[i] = new Array(info.height);
+                for(var j = 0; j < info.height; j++){
+                    this.grid[i][j] = this.parseJSONTile(info.grid[i][j]);
+                }
+            }
+
         }
     });
 
+    return Room;
 
-
-}
+});

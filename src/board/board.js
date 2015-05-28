@@ -44,13 +44,17 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
             this.enemyContainer.addChild(e.container);
         },
         setTile: function(x,y,tile){
+            this.removeChild(this.grid[x][y].tileSprite);
+            tile.tileSprite.x = x*tile.tileSprite.width;
+            tile.tileSprite.y = y*tile.tileSprite.height;
             this.grid[x][y] = tile;
+            this.addChild(tile.tileSprite);
         },
         //Creates Room at coordinates x,y down and to the right.
         addRoom: function(x,y,room){
-            for(var i = x; i < x+room.width; i++){
-                for(var j = y; j < y+room.height; j++){
-                    this.setTile(i,j,room.grid[i][j]);
+            for(var i = 0; i < room.width; i++){
+                for(var j = 0; j < room.height; j++){
+                    this.setTile(i+x,j+y,room.grid[i][j]);
                 }
             }
         },

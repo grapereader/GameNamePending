@@ -4,7 +4,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             Path.$super.call(this, gameManager);
             this.gameManager = gameManager;
             this.clipping = false;
-            this.tileType = "Door";
+            this.tileType = "Path";
             this.tileSprite = this.createSprite("wood1");
         },
         update: function(){

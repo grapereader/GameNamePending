@@ -22,15 +22,17 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
 
             var grid = this.gameManager.board.grid;
 
-            var left = Math.floor(this.x / 64);
+            var currentX = Math.round((this.x / 64));
+            var currentY = Math.round((this.y / 64));
+            var left = Math.ceil(this.x / 64)-1;
             var right = Math.floor(this.x / 64) + 1;
-            var top = Math.floor(this.y / 64);
+            var top = Math.ceil(this.y / 64) - 1;
             var bot = Math.floor(this.y / 64) + 1;
-
-            if (grid[left][top].clipping && grid[right][top].clipping && cy < 0) cy = 0;
-            if (grid[left][bot].clipping && grid[right][bot].clipping && cy > 0) cy = 0;
-            if (grid[left][top].clipping && grid[left][bot].clipping && cx < 0) cx = 0;
-            if (grid[right][top].clipping && grid[right][bot].clipping && cx > 0) cx = 0;
+            //this.gameManager.board.removeChild(grid[currentX][currentY].tileSprite); USE THIS FOR DEBUGGING
+            if (grid[currentX][top].clipping && cy < 0) cy = 0;
+            if (grid[currentX][bot].clipping && cy > 0) cy = 0;
+            if (grid[left][currentY].clipping && cx < 0) cx = 0;
+            if (grid[right][currentY].clipping && cx > 0) cx = 0;
 
             this.x += cx;
             this.y += cy;

@@ -62,6 +62,10 @@ define(function() {
         addChild: function(child) {
             this.container.addChild(child);
             if (this.autoResize) this.updateSize(this.container.width, this.container.height);
+        },
+
+        removeChild: function(child){
+            this.container.removeChild(child);
         }
     });
 
