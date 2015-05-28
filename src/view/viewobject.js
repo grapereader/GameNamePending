@@ -22,10 +22,9 @@ define(function() {
             to work. It is the parent object's responsibility to call
             this function; no system currently exists to automate this.
         */
-        update: function(transform) {
-            transform = transform === undefined ? true : transform;
-            this.container.x = this.sx = this.x - (transform ? this.scene.view.x : 0);
-            this.container.y = this.sy = this.y - (transform ? this.scene.view.y : 0);
+        update: function() {
+            this.container.x = this.sx = this.x - this.scene.view.x;
+            this.container.y = this.sy = this.y - this.scene.view.y;
 
             if (this.sx > this.scene.view.width || this.sx + this.width < 0 || this.sy > this.scene.view.height || this.sy + this.height < 0) {
                 this.container.visible = false;
