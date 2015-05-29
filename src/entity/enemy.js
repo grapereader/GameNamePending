@@ -70,24 +70,26 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                     }
                 }
             });
+            this.walkTimer = new Timer(1000 / this.walkSpeed, function() {
+                if (self.currentPath != null && self.currentPath.length > 0) {
+                    var next = self.currentPath[0];
+                    self.currentPath.splice(0, 1);
+
+                    self.walk(
+                        (next[0] - self.tileX) * self.walkSpeed * 17,
+                        (next[1] - self.tileY) * self.walkSpeed * 17
+                    );
+                }
+            });
         },
         update: function() {
             Enemy.$superp.update.call(this);
 
             var delta = this.gameManager.game.deltaTime;
             this.aiTimer.update(delta);
+            this.walkTimer.update(delta);
 
-            if (this.currentPath != null && this.currentPath.length > 0) {
-                var next = this.currentPath[0];
-                if (this.tileX == next[0] && this.tileY == next[1]) {
-                    this.currentPath.splice(0, 1);
-                }
 
-                this.walk(
-                    (next[0] - this.tileX) * this.walkSpeed * (delta / 17),
-                    (next[1] - this.tileY) * this.walkSpeed * (delta / 17)
-                );
-            }
         }
     });
 

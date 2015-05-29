@@ -73,6 +73,20 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
                 dy /= 1.41;
             }
 
+            var grid = this.gameManager.board.grid;
+
+            var currentX = Math.round((this.x / 64));
+            var currentY = Math.round((this.y / 64));
+            var left = Math.ceil(this.x / 64)-1;
+            var right = Math.floor(this.x / 64) + 1;
+            var top = Math.ceil(this.y / 64) - 1;
+            var bot = Math.floor(this.y / 64) + 1;
+            //this.gameManager.board.removeChild(grid[currentX][currentY].tileSprite); USE THIS FOR DEBUGGING
+            if (grid[currentX][top].clipping && dy < 0) dy = 0;
+            if (grid[currentX][bot].clipping && dy > 0) dy = 0;
+            if (grid[left][currentY].clipping && dx < 0) dx = 0;
+            if (grid[right][currentY].clipping && dx > 0) dx = 0;
+
             this.walk(dx, dy);
 
             this.gameManager.scene.view.move(
