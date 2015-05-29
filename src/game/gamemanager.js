@@ -33,7 +33,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             this.levelgenerator = new LevelGenerator(this);
             this.board = this.levelgenerator.getBoard();
             this.itemManager = new ItemManager();
-            this.board.addEnemy(new Enemy(this, 5, 5, 1, 1, 64 * 2, {}, "male-race-1"));
+            this.board.addEnemy(new Enemy(this, 5, 5, {damage: 5, speed: 2, range: 0}, 64 * 2, {}, "male-race-1"));
 
             this.player = new Player(this, saveData);
             this.scene.addObject(this.player.container, 1);

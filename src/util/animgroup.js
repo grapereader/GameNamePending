@@ -9,6 +9,11 @@ define(function() {
                 this.animations[i].stepAnimation(delta);
             }
         },
+        setPaused: function(paused) {
+            for (var i = 0; i < this.animations.length; i++) {
+                this.animations[i].paused = paused;
+            }
+        },
         addAnimationLayer: function(animation) {
             this.animations.push(animation);
         },
@@ -16,6 +21,7 @@ define(function() {
             this.animations.splice(this.animations.indexOf(animation), 1);
         },
         setAnimation: function(anim) {
+            this.active = anim;
             for (var i = 0; i < this.animations.length; i++) {
                 this.animations[i].setAnimation(anim);
             }
