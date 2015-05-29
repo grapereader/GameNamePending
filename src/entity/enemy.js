@@ -40,45 +40,40 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             this.animGroup.addAnimationLayer(new Animation(spritesheet, anims, this.sprite));
             this.animGroup.setAnimation("stand-down");
 
-            this.currentPath = null;
-
             var self = this;
-            this.aiTimer = new Timer(100, function() {
-                //We use a random distribution to spread out the AI logic
-                //across the enemies so performance is more balanced
-                if (Math.random() > 0.7) {
-                    var target = self.gameManager.player;
+            this.walkTimer = new Timer(1000 / (this.walkSpeed / 64), function() {
+                var target = self.gameManager.player;
 
-                    var targetX = target.tileX;
-                    var targetY = target.tileY;
+                var targetX = target.tileX;
+                var targetY = target.tileY;
 
-                    var tileX = self.tileX;
-                    var tileY = self.tileY;
+                var tileX = self.tileX;
+                var tileY = self.tileY;
 
-                    if ((Math.abs(tileX - targetX) > 10 && Math.abs(tileY - targetY) > 10)
-                    || (Math.abs(tileX - self.homeX) > 20 && Math.abs(tileX - self.homeX) > 20)) {
-                        targetX = self.homeX;
-                        targetY = self.homeY;
-                    }
-
-                    if (targetX != tileX || targetY != tileY) {
-                        var board = self.gameManager.board;
-                        var finder = new Pathfinder();
-                        self.currentPath = finder.getPath(tileX, tileY, targetX, targetY, board);
-                    } else {
-                        self.currentPath = null;
-                    }
+                if ((Math.abs(tileX - targetX) > 10 && Math.abs(tileY - targetY) > 10)
+                || (Math.abs(tileX - self.homeX) > 20 && Math.abs(tileX - self.homeX) > 20)) {
+                    targetX = self.homeX;
+                    targetY = self.homeY;
                 }
-            });
-            this.walkTimer = new Timer(1000 / this.walkSpeed, function() {
-                if (self.currentPath != null && self.currentPath.length > 0) {
-                    var next = self.currentPath[0];
-                    self.currentPath.splice(0, 1);
+
+                var path = false;
+
+                if (targetX != tileX || targetY != tileY) {
+                    var board = self.gameManager.board;
+                    var finder = new Pathfinder();
+                    path = finder.getPath(tileX, tileY, targetX, targetY, board);
+                }
+
+                if (path !== false && path.length > 0) {
+                    //We skip the first entry, since we are already there.
+                    var next = path[1];
 
                     self.walk(
-                        (next[0] - self.tileX) * self.walkSpeed * 17,
-                        (next[1] - self.tileY) * self.walkSpeed * 17
+                        (next[0] - self.tileX) * self.walkSpeed,
+                        (next[1] - self.tileY) * self.walkSpeed
                     );
+                } else {
+                    self.walk(0, 0);
                 }
             });
         },
@@ -86,10 +81,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             Enemy.$superp.update.call(this);
 
             var delta = this.gameManager.game.deltaTime;
-            this.aiTimer.update(delta);
             this.walkTimer.update(delta);
-
-
         }
     });
 

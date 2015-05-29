@@ -17,14 +17,15 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
 
             this.animGroup.step(delta);
 
-            var cx = this.dx * delta / 17;
-            var cy = this.dy * delta / 17;
+            //Speed is pixels/sec
+            var cx = (this.dx / 1000) * delta;
+            var cy = (this.dy / 1000) * delta;
 
             this.x += cx;
             this.y += cy;
 
-            this.tileX = Math.floor(this.x / 64);
-            this.tileY = Math.floor(this.y / 64);
+            this.tileX = Math.round(this.x / 64);
+            this.tileY = Math.round(this.y / 64);
         },
         /**
             Preferred way to move the entity, since it sets the corresponding animation.

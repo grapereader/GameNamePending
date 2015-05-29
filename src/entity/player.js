@@ -24,7 +24,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
             }
             this.setSize(64, 64);
 
-            this.walkSpeed = 4;
+            this.walkSpeed = 250;
 
             var standSpeed = 2;
             var actionSpeed = 5;
