@@ -36,7 +36,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             this.board.addEnemy(new Enemy(this, 5, 5, {damage: 5, speed: 2, range: 0}, 64 * 2, {}, "male-race-1"));
 
             this.player = new Player(this, saveData);
-            this.scene.addObject(this.player.container, 1);
+            this.scene.addObject(this.player.container, 2);
             this.scene.addObject(this.board.container, 0);
             this.scene.addObject(this.board.enemyContainer, 1);
 
