@@ -68,9 +68,13 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                     path = finder.getPath(tileX, tileY, targetX, targetY, board);
                 }
 
-                if (path !== false && path.length > 0) {
+                if (path !== false && path.length > 1) {
                     //We skip the first entry, since we are already there.
                     var next = path[1];
+
+                    //Prevents grid drift
+                    self.x = self.tileX * 64;
+                    self.y = self.tileY * 64;
 
                     self.walk(
                         (next[0] - self.tileX) * self.walkSpeed,
@@ -96,7 +100,6 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             var xDiff = Math.abs(player.tileX - this.tileX);
             var yDiff = Math.abs(player.tileY - this.tileY);
             if (xDiff <= this.attack.range && yDiff <= this.attack.range) {
-                this.walk(0, 0);
                 var anim = "use-left";
                 if (player.y < this.y) anim = "use-up";
                 if (player.y > this.y) anim = "use-down";
@@ -109,6 +112,12 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 }
                 this.attackTimer.update(delta);
 
+                //This smoothly moves the character to its tile position,
+                //since the combat will stop the pathfinder.
+                var x = this.tileX * 64;
+                var y = this.tileY * 64;
+                this.dx = Math.max(-40, Math.min(40, (x - this.x) * 20));
+                this.dy = Math.max(-40, Math.min(40, (y - this.y) * 20));
             } else {
                 this.walkTimer.update(delta);
             }
