@@ -89,6 +89,11 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 var player = self.gameManager.player;
                 player.attack(0);
             });
+
+            this.gridCorrectTimer = new Timer(0, false, function() {
+                self.offGrid = false;
+                self.walk(0, 0);
+            });
         },
         update: function() {
             Enemy.$superp.update.call(this);
@@ -100,6 +105,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             var xDiff = Math.abs(player.tileX - this.tileX);
             var yDiff = Math.abs(player.tileY - this.tileY);
             if (xDiff <= this.attack.range && yDiff <= this.attack.range) {
+                this.walk(0, 0);
                 var anim = "use-left";
                 if (player.y < this.y) anim = "use-up";
                 if (player.y > this.y) anim = "use-down";
@@ -112,12 +118,21 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 }
                 this.attackTimer.update(delta);
 
-                //This smoothly moves the character to its tile position,
-                //since the combat will stop the pathfinder.
-                var x = this.tileX * 64;
-                var y = this.tileY * 64;
-                this.dx = Math.max(-40, Math.min(40, (x - this.x) * 20));
-                this.dy = Math.max(-40, Math.min(40, (y - this.y) * 20));
+                if (!this.offGrid) {
+                    var x = (this.tileX * 64) - this.x;
+                    var y = (this.tileY * 64) - this.y;
+                    var time = Math.sqrt((x * x) + (y * y)) / this.walkSpeed;
+                    this.correctX = x / time;
+                    this.correctY = y / time;
+                    this.gridCorrectTimer.period = time * 1000;
+                }
+                this.offGrid = true;
+            } else if (this.offGrid) {
+                if (!this.gridCorrectTimer.started) {
+                    this.walk(this.correctX, this.correctY);
+                    this.gridCorrectTimer.started = true;
+                }
+                this.gridCorrectTimer.update(delta);
             } else {
                 this.walkTimer.update(delta);
             }
