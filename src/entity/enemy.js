@@ -45,7 +45,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             this.animGroup.setAnimation("stand-down");
 
             var self = this;
-            this.walkTimer = new Timer(1000 / (this.walkSpeed / 64), function() {
+            this.walkTimer = new Timer(1000 / (this.walkSpeed / 64), true, function() {
                 var target = self.gameManager.player;
 
                 var targetX = target.tileX;
@@ -81,7 +81,9 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 }
             });
 
-            this.attackTimer = new Timer(1000 / this.attack.speed, function() {
+            this.attackTimer = new Timer(1000 / this.attack.speed, true, function() {
+                var player = self.gameManager.player;
+                player.attack(0);
             });
         },
         update: function() {

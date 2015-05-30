@@ -1,14 +1,24 @@
-define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
+define(["view/viewobject", "util/animgroup", "util/timer"], function(ViewObject, AnimGroup, Timer) {
 
     var Entity = Class(ViewObject, {
         constructor: function(gameManager) {
             Entity.$super.call(this, gameManager.scene);
             this.gameManager = gameManager;
 
+            this.health = 100;
+
             this.dx = 0;
             this.dy = 0;
 
             this.animGroup = new AnimGroup();
+
+            this.colourMatrix = new PIXI.filters.ColorMatrixFilter();
+
+            var self = this;
+            this.damageTimer = new Timer(200, false, function() {
+                self.container.filters = null;
+            });
+            this.damageTimer.started = false;
         },
         update: function() {
             Entity.$superp.update.call(this);
@@ -16,6 +26,8 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
             var delta = this.gameManager.game.deltaTime;
 
             this.animGroup.step(delta);
+
+            this.damageTimer.update(delta);
 
             //Speed is pixels/sec
             var cx = (this.dx / 1000) * delta;
@@ -47,6 +59,21 @@ define(["view/viewobject", "util/animgroup"], function(ViewObject, AnimGroup) {
                 this.dy = dy;
                 //console.log("Moving " + dx + ", " + dy);
             }
+        },
+        attack: function(damage) {
+            this.health -= damage;
+            this.damageTimer.started = true;
+            var matrix = [
+                1.0, 0.0, 0.0, 0.0, 0.0,
+                0.0, 0.2, 0.0, 0.0, 0.0,
+                0.0, 0.0, 0.2, 0.0, 0.0,
+                0.0, 0.0, 0.0, 0.0, 0.0
+            ];
+            this.colourMatrix.matrix = matrix;
+            this.container.filters = [this.colourMatrix];
+        },
+        isDead: function() {
+            return this.health <= 0;
         }
     });
 

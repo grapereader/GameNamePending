@@ -19,6 +19,8 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
             this.x = 64;
             this.y = 64;
 
+            this.health = 200; //Temp health
+
             for (s in this.sprites) {
                 this.addChild(this.sprites[s]);
             }
@@ -93,6 +95,10 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
                 this.x + (this.width / 2) - this.gameManager.game.gameWidth / 2,
                 this.y + (this.height / 2) - this.gameManager.game.gameHeight / 2
             );
+        },
+        attack: function(damage) {
+            //TODO Affixes and defense handled here before calling super
+            Player.$superp.attack.call(this, damage);
         }
     });
 
