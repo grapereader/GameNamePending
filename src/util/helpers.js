@@ -33,6 +33,9 @@ define(function() {
             sprite.y = 32;
 
             return sprite;
+        },
+        getFont: function(size) {
+            return size + "px Poiret One";
         }
     };
 });

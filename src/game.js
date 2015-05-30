@@ -22,11 +22,22 @@ var Game = Class({
 
         console.log("Created new game instance.");
     },
-
     run: function() {
         var self = this;
 
         console.log("Loading assets...");
+
+        this.toLoad = 2;
+        this.loaded = 0;
+
+        WebFont.load({
+            active: function() {
+                self.doneLoading("fonts");
+            },
+            google: {
+                families: ['Poiret One']
+            }
+        });
 
         var loader = new PIXI.loaders.Loader();
         loader
@@ -38,11 +49,18 @@ var Game = Class({
             .add(Helpers.sprite("temp_bg.jpg"))
             .after(SheetParser)
             .once("complete", function() {
-                self.startLoop();
+                self.doneLoading("graphics assets");
             });
         loader.load();
     },
-
+    doneLoading: function(group) {
+        this.loaded++;
+        console.log("Loaded " + group);
+        if (this.loaded >= this.toLoad) {
+            console.log("All assets have loaded.");
+            this.startLoop();
+        }
+    },
     startLoop: function() {
         console.log("Running game now...");
 
@@ -56,7 +74,6 @@ var Game = Class({
             requestAnimationFrame(render);
         }
     },
-
     loop: function() {
         this.calculateDelta();
         this.fpsMillis += this.deltaTime;
@@ -70,12 +87,10 @@ var Game = Class({
         this.currentScene.update();
         this.currentScene.render(this.renderer);
     },
-
     changeScene: function(scene) {
         console.log("Changing scene");
         this.currentScene = scene;
     },
-
     calculateDelta: function() {
         var now = Date.now();
         this.deltaTime = now - this.lastUpdate;
