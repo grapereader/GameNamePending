@@ -56,11 +56,12 @@ define(function() {
                 item.moveTo(x, y);
             }
 
-            var tooltip = new PIXI.Text("Test", {font: "Arial 14px"});
-            tooltip.visible = false;
-            this.container.addChild(tooltip);
             var overlay = new PIXI.Graphics();
             this.container.addChild(overlay);
+
+            var tooltip = new PIXI.Text("Test", {font: "14px Arial", fill: "white"});
+            tooltip.visible = false;
+            this.container.addChild(tooltip);
 
             var self = this;
             this.container.interactive = true;
@@ -70,6 +71,7 @@ define(function() {
             })
             this.container.on("mouseout", function(e) {
                 tooltip.visible = false;
+                overlay.clear();
             })
             this.container.on("mousemove", function(e) {
                 var pos = e.data.getLocalPosition(self.container);
@@ -79,6 +81,14 @@ define(function() {
                 tooltip.y = my;
                 var item = self.getItemAt(mx, my);
                 if (item !== false) tooltip.text = item.item.name;
+
+                if (tooltip.visible) {
+                    overlay.clear();
+                    overlay.beginFill(0x000000, 0.5);
+                    var pad = 2;
+                    overlay.drawRect(tooltip.x - pad, tooltip.y - pad, tooltip.width + (2 * pad), tooltip.height + (2 * pad));
+                    overlay.endFill();
+                }
             });
         },
         getItemAt: function(x, y) {

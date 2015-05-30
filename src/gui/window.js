@@ -9,7 +9,7 @@ define(function() {
             var titleGraphics = new PIXI.Graphics();
             titleContainer.addChild(titleGraphics);
 
-            var titleText = new PIXI.Text(title, {font : "12px Arial"});
+            var titleText = new PIXI.Text(title, {font : "14px Arial"});
             titleContainer.addChild(titleText);
             titleGraphics.beginFill(0xFFFFFF, 0.8);
             titleGraphics.drawRect(0, 0, width, titleText.height);
