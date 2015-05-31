@@ -58,6 +58,14 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
             this.animGroup.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
             this.animGroup.setAnimation("stand-down");
         },
+        setLocation: function(x,y){
+            this.x = x;
+            this.y = y;
+            this.gameManager.scene.view.setLocation(
+                this.x + (this.width / 2) - this.gameManager.game.gameWidth / 2,
+                this.y + (this.height / 2) - this.gameManager.game.gameHeight / 2
+            );
+        },
         update: function() {
             Player.$superp.update.call(this);
 

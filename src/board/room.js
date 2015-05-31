@@ -3,14 +3,60 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
     var Room = Class({
         constructor: function(gameManager){
             this.gameManager = gameManager;
-            this.entrances = 0b0000; //binary number with the bits set in order based on if there is an entrance on the top,right,bottom,left.
+            this.entrances = []; //array of integers represting the entrances on the 1=north,2=east,3=south,4=west directions. Numbers should corresponde to doors in the entranceLocations list.
             this.entranceLocations = []; //Array composed of sets of coordinates representing the X offset from the left and then the Y offset from the top.
             this.width = 0;
             this.height = 0;
             this.grid = [[]];
         },
+        flipRoom: function(direction){ //direction should equal true if room should be flipped across a horizontal line or false if flipped across a vertical line
+            var newGrid = new Array(this.width);
+            for(var i = 0; i < this.width;i++){
+                newGrid[i] = new Array(this.height);
+                for(var j = 0; j < this.height; j++){
+                    if(direction){
+                        newGrid[i][j]=this.grid[i][(this.height-1)-j];
 
+                    }
+                    else{
+                        newGrid[i][j]=this.grid[(this.width-1)-i][j];
+                    }
+                }
+            }
+            this.grid=newGrid;
 
+        },
+        rotateRoom: function(direction){ //direction should equal 1 to rotate 90 degrees clockwise,2 for 180 degrees and 3 for 270 degrees
+            
+            if(direction != 2){
+                var newGrid = new Array(this.height);
+                for(var i = 0; i < this.height;i++){
+                    newGrid[i] = new Array(this.width);
+                    for(var j = 0; j < this.width; j++){
+                        switch(direction){
+                            case 1:
+                                newGrid[i][j]=this.grid[j][(this.height-1)-i];
+                                break;
+                            case 3:
+                                newGrid[i][j]=this.grid[(this.width-1)-j][i];
+                                break;
+                        }
+                    }
+                }
+                var h = this.height;
+                this.height = this.width;
+                this.width = h;
+            }else{
+                var newGrid = new Array(this.width);
+                for(var i = 0; i < this.width;i++){
+                    newGrid[i] = new Array(this.height);
+                    for(var j = 0; j < this.height; j++){
+                        newGrid[i][j]=this.grid[(this.width-1)-i][(this.height-1)-j];
+                    }
+                }           
+            }
+            this.grid=newGrid;
+        },
         createGrid: function(width,height){
             var grid = new Array(width);
             for(var i = 0;i < width;i++){

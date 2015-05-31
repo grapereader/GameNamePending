@@ -3,7 +3,8 @@ define(["view/viewobject", "util/helpers"], function(ViewObject,Helpers) {
 	var Tile = Class({
         constructor: function(gameManager) {
             this.gameManager = gameManager;
-            this.clipping = true;
+            this.clipping = false;
+            this.tileType = "Empty";
             this.animations = [];
         },
         update: function(){

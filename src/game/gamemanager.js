@@ -31,11 +31,12 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             var self = this;
             this.levelgenerator = new LevelGenerator(this);
-            this.board = this.levelgenerator.getBoard();
+            this.board = this.levelgenerator.getTestBoard();
             this.itemManager = new ItemManager();
             this.board.addEnemy(new Enemy(this, 5, 5, {damage: 5, speed: 2, range: 0}, 64 * 2, {}, "male-race-1"));
 
             this.player = new Player(this, saveData);
+            this.player.setLocation(51*64,51*64);
             this.scene.addObject(this.player.container, 2);
             this.scene.addObject(this.board.container, 0);
             this.scene.addObject(this.board.enemyContainer, 1);

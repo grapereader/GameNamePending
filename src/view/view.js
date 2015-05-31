@@ -26,6 +26,15 @@ define(function() {
             this.targetY = y;
         },
         /**
+            Forces the camera to specified x and y position
+        */
+        setLocation: function(x, y) {
+            this.targetX = x;
+            this.targetY = y;
+            this.x = x;
+            this.y = y;
+        },
+        /**
             This function, which should be called every loop from the Scene class' update,
             smoothly transitions the camera after it has been moved.
         */
