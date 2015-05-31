@@ -77,20 +77,33 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
             switch(direction){
                 case 1:
                     for(var i = 0; i < this.entrances.length; i++){                        
-                        this.entrances[i] = (this.entrances[i]==4) ? 1 : this.entrances[i] + 1;                        
-                        this.entranceLocations[i][0] = this.height - (this.entranceLocations[i][0]+1);
+                        this.entrances[i] = (this.entrances[i]==4) ? 1 : this.entrances[i] + 1;        
+                        
+                        var temp = this.entranceLocations[i][0];
+                        this.entranceLocations[i][0] = (this.width-1)-this.entranceLocations[i][1];
+                        this.entranceLocations[i][1] = temp;
+
                     }
                     break;
                 case 2:
-                     for(var i = 0; i < this.entrances.length; i++){
-                        this.entrances[i] = (this.entrances[i]==1||this.entrances[i]==3) ? this.entrances[i] ^ 2 : this.entrances[i] ^ 6;     
-                        this.entranceLocations[i][1] = this.width - (this.entranceLocations[i][1]+1);                       
+                    for(var i = 0; i < this.entrances.length; i++){
+                        this.entrances[i] = (this.entrances[i]==1||this.entrances[i]==3) ? this.entrances[i] ^ 2 : this.entrances[i] ^ 6;    
+   
+                        this.entranceLocations[i][0] = (this.width-1)-this.entranceLocations[i][0];
+                        this.entranceLocations[i][1] = (this.height-1)-this.entranceLocations[i][1];
+    
                     }
                     break;
                 case 3:
-                     for(var i = 0; i < this.entrances.length; i++){
+                    for(var i = 0; i < this.entrances.length; i++){
                         this.entrances[i] = (this.entrances[i]==1) ? 4 : this.entrances[i] - 1;   
-                        this.entranceLocations[i][1] = this.width - (this.entranceLocations[i][1]+1);                       
+                        console.log(this.entranceLocations[i][0]+","+this.entranceLocations[i][1]); 
+                        var temp = this.entranceLocations[i][0];
+                        this.entranceLocations[i][0] = this.entranceLocations[i][1];
+                        this.entranceLocations[i][1] = (this.height-1)-temp;
+
+                        console.log(this.entranceLocations[i][0]+","+this.entranceLocations[i][1]);       
+
                     }
                     break;
             }

@@ -58,15 +58,12 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             
         },
-        generateRandomRoom: function(maxWidth,maxHeight,minEntrances,entranceDirection){ //pass -1 as maxWidth or maxHeight to have dimensions ignored
+        generateRandomRoom: function(rect,minEntrances,entranceDirection){ //pass -1 rect to have dimensions ignored
             var room;
             do{
                 room = this.Rooms[Math.floor(Math.random()*this.Rooms.length)];
 
             }while(room.width>maxWidth&&maxWidth!=-1||room.height>maxHeight&&maxHeight!=-1||room.entrances.length<minEntrances||!room.contains(entranceDirection));
-            if(room.width>maxWidth){
-                room.rotate(1);
-            }
             return room;
         },
         createTestRoom: function(){
@@ -96,7 +93,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                 width: width,
                 height: height,
                 entrances: [1,4],
-                entranceLocations: [[0,2],[2,0]],
+                entranceLocations: [[2,0],[0,2]],
                 grid: this.grid
             };
             var r = new Room(this.gameManager);            
