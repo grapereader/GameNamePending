@@ -34,7 +34,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     var entrance = isolatedEntrances.pop();
                     var entranceX = entrances[0];
                     var entranceY = entrances[1];
-                    if((Math.sqrt(entranceX^2+entranceY^2)/100+gamma+Math.random())>2){ //Door will be removed if 
+                    if((Math.sqrt(Math.pow(entranceX,2)+Math.pow(entranceY,2))/100+gamma+Math.random())>2){ //Door will be removed if 
                         board.setTile(extranceX,entranceY,new Wall(this.gameManager));
                     }
                     else{
@@ -58,11 +58,12 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             
         },
-        generateRandomRoom: function(maxWidth,maxHeight,minEntrances){ //pass -1 as maxWidth or maxHeight to have dimensions ignored
+        generateRandomRoom: function(maxWidth,maxHeight,minEntrances,entranceDirection){ //pass -1 as maxWidth or maxHeight to have dimensions ignored
             var room;
             do{
                 room = this.Rooms[Math.floor(Math.random()*this.Rooms.length)];
-            }while(((Math.Max(room.width,room.height)>Math.max(maxWidth,maxHeight)||Math.min(room.height,room.width)>Math.min(maxHeight,maxWidth))&&maxHeight!=-1&&maxWidth!=-1)||room.entrances.length<minEntrances);
+
+            }while(room.width>maxWidth&&maxWidth!=-1||room.height>maxHeight&&maxHeight!=-1||room.entrances.length<minEntrances||!room.contains(entranceDirection));
             if(room.width>maxWidth){
                 room.rotate(1);
             }

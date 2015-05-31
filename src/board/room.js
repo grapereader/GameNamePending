@@ -24,6 +24,24 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
                 }
             }
             this.grid=newGrid;
+            switch(direction){
+                case true:
+                    for(var i = 0; i < this.entrances.length; i++){
+                        if(this.entrances[i]==1||this.entrances[i]==3){                            
+                            this.entrances[i] = this.entrances[i] ^ 2;
+                        }
+                        this.entranceLocations[i][0] = this.height - (this.entranceLocations[i][0]+1);
+                    }
+                    break;
+                case false:
+                     for(var i = 0; i < this.entrances.length; i++){
+                        if(this.entrances[i]==2||this.entrances[i]==4){
+                            this.entrances[i] = this.entrances[i] ^ 6;      
+                        }
+                        this.entranceLocations[i][1] = this.width - (this.entranceLocations[i][1]+1);                       
+                    }
+                    break;
+            }
 
         },
         rotateRoom: function(direction){ //direction should equal 1 to rotate 90 degrees clockwise,2 for 180 degrees and 3 for 270 degrees
@@ -35,7 +53,7 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
                     for(var j = 0; j < this.width; j++){
                         switch(direction){
                             case 1:
-                                newGrid[i][j]=this.grid[j][(this.height-1)-i];
+                                newGrid[i][j]=this.grid[j][(this.height-1)-i];                                
                                 break;
                             case 3:
                                 newGrid[i][j]=this.grid[(this.width-1)-j][i];
@@ -56,6 +74,26 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
                 }           
             }
             this.grid=newGrid;
+            switch(direction){
+                case 1:
+                    for(var i = 0; i < this.entrances.length; i++){                        
+                        this.entrances[i] = (this.entrances[i]==4) ? 1 : this.entrances[i] + 1;                        
+                        this.entranceLocations[i][0] = this.height - (this.entranceLocations[i][0]+1);
+                    }
+                    break;
+                case 2:
+                     for(var i = 0; i < this.entrances.length; i++){
+                        this.entrances[i] = (this.entrances[i]==1||this.entrances[i]==3) ? this.entrances[i] ^ 2 : this.entrances[i] ^ 6;     
+                        this.entranceLocations[i][1] = this.width - (this.entranceLocations[i][1]+1);                       
+                    }
+                    break;
+                case 3:
+                     for(var i = 0; i < this.entrances.length; i++){
+                        this.entrances[i] = (this.entrances[i]==1) ? 4 : this.entrances[i] - 1;   
+                        this.entranceLocations[i][1] = this.width - (this.entranceLocations[i][1]+1);                       
+                    }
+                    break;
+            }
         },
         createGrid: function(width,height){
             var grid = new Array(width);
