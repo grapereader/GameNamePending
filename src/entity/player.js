@@ -69,13 +69,13 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
         update: function() {
             Player.$superp.update.call(this);
 
-            var kb = this.gameManager.game.keyboard;
+            var keys = this.gameManager.game.keymap;
             var dx = 0;
             var dy = 0;
-            if (kb.isKeyDown("KeyW")) dy = -this.walkSpeed;
-            if (kb.isKeyDown("KeyS")) dy = this.walkSpeed;
-            if (kb.isKeyDown("KeyA")) dx = -this.walkSpeed;
-            if (kb.isKeyDown("KeyD")) dx = this.walkSpeed;
+            if (keys.isKeyDown("move.up")) dy = -this.walkSpeed;
+            if (keys.isKeyDown("move.down")) dy = this.walkSpeed;
+            if (keys.isKeyDown("move.left")) dx = -this.walkSpeed;
+            if (keys.isKeyDown("move.right")) dx = this.walkSpeed;
 
             if (dx !== 0 && dy !== 0) {
                 //Makes hypotenusal speed the same as leg speed

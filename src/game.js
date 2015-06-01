@@ -1,4 +1,4 @@
-define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyboard", "save/savemanager"], function(Globals, Menu, Helpers, SheetParser, KeyboardInput, SaveManager) {
+define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyboard", "save/savemanager", "input/keymap"], function(Globals, Menu, Helpers, SheetParser, KeyboardInput, SaveManager, KeyMap) {
 
 var Game = Class({
     constructor: function() {
@@ -19,6 +19,7 @@ var Game = Class({
         document.getElementById("canvas-wrapper").appendChild(this.renderer.view);
 
         this.keyboard = new KeyboardInput(window);
+        this.keymap = new KeyMap(this.keyboard);
 
         this.saveManager = new SaveManager();
 
