@@ -1,4 +1,4 @@
-define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer", "tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/torch"], function(Entity, Helpers, Animation, Inventory, Timer, Tile, Wall, Path, Door, Chest, Torch) {
+define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer", "debug/editor"], function(Entity, Helpers, Animation, Inventory, Timer, Editor) {
 
     var Player = Class(Entity, {
         constructor: function(gameManager, saveData) {
@@ -29,6 +29,9 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             this.setSize(64, 64);
 
             this.walkSpeed = 250;
+
+            //Debug editor
+            this.editor = new Editor(gameManager);
 
             var standSpeed = 2;
             var actionSpeed = 10;
@@ -80,6 +83,9 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 this.x + (this.width / 2) - this.gameManager.game.gameWidth / 2,
                 this.y + (this.height / 2) - this.gameManager.game.gameHeight / 2
             );
+        },
+        equip: function() {
+
         },
         update: function() {
             Player.$superp.update.call(this);
@@ -139,51 +145,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             var bot = Math.floor(this.y / 64) + 1;
             var LEVELEDITING = false;
             if (LEVELEDITING) {
-                if (keys.isKeyDown("debug.Tile")) this.gameManager.board.setTile(currentX, currentY, new Tile(this.gameManager));
-                if (keys.isKeyDown("debug.Wall")) this.gameManager.board.setTile(currentX, currentY, new Wall(this.gameManager));
-                if (keys.isKeyDown("debug.Path")) this.gameManager.board.setTile(currentX, currentY, new Path(this.gameManager));
-                if (keys.isKeyDown("debug.Door")) this.gameManager.board.setTile(currentX, currentY, new Door(this.gameManager));
-                if (keys.isKeyDown("debug.Chest")) this.gameManager.board.setTile(currentX, currentY, new Chest(this.gameManager));
-                if (keys.isKeyDown("debug.Torch")) this.gameManager.board.setTile(currentX, currentY, new Torch(this.gameManager));
-                if (keys.isKeyDown("debug.Export")) {
-                    var greatestX = 68;
-                    var greatestY = 68;
-
-                    for (var i = 68; i < 81; i++) {
-                        for (var j = 68; j < 81; j++) {
-                            if (this.gameManager.board.grid[i][j].tileType != "Empty") {
-                                greatestX = Math.max(greatestX, i);
-                                greatestY = Math.max(greatestY, j);
-                            }
-                        }
-                    }
-
-                    var output = "[";
-                    for (var i = 68; i <= greatestX; i++) {
-                        output += "[";
-                        for (var j = 68; j <= greatestY; j++) {
-                            output += "\"" + this.gameManager.board.grid[i][j].tileType + "\"";
-                            if (j != greatestY) {
-                                output += ",";
-                            }
-                        }
-                        output += "]";
-                        if (i != greatestX) {
-                            output += ",";
-                        } else {
-                            output += "\n";
-                        }
-                    }
-                    output += "]";
-                    window.prompt("Copy to clipboard: Ctrl+C, Enter", output);
-                }
-                if (keys.isKeyDown("debug.Clear")) {
-                    for (var i = 68; i < 81; i++) {
-                        for (var j = 68; j < 81; j++) {
-                            this.gameManager.board.setTile(i, j, new Tile(this.gameManager));
-                        }
-                    }
-                }
+                this.editor.update(currentX, currentY);
             } else {
                 if (grid[currentX][top].clipping && dy < 0) dy = 0;
                 if (grid[currentX][bot].clipping && dy > 0) dy = 0;
