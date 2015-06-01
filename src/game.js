@@ -1,4 +1,4 @@
-define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyboard"], function(Globals, Menu, Helpers, SheetParser, KeyboardInput) {
+define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyboard", "save/savemanager"], function(Globals, Menu, Helpers, SheetParser, KeyboardInput, SaveManager) {
 
 var Game = Class({
     constructor: function() {
@@ -19,6 +19,8 @@ var Game = Class({
         document.getElementById("canvas-wrapper").appendChild(this.renderer.view);
 
         this.keyboard = new KeyboardInput(window);
+
+        this.saveManager = new SaveManager();
 
         console.log("Created new game instance.");
     },
