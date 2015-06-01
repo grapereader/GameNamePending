@@ -19,14 +19,13 @@ define(function() {
 
             sprite - The sprite that gets anim textures applied to it
         */
-        constructor: function(namespace, animFrames, sprite, loop) {
+        constructor: function(namespace, animFrames, sprite) {
             this.elapsed = 0;
             this.animFrames = animFrames;
             this.activeFrame = 0;
             this.activeAnimation = "";
             this.changed = false;
             this.sprite = sprite;
-            this.loop = loop === undefined ? true : loop;
             this.finished = false;
 
             this.animData = {};
@@ -41,6 +40,7 @@ define(function() {
                     this.animData[anim].flip = true;
                 }
                 this.animData[anim].speed = 1000 / this.animFrames[source].fps;
+                this.animData[anim].loop = this.animFrames[source].loop;
                 for (var i = 0; i < this.animFrames[source].frames.length; i++) {
                     this.animData[anim].textures[i] = PIXI.utils.TextureCache[namespace][this.animFrames[source].frames[i]];
                 }
@@ -75,7 +75,7 @@ define(function() {
                 this.activeFrame++;
 
                 if (this.activeFrame >= this.animData[this.activeAnimation].textures.length) {
-                    if (this.loop) {
+                    if (this.animData[this.activeAnimation].loop) {
                         this.activeFrame = 0;
                     } else {
                         this.finished = true;
@@ -83,13 +83,16 @@ define(function() {
                 }
             }
 
-            var animData = this.animData[this.activeAnimation];
-            var texture = animData.textures[this.activeFrame];
-            if (this.changed) {
-                this.sprite.texture = texture;
-                this.sprite.scale.x = (animData.flip ? -1 : 1) * Math.abs(this.sprite.scale.x);
+            if (!this.finished) {
+                var animData = this.animData[this.activeAnimation];
+                var texture = animData.textures[this.activeFrame];
+                if (this.changed) {
+                    this.sprite.texture = texture;
+                    this.sprite.scale.x = (animData.flip ? -1 : 1) * Math.abs(this.sprite.scale.x);
+                }
+                return texture;
             }
-            return texture;
+            return false;
         }
 
     });

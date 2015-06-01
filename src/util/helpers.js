@@ -6,14 +6,15 @@ define(function() {
     var spriteDir = "assets/sprites/";
 
     return {
-        animBuilder: function(name, frameCount, fps) {
+        animBuilder: function(name, frameCount, fps, loop) {
             var frames = [];
             for (var i = 0; i < frameCount; i++) {
                 frames.push(name + "-" + i);
             }
             return {
                 frames: frames,
-                fps: fps
+                fps: fps,
+                loop: (loop === undefined ? true : loop)
             };
         },
         sprite: function(name) {

@@ -1,4 +1,4 @@
-define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function(Entity, Helpers, Animation, Inventory) {
+define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer"], function(Entity, Helpers, Animation, Inventory, Timer) {
 
     var Player = Class(Entity, {
         constructor: function(gameManager, saveData) {
@@ -21,6 +21,8 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
 
             this.health = 200; //Temp health
 
+            this.canAttack = true;
+
             for (s in this.sprites) {
                 this.addChild(this.sprites[s]);
             }
@@ -29,7 +31,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
             this.walkSpeed = 250;
 
             var standSpeed = 2;
-            var actionSpeed = 5;
+            var actionSpeed = 10;
 
             var anims = {
                 "stand-left": Helpers.animBuilder("stand-left", 2, standSpeed),
@@ -37,10 +39,10 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
                 "stand-up" : Helpers.animBuilder("stand-up", 2, standSpeed),
                 "stand-down": Helpers.animBuilder("stand-down", 2, standSpeed),
 
-                "use-left": Helpers.animBuilder("use-left", 4, actionSpeed),
+                "use-left": Helpers.animBuilder("use-left", 4, actionSpeed, false),
                 "use-right": {flip: "use-left"},
-                "use-up": Helpers.animBuilder("use-up", 4, actionSpeed),
-                "use-down": Helpers.animBuilder("use-down", 4, actionSpeed),
+                "use-up": Helpers.animBuilder("use-up", 4, actionSpeed, false),
+                "use-down": Helpers.animBuilder("use-down", 4, actionSpeed, false),
 
                 "walk-left" : Helpers.animBuilder("walk-left", 4, actionSpeed),
                 "walk-right" : {flip: "walk-left"},
@@ -57,6 +59,14 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
 
             this.animGroup.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
             this.animGroup.setAnimation("stand-down");
+
+            var self = this;
+
+            //Attack cooldown timer speed will need to be adjusted on weapon equip
+            this.attackCooldownTimer = new Timer(500, false, function() {
+                self.canAttack = true;
+            });
+            this.attackCooldownTimer.started = false;
         },
         setLocation: function(x,y){
             this.x = x;
@@ -69,7 +79,34 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory"], function
         update: function() {
             Player.$superp.update.call(this);
 
+            var delta = this.gameManager.game.deltaTime;
             var keys = this.gameManager.game.keymap;
+
+            if (keys.isKeyDown("attack") && this.canAttack) {
+                this.canAttack = false;
+                this.attackCooldownTimer.started = true;
+                switch (this.dir) {
+                    case 0: this.animGroup.setAnimation("use-right");
+                        break;
+                    case 1: this.animGroup.setAnimation("use-left");
+                        break;
+                    case 2: this.animGroup.setAnimation("use-down");
+                        break;
+                    case 3: this.animGroup.setAnimation("use-up");
+                        break;
+                }
+                this.animGroup.locked = true;
+                this.attacking = true;
+            }
+
+            if (this.attacking && this.animGroup.isFinished()) {
+                this.animGroup.locked = false;
+                this.attacking = false;
+                this.updateAnim(this.dx, this.dy);
+            }
+
+            this.attackCooldownTimer.update(delta);
+
             var dx = 0;
             var dy = 0;
             if (keys.isKeyDown("move.up")) dy = -this.walkSpeed;

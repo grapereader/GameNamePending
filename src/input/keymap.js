@@ -16,7 +16,8 @@ define(["save/storage"], function(Storage) {
                         "right": "KeyD",
                         "up": "KeyW",
                         "down": "KeyS"
-                    }
+                    },
+                    "attack": "KeyJ"
                 }
             }
         },
