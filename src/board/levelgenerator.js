@@ -1,4 +1,4 @@
-define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window","board/board","tile/wall","tile/path","tile/door","board/room"], function(Player, ItemManager, Helpers, InventoryScreen, Window, Board, Wall, Path, Door, Room) {
+define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window","board/board","tile/wall","tile/path","tile/door","board/room","tile/tile"], function(Player, ItemManager, Helpers, InventoryScreen, Window, Board, Wall, Path, Door, Room, Tile) {
 
     var LevelGenerator = Class({
         constructor: function(gameManager){
@@ -7,18 +7,9 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
         },  
 
         getTestBoard: function(){
-            this.board = new Board(this.gameManager,100,100);
+            this.board = new Board(this.gameManager,150,150);
             this.board.initializeGrid();
-            this.board.addRoom(50,50,this.createTestRoom());
-            var r = this.createTestRoom();
-            r.rotateRoom(1);
-            this.board.addRoom(56,50,r);
-            r = this.createTestRoom();
-            r.rotateRoom(2);
-            this.board.addRoom(55,56,r);
-            r = this.createTestRoom();            
-            r.rotateRoom(3);
-            this.board.addRoom(50,55,r);
+            this.board.addRoom(67,67,this.createTestRoom());
             return this.board;
         },
         generateLevel: function(gamma){ //Gamma is the tuning variable for the probability of the doors being deleted as they get further from the center. 
@@ -142,27 +133,28 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     r.rotateRoom(j);
                 }
             }
-            return -1;
             
-        },
+        }
+        return -1;
+    },
 
-        createTestRoom: function(){
-            var width = 5;
-            var height = 4;
+    createTestRoom: function(){
+            var width = 15;
+            var height = 15;
             this.grid = new Array(width);
             for(var i = 0;i < width;i++){
                 this.grid[i] = new Array(height);
                 for(var j = 0;j < height;j++){
                     var temp;
                     
-                    if(i==Math.floor(width/2)&&j==0||i==0&&j==Math.floor(height/2)){
+                    /**if(i==Math.floor(width/2)&&j==0||i==0&&j==Math.floor(height/2)){
                         temp = new Door(this);
-                    }
-                    else if(i==0||j==0||i==width-1||j==height-1){
-                        temp = new Wall(this);
+                    */
+                    if(i==0&&j==0||i==width-1&&j==0||j==height-1&&i==0||j==height-1&&i==width-1){
+                        temp = new Wall(this.gameManager);
                     }
                     else{
-                        temp = new Path(this);
+                        temp = new Tile(this.gameManager);
                     }
                     temp.tileSprite.x = i * temp.tileSprite.width;
                     temp.tileSprite.y = j * temp.tileSprite.height;

@@ -5,7 +5,6 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.gameManager = gameManager;
             this.isShut = false;
             this.clipping = false;
-            this.isAnimated = false;
             this.tileType = "Door";
             this.openSprite = this.createSprite("logs");
             this.closedSprite = this.createSprite("logs");

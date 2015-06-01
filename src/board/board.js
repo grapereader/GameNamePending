@@ -11,7 +11,9 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
             this.tiles = {
                 "wall": 0,
                 "path": 1,
-                "door": 2
+                "door": 2,
+                "chest": 3,
+                "torch": 4,
             };
 
             this.enemies = [];

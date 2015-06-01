@@ -1,4 +1,4 @@
-define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], function(Tile,Wall,Path,Door,ViewObject) {
+define(["tile/tile","tile/wall","tile/path","tile/door","tile/chest","tile/torch","view/viewobject"], function(Tile,Wall,Path,Door,torch,chest,ViewObject) {
 
     var Room = Class({
         constructor: function(gameManager){
@@ -123,16 +123,26 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
         },
 
         parseJSONTile: function(tileInfo){
+            var temp;
             switch(tileInfo.type){
+                case "Empty":
+                    temp = new Tile(this.gameManager);
+                    break;
                 case "Wall":
-                    var temp = new Wall(this.gameManager);                            
-                break;
+                    temp = new Wall(this.gameManager);                            
+                    break;
                 case "Path":
-                    var temp = new Path(this.gameManager);
-                break;
+                    temp = new Path(this.gameManager);
+                    break;
                 case "Door":
-                    var temp = new Door(this.gameManager);
-                break;
+                    temp = new Door(this.gameManager);
+                    break;
+                case "Chest":
+                    temp = new Chest(this.gameManager);
+                    break;
+                case "Torch":
+                    temp = new Torch(this.gameManager);
+                    break;
             }
             temp.fromJSON(tileInfo);
             return temp;

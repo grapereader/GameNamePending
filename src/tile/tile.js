@@ -5,6 +5,7 @@ define(["view/viewobject", "util/helpers"], function(ViewObject,Helpers) {
             this.gameManager = gameManager;
             this.clipping = false;
             this.tileType = "Empty";
+            this.tileSprite = new PIXI.Sprite.fromImage("assets/sprites/blank.png");
             this.animations = [];
         },
         update: function(){
