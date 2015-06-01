@@ -34,7 +34,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     var entrance = isolatedEntrances.pop();
                     var entranceX = entrances[0];
                     var entranceY = entrances[1];
-                    if((Math.sqrt(Math.pow(entranceX,2)+Math.pow(entranceY,2))/100+gamma+Math.random())>2){ //Door will be removed if 
+                    if((Math.sqrt(Math.pow(entranceX,2)+Math.pow(entranceY,2))/100+gamma+Math.random())>2){ //Door will be removed 
                         board.setTile(extranceX,entranceY,new Wall(this.gameManager));
                     }
                     else{
@@ -70,7 +70,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                             grid[entranceX][entranceY] = new Wall(this.gameManager)
                         }
                         else{
-
+                            addRoom(room.x,room.y,room);
                         }
 
                     }
@@ -104,7 +104,26 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                                 if(entranceLocations[i][0]>(room.width-1)-entranceLocations[i][0]&&entranceLocation[0]-rect[0]<rect[2]-entranceLocation[0]){
                                     room.flipRoom(false);
                                 }
-                                if((room.width-1)-entranceLocations[i][0]<=rect[2]-entranceLocation[0]&&entranceLocations[i][0]<=entranceLocation[0]-rect[0]){}
+                                if((room.width-1)-entranceLocations[i][0]<=rect[2]-entranceLocation[0]&&entranceLocations[i][0]<=entranceLocation[0]-rect[0]){
+                                    switch(requiredDirection){
+                                        case 1:
+                                            room.y = (entranceLocation[1]-1)-room.height;
+                                            room.x = entranceLocation[0] - (room.entranceLocations[i][0]);
+                                            break;
+                                        case 2:
+                                            room.y = entranceLocation[1] - (room.entranceLocations[i][1]);
+                                            room.x = (entranceLocation[0]+1);
+                                            break;
+                                        case 3:
+                                            room.y = (entranceLocation[1]+1);
+                                            room.x = entranceLocation[0] - (room.entranceLocations[i][0]);
+                                            break;
+                                        case 4:
+                                            room.y = entranceLocation[1] - (room.entranceLocations[i][1]);
+                                            room.x = (entranceLocation[0]-1);
+                                            break;                                        
+                                    }
+
                                     return Room;
                                 }
                             }else{

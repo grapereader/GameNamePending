@@ -7,6 +7,8 @@ define(["tile/tile","tile/wall","tile/path","tile/door","view/viewobject"], func
             this.entranceLocations = []; //Array composed of sets of coordinates representing the X offset from the left and then the Y offset from the top.
             this.width = 0;
             this.height = 0;
+            this.x = 0;
+            this.y = 0;
             this.grid = [[]];
         },
         flipRoom: function(direction){ //direction should equal true if room should be flipped across a horizontal line or false if flipped across a vertical line
