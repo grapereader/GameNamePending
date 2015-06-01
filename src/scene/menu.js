@@ -8,7 +8,7 @@ define(["scene/scene", "scene/gameplay"], function(Scene, Gameplay) {
         },
         update: function() {
             Menu.$superp.update.call(this);
-            
+
             this.game.changeScene(new Gameplay(this.game));
         }
     });

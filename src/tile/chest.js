@@ -17,13 +17,13 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.tileSprite = this.closedSprite;
         },
 
-        update: function(){
+        update: function() {
             Chest.$superp.update.call(this);
         },
 
-        use: function(){
-            if(this.currentAnimation.isFinished){
-                if(this.hasTreasure){
+        use: function() {
+            if (this.currentAnimation.isFinished) {
+                if (this.hasTreasure) {
                     this.currentAnimation.setAnimation("chestOpen");
                 }
                 this.hasTreasure = false;

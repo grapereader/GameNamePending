@@ -59,7 +59,10 @@ define(["util/helpers"], function(Helpers) {
             var overlay = new PIXI.Graphics();
             this.container.addChild(overlay);
 
-            var tooltip = new PIXI.Text("Test", {font: Helpers.getFont(16), fill: "white"});
+            var tooltip = new PIXI.Text("Test", {
+                font: Helpers.getFont(16),
+                fill: "white"
+            });
             tooltip.visible = false;
             this.container.addChild(tooltip);
 

@@ -1,5 +1,5 @@
 define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Animation) {
-	var Door = Class(Tile, {
+    var Door = Class(Tile, {
         constructor: function(gameManager) {
             Door.$super.call(this, gameManager.scene);
             this.gameManager = gameManager;
@@ -17,10 +17,10 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.tileSprite = this.closedSprite;
         },
 
-        update: function(){
-        	Door.$superp.update.call(this);
+        update: function() {
+            Door.$superp.update.call(this);
         },
-            /**if(!this.currentAnimation.isFinished){
+        /**if(!this.currentAnimation.isFinished){
                 var delta = this.gameManager.game.deltaTime;
                 currentAnimation.stepAnimation(delta);
             }8/
@@ -29,15 +29,14 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
         /**
             Function that opens and closes the door
         */
-        use: function(){
-            if(this.currentAnimation.isFinished){
-                if(this.isShut){
+        use: function() {
+            if (this.currentAnimation.isFinished) {
+                if (this.isShut) {
                     this.currentAnimation.setAnimation("open");
-                }
-                else{
+                } else {
                     this.currentAnimation.setAnimation("close");
                 }
-                this.isShut=!this.isShut;
+                this.isShut = !this.isShut;
                 this.isClippable = !this.isClippable;
             }
         },

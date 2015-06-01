@@ -1,6 +1,6 @@
-define(["view/viewobject", "util/helpers"], function(ViewObject,Helpers) {
+define(["view/viewobject", "util/helpers"], function(ViewObject, Helpers) {
 
-	var Tile = Class({
+    var Tile = Class({
         constructor: function(gameManager) {
             this.gameManager = gameManager;
             this.clipping = false;
@@ -8,8 +8,7 @@ define(["view/viewobject", "util/helpers"], function(ViewObject,Helpers) {
             this.tileSprite = new PIXI.Sprite.fromImage("assets/sprites/blank.png");
             this.animations = [];
         },
-        update: function(){
-        },
+        update: function() {},
         createSprite: function(spriteLocation) {
             var sprite = new PIXI.Sprite(PIXI.utils.TextureCache["tiles-1"][spriteLocation]);
             sprite.scale.x = 2;
@@ -25,7 +24,7 @@ define(["view/viewobject", "util/helpers"], function(ViewObject,Helpers) {
         /**
             Add an animation (util/anim) to the Tile. Potientally useful for animated decorations.
         */
-        toJSON: function(){
+        toJSON: function() {
             var tile = {
                 type: this.tileType,
                 x: this.tileSprite.x,
@@ -33,7 +32,7 @@ define(["view/viewobject", "util/helpers"], function(ViewObject,Helpers) {
             };
             return tile;
         },
-        fromJSON: function(tileInfo){
+        fromJSON: function(tileInfo) {
             this.tileSprite.x = tileInfo.x;
             this.tileSprite.y = tileInfo.y;
 

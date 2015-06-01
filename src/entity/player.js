@@ -1,4 +1,4 @@
-define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer","tile/tile","tile/wall","tile/path","tile/door","tile/chest","tile/torch"], function(Entity, Helpers, Animation, Inventory, Timer, Tile, Wall, Path, Door, Chest, Torch) {
+define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer", "tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/torch"], function(Entity, Helpers, Animation, Inventory, Timer, Tile, Wall, Path, Door, Chest, Torch) {
 
     var Player = Class(Entity, {
         constructor: function(gameManager, saveData) {
@@ -34,19 +34,25 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             var actionSpeed = 10;
             var anims = {
                 "stand-left": Helpers.animBuilder("stand-left", 2, standSpeed),
-                "stand-right": {flip: "stand-left"},
-                "stand-up" : Helpers.animBuilder("stand-up", 2, standSpeed),
+                "stand-right": {
+                    flip: "stand-left"
+                },
+                "stand-up": Helpers.animBuilder("stand-up", 2, standSpeed),
                 "stand-down": Helpers.animBuilder("stand-down", 2, standSpeed),
 
                 "use-left": Helpers.animBuilder("use-left", 4, actionSpeed, false),
-                "use-right": {flip: "use-left"},
+                "use-right": {
+                    flip: "use-left"
+                },
                 "use-up": Helpers.animBuilder("use-up", 4, actionSpeed, false),
                 "use-down": Helpers.animBuilder("use-down", 4, actionSpeed, false),
 
-                "walk-left" : Helpers.animBuilder("walk-left", 4, actionSpeed),
-                "walk-right" : {flip: "walk-left"},
-                "walk-up" : Helpers.animBuilder("walk-up", 4, actionSpeed),
-                "walk-down" : Helpers.animBuilder("walk-down", 4, actionSpeed)
+                "walk-left": Helpers.animBuilder("walk-left", 4, actionSpeed),
+                "walk-right": {
+                    flip: "walk-left"
+                },
+                "walk-up": Helpers.animBuilder("walk-up", 4, actionSpeed),
+                "walk-down": Helpers.animBuilder("walk-down", 4, actionSpeed)
             };
 
             var testWeapon = gameManager.itemManager.generateWeapon();
@@ -67,7 +73,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             });
             this.attackCooldownTimer.started = false;
         },
-        setLocation: function(x,y){
+        setLocation: function(x, y) {
             this.x = x;
             this.y = y;
             this.gameManager.scene.view.setLocation(
@@ -85,13 +91,17 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 this.canAttack = false;
                 this.attackCooldownTimer.started = true;
                 switch (this.dir) {
-                    case 0: this.animGroup.setAnimation("use-right");
+                    case 0:
+                        this.animGroup.setAnimation("use-right");
                         break;
-                    case 1: this.animGroup.setAnimation("use-left");
+                    case 1:
+                        this.animGroup.setAnimation("use-left");
                         break;
-                    case 2: this.animGroup.setAnimation("use-down");
+                    case 2:
+                        this.animGroup.setAnimation("use-down");
                         break;
-                    case 3: this.animGroup.setAnimation("use-up");
+                    case 3:
+                        this.animGroup.setAnimation("use-up");
                         break;
                 }
                 this.animGroup.locked = true;
@@ -123,60 +133,58 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
 
             var currentX = Math.round((this.x / 64));
             var currentY = Math.round((this.y / 64));
-            var left = Math.ceil(this.x / 64)-1;
+            var left = Math.ceil(this.x / 64) - 1;
             var right = Math.floor(this.x / 64) + 1;
             var top = Math.ceil(this.y / 64) - 1;
             var bot = Math.floor(this.y / 64) + 1;
             var LEVELEDITING = false;
-            if(LEVELEDITING){
-                if (keys.isKeyDown("debug.Tile")) this.gameManager.board.setTile(currentX,currentY,new Tile(this.gameManager));
-                if (keys.isKeyDown("debug.Wall")) this.gameManager.board.setTile(currentX,currentY,new Wall(this.gameManager));
-                if (keys.isKeyDown("debug.Path")) this.gameManager.board.setTile(currentX,currentY,new Path(this.gameManager));
-                if (keys.isKeyDown("debug.Door")) this.gameManager.board.setTile(currentX,currentY,new Door(this.gameManager));
-                if (keys.isKeyDown("debug.Chest")) this.gameManager.board.setTile(currentX,currentY,new Chest(this.gameManager));
-                if (keys.isKeyDown("debug.Torch")) this.gameManager.board.setTile(currentX,currentY,new Torch(this.gameManager));
-                if (keys.isKeyDown("debug.Export")){      
+            if (LEVELEDITING) {
+                if (keys.isKeyDown("debug.Tile")) this.gameManager.board.setTile(currentX, currentY, new Tile(this.gameManager));
+                if (keys.isKeyDown("debug.Wall")) this.gameManager.board.setTile(currentX, currentY, new Wall(this.gameManager));
+                if (keys.isKeyDown("debug.Path")) this.gameManager.board.setTile(currentX, currentY, new Path(this.gameManager));
+                if (keys.isKeyDown("debug.Door")) this.gameManager.board.setTile(currentX, currentY, new Door(this.gameManager));
+                if (keys.isKeyDown("debug.Chest")) this.gameManager.board.setTile(currentX, currentY, new Chest(this.gameManager));
+                if (keys.isKeyDown("debug.Torch")) this.gameManager.board.setTile(currentX, currentY, new Torch(this.gameManager));
+                if (keys.isKeyDown("debug.Export")) {
                     var greatestX = 68;
                     var greatestY = 68;
 
-                    for(var i = 68; i < 81; i++){
-                        for(var j = 68; j < 81; j++){
-                            if(this.gameManager.board.grid[i][j].tileType!="Empty"){
-                                greatestX = Math.max(greatestX,i);
-                                greatestY = Math.max(greatestY,j);
+                    for (var i = 68; i < 81; i++) {
+                        for (var j = 68; j < 81; j++) {
+                            if (this.gameManager.board.grid[i][j].tileType != "Empty") {
+                                greatestX = Math.max(greatestX, i);
+                                greatestY = Math.max(greatestY, j);
                             }
                         }
                     }
 
-                    var output = "[";         
-                    for(var i = 68; i <= greatestX; i++){
+                    var output = "[";
+                    for (var i = 68; i <= greatestX; i++) {
                         output += "[";
-                        for(var j = 68; j <= greatestY; j++){
-                            output += "\""+this.gameManager.board.grid[i][j].tileType+"\"";
-                            if(j!=greatestY){
+                        for (var j = 68; j <= greatestY; j++) {
+                            output += "\"" + this.gameManager.board.grid[i][j].tileType + "\"";
+                            if (j != greatestY) {
                                 output += ",";
                             }
                         }
                         output += "]";
-                        if(i!=greatestX){
+                        if (i != greatestX) {
                             output += ",";
-                        }
-                        else{
+                        } else {
                             output += "\n";
                         }
                     }
-                    output += "]";        
+                    output += "]";
                     window.prompt("Copy to clipboard: Ctrl+C, Enter", output);
-                } 
-                if (keys.isKeyDown("debug.Clear")){      
-                    for(var i = 68; i < 81; i++){
-                        for(var j = 68; j < 81; j++){
-                            this.gameManager.board.setTile(i,j,new Tile(this.gameManager));
+                }
+                if (keys.isKeyDown("debug.Clear")) {
+                    for (var i = 68; i < 81; i++) {
+                        for (var j = 68; j < 81; j++) {
+                            this.gameManager.board.setTile(i, j, new Tile(this.gameManager));
                         }
                     }
                 }
-            }
-            else{
+            } else {
                 if (grid[currentX][top].clipping && dy < 0) dy = 0;
                 if (grid[currentX][bot].clipping && dy > 0) dy = 0;
                 if (grid[left][currentY].clipping && dx < 0) dx = 0;

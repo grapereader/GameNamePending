@@ -1,5 +1,5 @@
 define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Animation) {
-	var Wall = Class(Tile, {
+    var Wall = Class(Tile, {
         constructor: function(gameManager) {
             Wall.$super.call(this, gameManager);
             this.gameManager = gameManager;
@@ -7,8 +7,8 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.tileType = "Wall";
             this.tileSprite = this.createSprite("rock3");
         },
-        update: function(){
-        	Wall.$superp.update.call(this);
+        update: function() {
+            Wall.$superp.update.call(this);
         }
     });
 

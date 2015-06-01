@@ -18,7 +18,7 @@ define(["save/storage"], function(Storage) {
                         "down": "KeyS"
                     },
                     "attack": "KeyJ",
-                    "debug":{
+                    "debug": {
                         "Tile": "Digit1",
                         "Wall": "Digit2",
                         "Path": "Digit3",
@@ -27,7 +27,7 @@ define(["save/storage"], function(Storage) {
                         "Torch": "Digit6",
                         "Export": "KeyX",
                         "Clear": "KeyC"
-                    } 
+                    }
                 }
             }
         },

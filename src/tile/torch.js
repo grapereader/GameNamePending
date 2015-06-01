@@ -11,10 +11,10 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.tileSprite = this.closedSprite;
         },
 
-        update: function(){
+        update: function() {
             Torch.$superp.update.call(this);
         },
-        use: function(){
+        use: function() {
             this.isLit = !this.isLit;
         },
     });

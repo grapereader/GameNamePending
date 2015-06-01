@@ -131,7 +131,9 @@ define(["lib/heap"], function(Heap) {
 
         },
         reconstruct: function(node) {
-            var path = [[node.x, node.y]];
+            var path = [
+                [node.x, node.y]
+            ];
             while (node.parent) {
                 node = node.parent;
                 path.push([node.x, node.y]);

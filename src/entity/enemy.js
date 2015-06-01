@@ -25,19 +25,25 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
 
             var anims = {
                 "stand-left": Helpers.animBuilder("stand-left", 2, standSpeed),
-                "stand-right": {flip: "stand-left"},
-                "stand-up" : Helpers.animBuilder("stand-up", 2, standSpeed),
+                "stand-right": {
+                    flip: "stand-left"
+                },
+                "stand-up": Helpers.animBuilder("stand-up", 2, standSpeed),
                 "stand-down": Helpers.animBuilder("stand-down", 2, standSpeed),
 
                 "use-left": Helpers.animBuilder("use-left", 4, useSpeed),
-                "use-right": {flip: "use-left"},
+                "use-right": {
+                    flip: "use-left"
+                },
                 "use-up": Helpers.animBuilder("use-up", 4, useSpeed),
                 "use-down": Helpers.animBuilder("use-down", 4, useSpeed),
 
-                "walk-left" : Helpers.animBuilder("walk-left", 4, actionSpeed),
-                "walk-right" : {flip: "walk-left"},
-                "walk-up" : Helpers.animBuilder("walk-up", 4, actionSpeed),
-                "walk-down" : Helpers.animBuilder("walk-down", 4, actionSpeed)
+                "walk-left": Helpers.animBuilder("walk-left", 4, actionSpeed),
+                "walk-right": {
+                    flip: "walk-left"
+                },
+                "walk-up": Helpers.animBuilder("walk-up", 4, actionSpeed),
+                "walk-down": Helpers.animBuilder("walk-down", 4, actionSpeed)
             };
 
             this.animGroup.addAnimationLayer(new Animation(spritesheet, anims, this.sprite));
@@ -54,8 +60,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 var tileX = self.tileX;
                 var tileY = self.tileY;
 
-                if ((Math.abs(tileX - targetX) > 10 && Math.abs(tileY - targetY) > 10)
-                || (Math.abs(tileX - self.homeX) > 20 && Math.abs(tileX - self.homeX) > 20)) {
+                if ((Math.abs(tileX - targetX) > 10 && Math.abs(tileY - targetY) > 10) || (Math.abs(tileX - self.homeX) > 20 && Math.abs(tileX - self.homeX) > 20)) {
                     targetX = self.homeX;
                     targetY = self.homeY;
                 }
@@ -77,8 +82,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                     self.y = self.tileY * 64;
 
                     self.walk(
-                        (next[0] - self.tileX) * self.walkSpeed,
-                        (next[1] - self.tileY) * self.walkSpeed
+                        (next[0] - self.tileX) * self.walkSpeed, (next[1] - self.tileY) * self.walkSpeed
                     );
                 } else {
                     self.walk(0, 0);

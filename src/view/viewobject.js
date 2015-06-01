@@ -64,7 +64,7 @@ define(function() {
             if (this.autoResize) this.updateSize(this.container.width, this.container.height);
         },
 
-        removeChild: function(child){
+        removeChild: function(child) {
             this.container.removeChild(child);
         }
     });
