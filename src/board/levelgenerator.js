@@ -3,7 +3,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
     var LevelGenerator = Class({
         constructor: function(gameManager){
             this.gameManager = gameManager;
-            //this.Rooms = new PIXI.JsonLoader("roomTemplates",false);
+            this.Rooms = [];
         },  
 
         getTestBoard: function(){
@@ -23,7 +23,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
         },
         generateLevel: function(gamma){ //Gamma is the tuning variable for the probability of the doors being deleted as they get further from the center. 
             var board = new Board(this.gameManager,100,100);
-            var centralRoom = generateRandomRoom(-1,-1,2); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
+            var centralRoom = generateRandomRoom(-1,-1); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
 
             board.addRoom(Math.Floor((board.gridWidth/2)-(centralRoom.width/2)),Math.floor((board.gridWidth/2)-(centralRoom.width/2)),centralRoom);
 
@@ -40,10 +40,38 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     else{
                         //Determines which side of the entrance needs a room
                         var rect;
-                        if(grid[entranceX][entranceY-1] == "Empty") rect = getEmptyRectangle(entranceX,entranceY-1,1);
-                        if(grid[entranceX+1][entranceY] == "Empty") rect = getEmptyRectangle(entranceX+1,entranceY,2);
-                        if(grid[entranceX][entranceY+1] == "Empty") rect = getEmptyRectangle(entranceX,entranceY+1,3);
-                        if(grid[entranceX-1][entranceY] == "Empty") rect = getEmptyRectangle(entranceX-1,entranceY,4);
+                        var direction;
+                        var distanceFromEdge;
+                        if(grid[entranceX][entranceY-1] == "Empty") {
+                            rect = getEmptyRectangle(entranceX,entranceY-1,1);
+                            direction = 1;
+                            distanceFromEdge = Math.min(entranceX-rect[0],rect[2]-entranceX);
+
+                        }
+                        else if(grid[entranceX+1][entranceY] == "Empty"){
+                            rect = getEmptyRectangle(entranceX+1,entranceY,2);
+                            direction = 2;
+                            distanceFromEdge = Math.min(entranceY-rect[1],rect[3]-entranceY);
+
+                        }      
+                        else if(grid[entranceX][entranceY+1] == "Empty"){
+                            rect = getEmptyRectangle(entranceX,entranceY+1,3);
+                            direction = 3;
+                            distanceFromEdge = Math.min(entranceX-rect[0],rect[2]-entranceX);
+                        }
+                        else if(grid[entranceX-1][entranceY] == "Empty"){
+                            rect = getEmptyRectangle(entranceX-1,entranceY,4);
+                            direction = 4;
+                            distanceFromEdge = Math.min(entranceY-rect[1],rect[3]-entranceY);
+                        }
+                        var minEntrances = Math.sqrt(Math.pow(entranceX,2)+Math.pow(entranceY,2))
+                        var room = generateRandomRoom(rect,minEntrances,(direction==1||direction==3) ? direction ^ 2 : direction ^ 6,[entranceX,entranceY]);
+                        if(room==-1){
+                            grid[entranceX][entranceY] = new Wall(this.gameManager)
+                        }
+                        else{
+
+                        }
 
                     }
                 }
@@ -58,14 +86,47 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             
         },
-        generateRandomRoom: function(rect,minEntrances,entranceDirection){ //pass -1 rect to have dimensions ignored
+        generateRandomRoom: function(rect,minEntrances,requiredDirection,entranceLocation){ //pass -1 to have requirements ignored, will return room in correct orientation
             var room;
-            do{
-                room = this.Rooms[Math.floor(Math.random()*this.Rooms.length)];
+            var roomList = this.Rooms;
+            while(roomList.length>0){
+                do{
+                    room = this.roomList.splice(Math.floor(Math.random()*this.roomList.length),1)[0];
+                    if(this.roomList.length==0){
+                        return -1;
+                    }
+                }while(rect!=-1&&((room.width>(rect[2]-rect[0])||(rect[3]-rect[1])>maxHeight)||room.entrances.length<minEntrances));                
+                var roomBackup = room;
+                for(var j = 0; j < 4; j++){
+                    for(var i = 0; i < room.entrances.length; i++){
+                        if(room.entrances[i]==requiredDirection){
+                            if(room.entranceLocations[i]==1||room.entranceLocations[i]==3){
+                                if(entranceLocations[i][0]>(room.width-1)-entranceLocations[i][0]&&entranceLocation[0]-rect[0]<rect[2]-entranceLocation[0]){
+                                    room.flipRoom(false);
+                                }
+                                if((room.width-1)-entranceLocations[i][0]<=rect[2]-entranceLocation[0]&&entranceLocations[i][0]<=entranceLocation[0]-rect[0]){}
+                                    return Room;
+                                }
+                            }else{
+                                if(entranceLocations[i][1]>(room.height-1)-entranceLocations[i][1]&&entranceLocation[1]-rect[1]<rect[3]-entranceLocation[1]){
+                                    room.flipRoom(true);
+                                }
+                                if((room.height-1)-entranceLocations[i][1]<=rect[3]-entranceLocation[1]&&entranceLocations[i][1]<=entranceLocation[1]-rect[1]){
+                                    return Room;
+                                }
 
-            }while(room.width>maxWidth&&maxWidth!=-1||room.height>maxHeight&&maxHeight!=-1||room.entrances.length<minEntrances||!room.contains(entranceDirection));
-            return room;
+                            }
+                        }
+                    }
+                if(j!=0){
+                    room = roomBackup;
+                    r.rotateRoom(j);
+                }
+            }
+            return -1;
+            
         },
+
         createTestRoom: function(){
             var width = 5;
             var height = 4;
