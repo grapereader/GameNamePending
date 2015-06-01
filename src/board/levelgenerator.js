@@ -3,7 +3,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
     var LevelGenerator = Class({
         constructor: function(gameManager){
             this.gameManager = gameManager;
-            //this.Rooms = new PIXI.JsonLoader("roomTemplates",false);
+            this.Rooms = [];
         },  
 
         getTestBoard: function(){
@@ -89,7 +89,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
         generateRandomRoom: function(rect,minEntrances,requiredDirection,entranceLocation){ //pass -1 to have requirements ignored, will return room in correct orientation
             var room;
             var roomList = this.Rooms;
-            while(roomList.length>0)
+            while(roomList.length>0){
                 do{
                     room = this.roomList.splice(Math.floor(Math.random()*this.roomList.length),1)[0];
                     if(this.roomList.length==0){
@@ -98,7 +98,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                 }while(rect!=-1&&((room.width>(rect[2]-rect[0])||(rect[3]-rect[1])>maxHeight)||room.entrances.length<minEntrances));                
                 var roomBackup = room;
                 for(var j = 0; j < 4; j++){
-                    for(var i = 0; i < room.entrances.length&&; i++){
+                    for(var i = 0; i < room.entrances.length; i++){
                         if(room.entrances[i]==requiredDirection){
                             if(room.entranceLocations[i]==1||room.entranceLocations[i]==3){
                                 if(entranceLocations[i][0]>(room.width-1)-entranceLocations[i][0]&&entranceLocation[0]-rect[0]<rect[2]-entranceLocation[0]){
@@ -118,14 +118,15 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                             }
                         }
                     }
-                    if(j!=0){
-                        room = roomBackup;
-                        r.rotateRoom(j);
-                    }
+                if(j!=0){
+                    room = roomBackup;
+                    r.rotateRoom(j);
                 }
             }
             return -1;
+            
         },
+
         createTestRoom: function(){
             var width = 5;
             var height = 4;
