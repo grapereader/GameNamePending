@@ -1,63 +1,55 @@
-define(["util/helpers"], function(Helpers) {
+define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
 
-    var Window = Class({
-        constructor: function(width, height, title) {
-            this.rootContainer = new PIXI.Container();
-            this.container = new PIXI.Container();
+    var Window = Class(WindowObject, {
+        constructor: function(gameManager, width, height, titleString) {
+            Window.$super.call(this, gameManager);
 
-            var titleContainer = new PIXI.Container();
+            this.content = new WindowObject(gameManager);
+            var title = new WindowObject(gameManager);
+
             var titleGraphics = new PIXI.Graphics();
-            titleContainer.addChild(titleGraphics);
+            title.addChild(titleGraphics);
 
-            var titleText = new PIXI.Text(title, {
+            var titleText = new PIXI.Text(titleString, {
                 font: Helpers.getFont(16)
             });
-            titleContainer.addChild(titleText);
+            title.addChild(titleText);
             titleGraphics.beginFill(0xFFFFFF, 0.8);
             titleGraphics.drawRect(0, 0, width, titleText.height);
             titleGraphics.endFill();
 
-            this.rootContainer.addChild(this.container);
-            this.rootContainer.addChild(titleContainer);
+            Window.$superp.addChild.call(this, this.content);
+            Window.$superp.addChild.call(this, title);
 
-            this.container.y = titleContainer.height;
+            this.content.container.y = title.container.height;
 
             var self = this;
             var down = false;
             var offset = 0;
-            titleContainer.interactive = true;
-            titleContainer.on("mousedown", function(e) {
+            title.container.interactive = true;
+            title.container.on("mousedown", function(e) {
                 if (self.windowSystem !== undefined) {
                     self.windowSystem.requestFocus(self);
                 }
                 down = true;
-                offset = e.data.global.x - self.rootContainer.x;
+                offset = e.data.global.x - self.container.x;
             });
-            titleContainer.on("mouseup", function() {
+            title.container.on("mouseup", function() {
                 down = false;
             });
 
-            titleContainer.on("mousemove", function(e) {
+            title.container.on("mousemove", function(e) {
                 if (down) {
-                    self.rootContainer.x = e.data.global.x - offset;
-                    self.rootContainer.y = e.data.global.y - 2;
+                    self.container.x = e.data.global.x - offset;
+                    self.container.y = e.data.global.y - 2;
                 }
             });
-
-            this.children = [];
-        },
-        setPosition: function(x, y) {
-            this.rootContainer.x = x;
-            this.rootContainer.y = y;
         },
         addChild: function(child) {
-            this.children.push(child);
-            this.container.addChild(child.container);
+            this.content.addChild(child);
         },
         update: function() {
-            for (var i = 0; i < this.children.length; i++) {
-                this.children[i].update();
-            }
+            Window.$superp.update.call(this);
         }
     });
 

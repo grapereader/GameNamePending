@@ -55,13 +55,13 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             this.scene.addObject(this.fpsText, 9);
 
             var testInv = new InventoryScreen(this, this.player.inventory);
-            var testWindow = new Window(300, 300, "Inventory");
+            var testWindow = new Window(this, 300, 300, "Inventory");
             testWindow.addChild(testInv);
             var testInv2 = new InventoryScreen(this, this.player.inventory);
-            var testWindow2 = new Window(300, 300, "Inventory 2");
+            var testWindow2 = new Window(this, 300, 300, "Inventory 2");
             testWindow2.addChild(testInv2);
             testWindow2.setPosition(0, 100);
-            this.windowSystem = new WindowSystem();
+            this.windowSystem = new WindowSystem(document.getElementById("canvas-wrapper"));
             this.windowSystem.addWindow(testWindow);
             this.windowSystem.addWindow(testWindow2);
             this.scene.addObject(this.windowSystem.container, 8);

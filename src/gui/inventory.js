@@ -1,8 +1,8 @@
-define(["util/helpers"], function(Helpers) {
+define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
 
-    var InventoryItem = Class({
+    var InventoryItem = Class(WindowObject, {
         constructor: function(gameManager, item, invId, tileX, tileY) {
-            this.gameManager = gameManager;
+            InventoryItem.$super.call(this, gameManager);
 
             this.item = item;
             this.invId = invId;
@@ -16,8 +16,19 @@ define(["util/helpers"], function(Helpers) {
 
             this.sprite.x = tileX * 32;
             this.sprite.y = tileY * 32;
+
+            this.contextMenu = {
+                "Test": function() {
+
+                },
+                "Test 2": function() {
+
+                }
+            }
+            this.addChild(this.sprite);
         },
         update: function() {
+            InventoryItem.$superp.update.call(this);
             //Similar transition as the View's on item move
             var period = this.gameManager.game.deltaTime / 17;
 
@@ -33,12 +44,11 @@ define(["util/helpers"], function(Helpers) {
         }
     });
 
-    var InventoryScreen = Class({
+    var InventoryScreen = Class(WindowObject, {
         constructor: function(gameManager, inventory) {
-            this.container = new PIXI.Container();
+            InventoryScreen.$super.call(this, gameManager);
 
             this.inventory = inventory;
-            this.items = [];
 
             //These seem useless right now, but may be useful later...
             this.width = Math.min(inventory.items.length, 4);
@@ -49,8 +59,7 @@ define(["util/helpers"], function(Helpers) {
                 var x = i % 4;
                 var y = Math.floor(i / 4);
                 var item = new InventoryItem(gameManager, inventory.items[i], i, 0, 0);
-                this.container.addChild(item.sprite);
-                this.items.push(item);
+                this.addChild(item);
                 //Move to instead of set so we get a swaggin animnation on open.
                 //This could be really bad for functionality. :P We shall see
                 item.moveTo(x, y);
@@ -97,16 +106,11 @@ define(["util/helpers"], function(Helpers) {
         getItemAt: function(x, y) {
             var tileX = Math.floor(x / 32);
             var tileY = Math.floor(y / 32);
-            for (var i = 0; i < this.items.length; i++) {
-                var item = this.items[i];
+            for (var i = 0; i < this.children.length; i++) {
+                var item = this.children[i];
                 if (item.tileX === tileX && item.tileY === tileY) return item;
             }
             return false;
-        },
-        update: function() {
-            for (var i = 0; i < this.items.length; i++) {
-                this.items[i].update();
-            }
         }
     });
 
