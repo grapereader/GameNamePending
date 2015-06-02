@@ -5,7 +5,7 @@ define(function() {
 
     var spriteDir = "assets/sprites/";
 
-    return {
+    var Helpers = {
         animBuilder: function(name, frameCount, fps, loop) {
             var frames = [];
             for (var i = 0; i < frameCount; i++) {
@@ -20,11 +20,14 @@ define(function() {
         sprite: function(name) {
             return spriteDir + name;
         },
+        item: function(name) {
+            return Helpers.sprite("items/" + name + "/" + name + ".sheet");
+        },
         getFileNameFromPath: function(path) {
             return path.replace(/^.*[\\\/]/, '');
         },
         createSprite: function() {
-            var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[this.sprite("blank.png")]);
+            var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("blank.png")]);
             sprite.scale.x = 2;
             sprite.scale.y = 2;
             sprite.anchor.x = 0.5;
@@ -39,4 +42,6 @@ define(function() {
             return size + "px Poiret One";
         }
     };
+
+    return Helpers;
 });

@@ -47,7 +47,12 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
             var loader = new PIXI.loaders.Loader();
             loader
                 .add(Helpers.sprite("players/male-race-1/male-race-1.sheet"))
-                .add(Helpers.sprite("items/ironsword/ironsword.sheet"))
+                .add(Helpers.item("ironsword"))
+                .add(Helpers.item("ironboots"))
+                .add(Helpers.item("ironchest"))
+                .add(Helpers.item("irongloves"))
+                .add(Helpers.item("ironhelm"))
+                .add(Helpers.item("ironlegs"))
                 .add(Helpers.sprite("world/tiles-1/tiles-1.sheet"))
                 .add(Helpers.sprite("blank.png"))
                 .add(Helpers.sprite("placeholder.png"))

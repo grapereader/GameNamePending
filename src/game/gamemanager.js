@@ -17,7 +17,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                 repeats: 0,
                 inventory: false,
                 chest: false,
-                equip: {
+                equips: {
                     head: false,
                     chest: false,
                     legs: false,
