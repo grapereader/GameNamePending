@@ -20,6 +20,11 @@ define(function() {
         removeAnimationLayer: function(animation) {
             this.animations.splice(this.animations.indexOf(animation), 1);
         },
+        setSpeed: function(anim, speed) {
+            for (var i = 0; i < this.animations.length; i++) {
+                this.animations[i].animData[anim].speed = speed;
+            }
+        },
         setAnimation: function(anim) {
             if (this.locked === true) return;
             this.active = anim;

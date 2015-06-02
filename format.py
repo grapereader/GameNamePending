@@ -33,5 +33,5 @@ for root, dirs, files in os.walk("."):
         if is_exclude(root, file):
             continue;
         path = os.path.join(root, file)
-        call("python ./format/js-beautify -r " + path, shell=True)
+        call("python ./format/js-beautify -r -n " + path, shell=True)
         formatted += 1

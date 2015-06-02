@@ -78,10 +78,10 @@ define(["util/helpers"], function(Helpers) {
             })
             this.container.on("mousemove", function(e) {
                 var pos = e.data.getLocalPosition(self.container);
-                var mx = pos.x + 15;
-                var my = pos.y + 15;
-                tooltip.x = mx;
-                tooltip.y = my;
+                var mx = pos.x;
+                var my = pos.y;
+                tooltip.x = mx + 15;
+                tooltip.y = my + 15;
                 var item = self.getItemAt(mx, my);
                 if (item !== false) tooltip.text = item.item.name;
 

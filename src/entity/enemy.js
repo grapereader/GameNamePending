@@ -60,7 +60,8 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 var tileX = self.tileX;
                 var tileY = self.tileY;
 
-                if ((Math.abs(tileX - targetX) > 10 && Math.abs(tileY - targetY) > 10) || (Math.abs(tileX - self.homeX) > 20 && Math.abs(tileX - self.homeX) > 20)) {
+                if ((Math.abs(tileX - targetX) > 10 && Math.abs(tileY - targetY) > 10) ||
+                    (Math.abs(tileX - self.homeX) > 20 && Math.abs(tileX - self.homeX) > 20)) {
                     targetX = self.homeX;
                     targetY = self.homeY;
                 }

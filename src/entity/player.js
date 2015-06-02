@@ -1,4 +1,4 @@
-define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer", "tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/torch"], function(Entity, Helpers, Animation, Inventory, Timer, Tile, Wall, Path, Door, Chest, Torch) {
+define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer", "debug/editor", "item/item", "item/armour"], function(Entity, Helpers, Animation, Inventory, Timer, Editor, Item, Armour) {
 
     var Player = Class(Entity, {
         constructor: function(gameManager, saveData) {
@@ -16,12 +16,13 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 "item": Helpers.createSprite()
             };
 
+            this.equips = saveData.equips;
+            this.equipAnims = {};
+
             this.x = 64;
             this.y = 64;
 
             this.health = 200; //Temp health
-
-            this.canAttack = true;
 
             for (s in this.sprites) {
                 this.addChild(this.sprites[s]);
@@ -30,9 +31,12 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
 
             this.walkSpeed = 250;
 
+            //Debug editor
+            this.editor = new Editor(gameManager);
+
             var standSpeed = 2;
             var actionSpeed = 10;
-            var anims = {
+            this.animData = {
                 "stand-left": Helpers.animBuilder("stand-left", 2, standSpeed),
                 "stand-right": {
                     flip: "stand-left"
@@ -54,16 +58,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 "walk-up": Helpers.animBuilder("walk-up", 4, actionSpeed),
                 "walk-down": Helpers.animBuilder("walk-down", 4, actionSpeed)
             };
-
-            var testWeapon = gameManager.itemManager.generateWeapon();
-            this.animGroup.addAnimationLayer(new Animation(testWeapon.framesNamespace, anims, this.sprites["item"]));
-
-            for (var i = 0; i < this.inventory.items.length; i++) {
-                this.inventory.items[i] = testWeapon;
-            }
-
-            this.animGroup.addAnimationLayer(new Animation("male-race-1", anims, this.sprites["base"]));
-            this.animGroup.setAnimation("stand-down");
+            this.animGroup.addAnimationLayer(new Animation("male-race-1", this.animData, this.sprites["base"]));
 
             var self = this;
 
@@ -72,6 +67,19 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 self.canAttack = true;
             });
             this.attackCooldownTimer.started = false;
+            this.canAttack = true;
+
+            var testWeapon = gameManager.itemManager.generateWeapon();
+            this.inventory.items[0] = testWeapon;
+            this.equipItem(testWeapon);
+
+            var testArmour = gameManager.itemManager.generateArmours();
+            for (var i = 0; i < testArmour.length; i++) {
+                this.inventory.items[i + 1] = testArmour[i];
+                this.equipItem(testArmour[i]);
+            }
+
+            this.animGroup.setAnimation("stand-down");
         },
         setLocation: function(x, y) {
             this.x = x;
@@ -81,29 +89,51 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 this.y + (this.height / 2) - this.gameManager.game.gameHeight / 2
             );
         },
+        equipItem: function(item) {
+            var location = false;
+            if (item.type === Item.TYPES.WEAPON) {
+                location = "item"
+            } else {
+                location = Armour.EQUIP[item.armourType];
+            }
+
+            if (this.equipAnims[location] !== undefined) {
+                this.animGroup.removeAnimationLayer(this.equipAnims[location]);
+            }
+
+            this.equips[location] = item;
+
+            var anim = new Animation(item.framesNamespace, this.animData, this.sprites[location]);
+            this.equipAnims[location] = anim;
+            this.animGroup.addAnimationLayer(anim);
+
+            if (item.type === Item.TYPES.WEAPON) {
+                var spd = (1000 * (item.attackSpeed / 4)) / 2;
+                var dirs = ["left", "right", "up", "down"];
+                for (var i = 0; i < dirs.length; i++) {
+                    this.animGroup.setSpeed("use-" + dirs[i], spd);
+                }
+                this.attackCooldownTimer.period = item.attackSpeed * 1000;
+            }
+            console.log("Equipped item " + item.name);
+        },
         update: function() {
             Player.$superp.update.call(this);
 
             var delta = this.gameManager.game.deltaTime;
             var keys = this.gameManager.game.keymap;
 
+            this.updateAttack(keys, delta);
+            this.updateMovement(keys);
+        },
+        updateAttack: function(keys, delta) {
             if (keys.isKeyDown("attack") && this.canAttack) {
                 this.canAttack = false;
                 this.attackCooldownTimer.started = true;
-                switch (this.dir) {
-                    case 0:
-                        this.animGroup.setAnimation("use-right");
-                        break;
-                    case 1:
-                        this.animGroup.setAnimation("use-left");
-                        break;
-                    case 2:
-                        this.animGroup.setAnimation("use-down");
-                        break;
-                    case 3:
-                        this.animGroup.setAnimation("use-up");
-                        break;
-                }
+                if (this.dir === 0) this.animGroup.setAnimation("use-right");
+                if (this.dir === 1) this.animGroup.setAnimation("use-left");
+                if (this.dir === 2) this.animGroup.setAnimation("use-down");
+                if (this.dir === 3) this.animGroup.setAnimation("use-up");
                 this.animGroup.locked = true;
                 this.attacking = true;
             }
@@ -115,7 +145,8 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             }
 
             this.attackCooldownTimer.update(delta);
-
+        },
+        updateMovement: function(keys) {
             var dx = 0;
             var dy = 0;
             if (keys.isKeyDown("move.up")) dy = -this.walkSpeed;
@@ -139,51 +170,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             var bot = Math.floor(this.y / 64) + 1;
             var LEVELEDITING = true;
             if (LEVELEDITING) {
-                if (keys.isKeyDown("debug.Tile")) this.gameManager.board.setTile(currentX, currentY, new Tile(this.gameManager));
-                if (keys.isKeyDown("debug.Wall")) this.gameManager.board.setTile(currentX, currentY, new Wall(this.gameManager));
-                if (keys.isKeyDown("debug.Path")) this.gameManager.board.setTile(currentX, currentY, new Path(this.gameManager));
-                if (keys.isKeyDown("debug.Door")) this.gameManager.board.setTile(currentX, currentY, new Door(this.gameManager));
-                if (keys.isKeyDown("debug.Chest")) this.gameManager.board.setTile(currentX, currentY, new Chest(this.gameManager));
-                if (keys.isKeyDown("debug.Torch")) this.gameManager.board.setTile(currentX, currentY, new Torch(this.gameManager));
-                if (keys.isKeyDown("debug.Export")) {
-                    var greatestX = 68;
-                    var greatestY = 68;
-
-                    for (var i = 68; i < 81; i++) {
-                        for (var j = 68; j < 81; j++) {
-                            if (this.gameManager.board.grid[i][j].tileType != "Empty") {
-                                greatestX = Math.max(greatestX, i);
-                                greatestY = Math.max(greatestY, j);
-                            }
-                        }
-                    }
-
-                    var output = "[";
-                    for (var i = 68; i <= greatestX; i++) {
-                        output += "[";
-                        for (var j = 68; j <= greatestY; j++) {
-                            output += "\"" + this.gameManager.board.grid[i][j].tileType + "\"";
-                            if (j != greatestY) {
-                                output += ",\n";
-                            }
-                        }
-                        output += "]";
-                        if (i != greatestX) {
-                            output += ",";
-                        } else {
-                            output += "\n";
-                        }
-                    }
-                    output += "]";
-                    window.prompt("Copy to clipboard: Ctrl+C, Enter", output);
-                }
-                if (keys.isKeyDown("debug.Clear")) {
-                    for (var i = 68; i < 81; i++) {
-                        for (var j = 68; j < 81; j++) {
-                            this.gameManager.board.setTile(i, j, new Tile(this.gameManager));
-                        }
-                    }
-                }
+                this.editor.update(currentX, currentY);
             } else {
                 if (grid[currentX][top].clipping && dy < 0) dy = 0;
                 if (grid[currentX][bot].clipping && dy > 0) dy = 0;
@@ -198,8 +185,43 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 this.y + (this.height / 2) - this.gameManager.game.gameHeight / 2
             );
         },
+        getArmourValue: function() {
+            var armourValue = 0;
+            for (var i in this.equips) {
+                var item = this.equips[i];
+                if (item.type === Item.TYPES.ARMOUR) {
+                    var boostPerc = 100;
+                    var boostVal = 0;
+                    for (var a = 0; a < item.affixes.length; a++) {
+                        var affix = item.affixes[a];
+                        if (affix.buffs.armour !== undefined) {
+                            var armour = affix.buffs.armour;
+                            if (armour.type === "%") {
+                                boostPerc += armour.val;
+                            } else {
+                                //Perhaps all affixes should just be percent.
+                                //It doesn't make sense for fixed values when every run
+                                //the values needed increase...
+                                boostVal += armour.val;
+                            }
+                        }
+                    }
+                    armourValue += item.armour * (1 + (100 / boostPerc)) + boostVal;
+                }
+            }
+            return armourValue;
+        },
         attack: function(damage) {
-            //TODO Affixes and defense handled here before calling super
+            /*
+                This could be a decent way to calculate defense.
+                Each armour value giving some % chance to reduce damage by 1?
+            */
+            var armour = Math.floor(this.getArmourValue());
+            for (var i = 0; i < armour; i++) {
+                if (Math.random() < 0.1) {
+                    damage -= 1;
+                }
+            }
             Player.$superp.attack.call(this, damage);
         }
     });
