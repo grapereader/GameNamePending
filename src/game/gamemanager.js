@@ -30,7 +30,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             var self = this;
             this.levelgenerator = new LevelGenerator(this);
-            this.board = this.levelgenerator.getTestBoard();
+            this.board = this.levelgenerator.generateLevel(0.25);
             this.itemManager = new ItemManager();
             this.board.addEnemy(new Enemy(this, 5, 5, {
                 damage: 5,
@@ -39,7 +39,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             }, 64 * 2, {}, "male-race-1"));
 
             this.player = new Player(this, saveData);
-            this.player.setLocation(68 * 64, 68 * 64);
+            this.player.setLocation(75 * 64, 75 * 64);
             this.scene.addObject(this.player.container, 2);
             this.scene.addObject(this.board.container, 0);
             this.scene.addObject(this.board.enemyContainer, 1);

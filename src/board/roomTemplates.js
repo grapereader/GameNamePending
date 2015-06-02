@@ -1,9 +1,9 @@
-define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], function(Tile, Wall, Path, Door, ViewObject) {
+define(["tile/tile", "tile/wall", "tile/path", "tile/door","tile/chest","tile/torch","board/room", "view/viewobject"], function(Tile, Wall, Path, Door, Chest, Torch, Room, ViewObject) {
 
-    var Room = Class({
+    var RoomTemplates = Class({
         constructor: function(gameManager) {
             this.gameManager = gameManager;
-            this.rooms = {
+            this.roomsRaw = {
                 "circular4EntranceRoom": [
                     ["Empty", "Wall", "Wall", "Door", "Wall", "Wall", "Empty"],
                     ["Wall", "Wall", "Path", "Path", "Path", "Wall", "Wall"],
@@ -46,16 +46,66 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
                 "mediumHallway": [["Wall","Wall","Wall","Wall","Wall"],["Door","Path","Path","Path","Door"],["Wall","Wall","Wall","Wall","Wall"]],
                 "longHallway": [["Wall","Wall","Wall","Wall","Wall","Wall","Wall","Wall"],["Door","Path","Path","Path","Path","Path","Path","Door"],["Wall","Wall","Wall","Wall","Wall","Wall","Wall","Wall"]],
                 "shortHallwayCorner":[["Empty","Empty","Wall","Door","Wall"],["Empty","Empty","Wall","Path","Wall"],["Wall","Wall","Wall","Path","Wall"],["Door","Path","Path","Path","Wall"],["Wall","Wall","Wall","Wall","Wall"]],
-                "mediumHallwayCorner":[["Empty","Empty","Empty","Empty","Wall","Door","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Path","Wall"],["Door","Path","Path","Path","Path","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Wall","Wall"]],
-
+                "mediumHallwayCorner":[["Empty","Empty","Empty","Empty","Wall","Door","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Path","Wall"],["Door","Path","Path","Path","Path","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Wall","Wall"]]
             }
+            this.rooms = [];
+            for(r in this.roomsRaw){
+                this.rooms.push(this.roomConstructor(this.roomsRaw[r]));
+            }
+            console.log("Loaded Template Rooms");
         },
 
         roomConstructor: function(roomCompact) {
-
+            var room = new Room(this.gameManager);
+            room.width = roomCompact.length;
+            room.height = roomCompact[0].length;
+            room.grid = new Array(room.width);
+            for(var i = 0; i < room.width; i++){
+                room.grid[i] = new Array(room.height);
+                for(var j = 0; j < room.height; j++){
+                    if(roomCompact[i][j] == "Door"){
+                        var direction;
+                        if(j == 0){
+                            direction = 1;
+                        }
+                        else if(j == room.height - 1){
+                            direction = 3;
+                        }
+                        else if(i == 0){
+                            direction = 4;
+                        }
+                        else if(i == room.width-1){
+                            direction = 2;
+                        }                        
+                        room.entrances.push(direction);
+                        room.entranceLocations.push([i,j]);
+                    }   
+                    switch (roomCompact[i][j]) {
+                        case "Empty":
+                            room.grid[i][j] = new Tile(this.gameManager);
+                            break;
+                        case "Wall":
+                            room.grid[i][j] = new Wall(this.gameManager);
+                            break;
+                        case "Path":
+                            room.grid[i][j] = new Path(this.gameManager);
+                            break;
+                        case "Door":
+                            room.grid[i][j] = new Door(this.gameManager);
+                            break;
+                        case "Chest":
+                            room.grid[i][j] = new Chest(this.gameManager);
+                            break;
+                        case "Torch":
+                            room.grid[i][j] = new Torch(this.gameManager);
+                            break;
+                    }
+                }
+            }     
+            return room;
         }
 
 
     });
-    return roomTemplates;
+    return RoomTemplates;
 });

@@ -1,9 +1,10 @@
-define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window", "board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile"], function(Player, ItemManager, Helpers, InventoryScreen, Window, Board, Wall, Path, Door, Room, Tile) {
+define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window", "board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates"], function(Player, ItemManager, Helpers, InventoryScreen, Window, Board, Wall, Path, Door, Room, Tile, RoomTemplates) {
 
     var LevelGenerator = Class({
         constructor: function(gameManager) {
             this.gameManager = gameManager;
-            this.Rooms = [];
+            this.roomTemplates = new RoomTemplates(this.gameManager);
+
         },
 
         getTestBoard: function() {
@@ -13,11 +14,10 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             return this.board;
         },
         generateLevel: function(gamma) { //Gamma is the tuning variable for the probability of the doors being deleted as they get further from the center. 
-            var board = new Board(this.gameManager, 100, 100);
-            var centralRoom = generateRandomRoom(-1, -1); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
-
-            board.addRoom(Math.Floor((board.gridWidth / 2) - (centralRoom.width / 2)), Math.floor((board.gridWidth / 2) - (centralRoom.width / 2)), centralRoom);
-
+            var board = new Board(this.gameManager, 150, 150);
+            var centralRoom = this.generateRandomRoom(-1, -1, -1, -1); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
+            board.addRoom(Math.floor((board.gridWidth / 2) - (centralRoom.width / 2)), Math.floor((board.gridHeight / 2) - (centralRoom.height / 2)), centralRoom);
+            return board; 
             do { //Main Algorithm adding rooms to entrances randomly closing more doors based on their distance from the center of the level
                 var isolatedEntrances = board.getIsolatedEntrances();
                 //Removes Entrances from board
@@ -25,7 +25,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     var entrance = isolatedEntrances.pop();
                     var entranceX = entrances[0];
                     var entranceY = entrances[1];
-                    if ((Math.sqrt(Math.pow(entranceX, 2) + Math.pow(entranceY, 2)) / 100 + gamma + Math.random()) > 2) { //Door will be removed 
+                    if ((Math.sqrt(Math.pow(board.gridWidth/2-entranceX, 2) + Math.pow(board.gridHeight/2-entranceY, 2)) / 100 + gamma + Math.random()) > 2) { //Door will be removed 
                         board.setTile(extranceX, entranceY, new Wall(this.gameManager));
                     } else {
                         //Determines which side of the entrance needs a room
@@ -52,7 +52,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                             distanceFromEdge = Math.min(entranceY - rect[1], rect[3] - entranceY);
                         }
                         var minEntrances = Math.sqrt(Math.pow(entranceX, 2) + Math.pow(entranceY, 2))
-                        var room = generateRandomRoom(rect, minEntrances, (direction == 1 || direction == 3) ? direction ^ 2 : direction ^ 6, [entranceX, entranceY]);
+                        var room = this.generateRandomRoom(rect, minEntrances, (direction == 1 || direction == 3) ? direction ^ 2 : direction ^ 6, [entranceX, entranceY]);
                         if (room == -1) {
                             grid[entranceX][entranceY] = new Wall(this.gameManager)
                         } else {
@@ -74,23 +74,26 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
         },
         generateRandomRoom: function(rect, minEntrances, requiredDirection, entranceLocation) { //pass -1 to have requirements ignored, will return room in correct orientation
             var room;
-            var roomList = this.Rooms;
+            var roomList = this.roomTemplates.rooms;
             while (roomList.length > 0) {
                 do {
-                    room = this.roomList.splice(Math.floor(Math.random() * this.roomList.length), 1)[0];
-                    if (this.roomList.length == 0) {
+                    room = roomList.splice(Math.floor(Math.random() * roomList.length), 1)[0];
+                    if (roomList.length == 0) {
                         return -1;
                     }
                 } while (rect != -1 && ((room.width > (rect[2] - rect[0]) || (rect[3] - rect[1]) > maxHeight) || room.entrances.length < minEntrances));
                 var roomBackup = room;
                 for (var j = 0; j < 4; j++) {
                     for (var i = 0; i < room.entrances.length; i++) {
-                        if (room.entrances[i] == requiredDirection) {
-                            if (room.entranceLocations[i] == 1 || room.entranceLocations[i] == 3) {
+                        if (room.entrances[i] == requiredDirection || requiredDirection == -1) {
+                            if (room.entrances[i] == 1 || room.entrances[i] == 3) {
+                                if(entranceLocation == -1){
+                                    return room;
+                                }
                                 if (entranceLocations[i][0] > (room.width - 1) - entranceLocations[i][0] && entranceLocation[0] - rect[0] < rect[2] - entranceLocation[0]) {
                                     room.flipRoom(false);
                                 }
-                                if ((room.width - 1) - entranceLocations[i][0] <= rect[2] - entranceLocation[0] && entranceLocations[i][0] <= entranceLocation[0] - rect[0]) {
+                                if (((room.width - 1) - entranceLocations[i][0] <= rect[2] - entranceLocation[0] && entranceLocations[i][0] <= entranceLocation[0] - rect[0])) {
                                     switch (requiredDirection) {
                                         case 1:
                                             room.y = (entranceLocation[1] - 1) - room.height;
@@ -110,14 +113,35 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                                             break;
                                     }
 
-                                    return Room;
+                                    return room;
                                 }
                             } else {
-                                if (entranceLocations[i][1] > (room.height - 1) - entranceLocations[i][1] && entranceLocation[1] - rect[1] < rect[3] - entranceLocation[1]) {
+                                if(entranceLocation == -1){
+                                    return room;
+                                }
+                                if (entranceLocation[i][1] > (room.height - 1) - entranceLocations[i][1] && entranceLocation[1] - rect[1] < rect[3] - entranceLocation[1]) {
                                     room.flipRoom(true);
                                 }
-                                if ((room.height - 1) - entranceLocations[i][1] <= rect[3] - entranceLocation[1] && entranceLocations[i][1] <= entranceLocation[1] - rect[1]) {
-                                    return Room;
+                                if (((room.height - 1) - entranceLocations[i][1] <= rect[3] - entranceLocation[1] && entranceLocations[i][1] <= entranceLocation[1] - rect[1])||entranceLocation == -1) {
+                                    switch (requiredDirection) {
+                                        case 1:
+                                            room.y = (entranceLocation[1] - 1) - room.height;
+                                            room.x = entranceLocation[0] - (room.entranceLocations[i][0]);
+                                            break;
+                                        case 2:
+                                            room.y = entranceLocation[1] - (room.entranceLocations[i][1]);
+                                            room.x = (entranceLocation[0] + 1);
+                                            break;
+                                        case 3:
+                                            room.y = (entranceLocation[1] + 1);
+                                            room.x = entranceLocation[0] - (room.entranceLocations[i][0]);
+                                            break;
+                                        case 4:
+                                            room.y = entranceLocation[1] - (room.entranceLocations[i][1]);
+                                            room.x = (entranceLocation[0] - 1);
+                                            break;
+                                    }                                    
+                                    return room;
                                 }
 
                             }
@@ -125,7 +149,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     }
                     if (j != 0) {
                         room = roomBackup;
-                        r.rotateRoom(j);
+                        room.rotateRoom(j);
                     }
                 }
 
