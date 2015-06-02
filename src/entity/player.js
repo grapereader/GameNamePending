@@ -185,8 +185,43 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 this.y + (this.height / 2) - this.gameManager.game.gameHeight / 2
             );
         },
+        getArmourValue: function() {
+            var armourValue = 0;
+            for (var i in this.equips) {
+                var item = this.equips[i];
+                if (item.type === Item.TYPES.ARMOUR) {
+                    var boostPerc = 100;
+                    var boostVal = 0;
+                    for (var a = 0; a < item.affixes.length; a++) {
+                        var affix = item.affixes[a];
+                        if (affix.buffs.armour !== undefined) {
+                            var armour = affix.buffs.armour;
+                            if (armour.type === "%") {
+                                boostPerc += armour.val;
+                            } else {
+                                //Perhaps all affixes should just be percent.
+                                //It doesn't make sense for fixed values when every run
+                                //the values needed increase...
+                                boostVal += armour.val;
+                            }
+                        }
+                    }
+                    armourValue += item.armour * (1 + (100 / boostPerc)) + boostVal;
+                }
+            }
+            return armourValue;
+        },
         attack: function(damage) {
-            //TODO Affixes and defense handled here before calling super
+            /*
+                This could be a decent way to calculate defense.
+                Each armour value giving some % chance to reduce damage by 1?
+            */
+            var armour = Math.floor(this.getArmourValue());
+            for (var i = 0; i < armour; i++) {
+                if (Math.random() < 0.1) {
+                    damage -= 1;
+                }
+            }
             Player.$superp.attack.call(this, damage);
         }
     });
