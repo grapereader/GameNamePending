@@ -62,8 +62,8 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             testWindow2.addChild(testInv2);
             testWindow2.setPosition(0, 100);
             this.windowSystem = new WindowSystem(document.getElementById("canvas-wrapper"));
-            this.windowSystem.addWindow(testWindow);
-            this.windowSystem.addWindow(testWindow2);
+            this.windowSystem.addChild(testWindow);
+            this.windowSystem.addChild(testWindow2);
             this.scene.addObject(this.windowSystem.container, 8);
         },
         update: function() {

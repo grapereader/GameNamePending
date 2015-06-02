@@ -1,26 +1,17 @@
-define(function() {
+define(["gui/windowobject"], function(WindowObject) {
 
-    var WindowSystem = Class({
+    var WindowSystem = Class(WindowObject, {
         constructor: function(eventElement) {
-            this.container = new PIXI.Container();
-
-            this.windows = [];
-
+            WindowSystem.$super.call(this);
             var self = this;
             eventElement.addEventListener("contextmenu", function(e) {
                 e.preventDefault();
                 return false;
             });
         },
-        update: function() {
-            for (var i = 0; i < this.windows.length; i++) {
-                this.windows[i].update();
-            }
-        },
-        addWindow: function(window) {
-            window.windowSystem = this;
-            this.windows.push(window);
-            this.container.addChild(window.container);
+        addChild: function(child) {
+            child.windowSystem = this;
+            WindowSystem.$superp.addChild.call(this, child);
         },
         requestFocus(window) {
             this.container.removeChild(window.container);
