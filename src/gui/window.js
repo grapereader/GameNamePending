@@ -27,6 +27,9 @@ define(["util/helpers"], function(Helpers) {
             var offset = 0;
             titleContainer.interactive = true;
             titleContainer.on("mousedown", function(e) {
+                if (self.windowSystem !== undefined) {
+                    self.windowSystem.requestFocus(self);
+                }
                 down = true;
                 offset = e.data.global.x - self.rootContainer.x;
             });
@@ -40,6 +43,21 @@ define(["util/helpers"], function(Helpers) {
                     self.rootContainer.y = e.data.global.y - 2;
                 }
             });
+
+            this.children = [];
+        },
+        setPosition: function(x, y) {
+            this.rootContainer.x = x;
+            this.rootContainer.y = y;
+        },
+        addChild: function(child) {
+            this.children.push(child);
+            this.container.addChild(child.container);
+        },
+        update: function() {
+            for (var i = 0; i < this.children.length; i++) {
+                this.children[i].update();
+            }
         }
     });
 

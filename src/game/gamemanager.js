@@ -1,4 +1,4 @@
-define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window", "board/board", "entity/enemy", "board/levelgenerator"], function(Player, ItemManager, Helpers, InventoryScreen, Window, Board, Enemy, LevelGenerator) {
+define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window", "gui/windowsystem", "board/board", "entity/enemy", "board/levelgenerator"], function(Player, ItemManager, Helpers, InventoryScreen, Window, WindowSystem, Board, Enemy, LevelGenerator) {
     /**
         This is the meat of the game logic.
 
@@ -54,15 +54,22 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             });
             this.scene.addObject(this.fpsText, 9);
 
-            this.testInv = new InventoryScreen(this, this.player.inventory);
-            this.testGui = new Window(300, 300, "Inventory");
-            this.testGui.container.addChild(this.testInv.container);
-            this.scene.addObject(this.testGui.rootContainer, 8);
+            var testInv = new InventoryScreen(this, this.player.inventory);
+            var testWindow = new Window(300, 300, "Inventory");
+            testWindow.addChild(testInv);
+            var testInv2 = new InventoryScreen(this, this.player.inventory);
+            var testWindow2 = new Window(300, 300, "Inventory 2");
+            testWindow2.addChild(testInv2);
+            testWindow2.setPosition(0, 100);
+            this.windowSystem = new WindowSystem();
+            this.windowSystem.addWindow(testWindow);
+            this.windowSystem.addWindow(testWindow2);
+            this.scene.addObject(this.windowSystem.container, 8);
         },
         update: function() {
             this.player.update();
             this.board.update();
-            this.testInv.update();
+            this.windowSystem.update();
             this.fpsText.text = "FPS: " + this.game.fps;
         },
 
