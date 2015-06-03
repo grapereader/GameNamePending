@@ -1,9 +1,9 @@
-define(function() {
+define(["view/cullable"], function(Cullable) {
     /**
         All objects designed to translate around the view must extend
         this class.
     */
-    var ViewObject = Class({
+    var ViewObject = Class(Cullable, {
         constructor: function(scene) {
             this.scene = scene;
 
@@ -26,11 +26,7 @@ define(function() {
             this.container.x = this.sx = this.x - this.scene.view.x;
             this.container.y = this.sy = this.y - this.scene.view.y;
 
-            if (this.sx > this.scene.view.width || this.sx + this.width < 0 || this.sy > this.scene.view.height || this.sy + this.height < 0) {
-                this.container.visible = false;
-            } else {
-                this.container.visible = true;
-            }
+            this.cull();
         },
         /**
             Sets the ViewObject's size values, but not the container's.

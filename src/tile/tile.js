@@ -1,16 +1,25 @@
-define(["view/viewobject", "util/helpers", "util/animgroup"], function(ViewObject, Helpers, AnimGroup) {
+define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, Helpers, AnimGroup) {
 
-    var Tile = Class({
+    var Tile = Class(Cullable, {
         constructor: function(gameManager) {
             this.gameManager = gameManager;
+            this.scene = gameManager.scene;
             this.clipping = true;
             this.tileType = "Empty";
             this.container = new PIXI.Container();
             this.tileX = 0;
             this.tileY = 0;
+            this.x = 0;
+            this.y = 0;
+            this.width = 64;
+            this.height = 64;
             this.animGroup = new AnimGroup();
         },
-        update: function() {},
+        update: function() {
+            this.sx = this.x - this.scene.view.x;
+            this.sy = this.y - this.scene.view.y;
+            this.cull();
+        },
         createSprite: function(spriteLocation) {
             var sprite = new PIXI.Sprite(PIXI.utils.TextureCache["tiles-1"][spriteLocation]);
             sprite.scale.x = 2;
@@ -21,8 +30,8 @@ define(["view/viewobject", "util/helpers", "util/animgroup"], function(ViewObjec
             return sprite;
         },
         setPosition: function(tileX, tileY) {
-            this.container.x = tileX * 64;
-            this.container.y = tileY * 64;
+            this.container.x = this.x = tileX * 64;
+            this.container.y = this.y = tileY * 64;
             this.tileX = tileX;
             this.tileY = tileY;
             return this;
