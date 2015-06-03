@@ -47,7 +47,16 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
             }
 
         },
-
+        getRandomSpawnableLocation: function() {
+            var coords = [0, 0];
+            do {
+                coords[0] = Math.floor(Math.random() * this.width);
+                coords[1] = Math.floor(Math.random() * this.height);
+            } while (this.grid[coords[0]][coords[1]].tileType != "Path");
+            coords[0] = coords[0] + this.x;
+            coords[1] = coords[1] + this.y;
+            return coords;
+        },
         getClosestEntranceIndex: function() {
             var distance = 100;
             var index = 0;

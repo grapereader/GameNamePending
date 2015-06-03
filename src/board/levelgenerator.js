@@ -16,6 +16,8 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
         generateLevel: function(gamma) { //Gamma is the tuning variable for the probability of the doors being deleted as they get further from the center. 
             var board = new Board(this.gameManager, 200, 200);
             var centralRoom = this.generateRandomRoom(4, -1, -1, board); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
+            centralRoom.x = Math.floor((board.gridWidth / 2) - (centralRoom.width / 2));
+            centralRoom.y = Math.floor((board.gridHeight / 2) - (centralRoom.height / 2));
             board.addRoom(Math.floor((board.gridWidth / 2) - (centralRoom.width / 2)), Math.floor((board.gridHeight / 2) - (centralRoom.height / 2)), centralRoom);
             board.roomList.push(centralRoom);
             //return board; 
@@ -30,32 +32,32 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     board.setTile(entranceX, entranceY, new Wall(this.gameManager));
                 } else {
                     //Determines which side of the entrance needs a room
-                    var rect;
+                    //var rect;
                     var direction;
-                    var distanceFromEdge;
+                    //var distanceFromEdge;
                     //console.log(entranceX,entranceY);
                     if (board.grid[entranceX][entranceY - 1].tileType == "Empty") {
-                        rect = board.getEmptyRectangle(entranceX, entranceY - 1, 1);
+                        //rect = board.getEmptyRectangle(entranceX, entranceY - 1, 1);
                         direction = 1;
-                        distanceFromEdge = Math.min(entranceX - rect[0], rect[2] - entranceX);
+                        //distanceFromEdge = Math.min(entranceX - rect[0], rect[2] - entranceX);
 
                     } else if (board.grid[entranceX + 1][entranceY].tileType == "Empty") {
-                        rect = board.getEmptyRectangle(entranceX + 1, entranceY, 2);
+                        //rect = board.getEmptyRectangle(entranceX + 1, entranceY, 2);
                         direction = 2;
-                        distanceFromEdge = Math.min(entranceY - rect[1], rect[3] - entranceY);
+                        //distanceFromEdge = Math.min(entranceY - rect[1], rect[3] - entranceY);
 
                     } else if (board.grid[entranceX][entranceY + 1].tileType == "Empty") {
-                        rect = board.getEmptyRectangle(entranceX, entranceY + 1, 3);
+                        //rect = board.getEmptyRectangle(entranceX, entranceY + 1, 3);
                         direction = 3;
-                        distanceFromEdge = Math.min(entranceX - rect[0], rect[2] - entranceX);
+                        //distanceFromEdge = Math.min(entranceX - rect[0], rect[2] - entranceX);
                     } else if (board.grid[entranceX - 1][entranceY].tileType == "Empty") {
-                        rect = board.getEmptyRectangle(entranceX - 1, entranceY, 4);
+                        //rect = board.getEmptyRectangle(entranceX - 1, entranceY, 4);
                         direction = 4;
-                        distanceFromEdge = Math.min(entranceY - rect[1], rect[3] - entranceY);
+                        //distanceFromEdge = Math.min(entranceY - rect[1], rect[3] - entranceY);
                     }
                     //console.log(rect);
                     //return board;
-                    var minimumEntrances = Math.max(-1, 4 - (0.25 * Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) + Math.random()));
+                    var minimumEntrances = Math.max(-1, 4 - (0.1 * Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) + Math.random()));
                     var room = this.generateRandomRoom(minimumEntrances, (direction == 1 || direction == 3) ? direction ^ 2 : direction ^ 6, [entranceX, entranceY], board);
                     if (room == -1) {
                         board.setTile(entranceX, entranceY, new Wall(this.gameManager));
@@ -63,16 +65,6 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                         board.addRoom(room.x, room.y, room);
 
                         board.roomList.push(room);
-                        for (var i = 0; i < room.entrances.length; i++) {
-                            var numWalls = 0;
-                            if (board.grid[room.entranceLocations[i][0] + room.x - 1][room.entranceLocations[i][1] + room.y].tileType == "Wall") numWalls++;
-                            if (board.grid[room.entranceLocations[i][0] + room.x][room.entranceLocations[i][1] + room.y - 1].tileType == "Wall") numWalls++;
-                            if (board.grid[room.entranceLocations[i][0] + room.x + 1][room.entranceLocations[i][1] + room.y].tileType == "Wall") numWalls++;
-                            if (board.grid[room.entranceLocations[i][0] + room.x][room.entranceLocations[i][1] + room.y + 1].tileType == "Wall") numWalls++;
-                            if (numWalls >= 3) {
-                                board.setTile(room.entranceLocations[i][0] + room.x, room.entranceLocations[i][1] + room.y, new Wall(this.gameManager));
-                            }
-                        }
                         //if(board.roomList.length > 1){
                         // return board;
                         //}
@@ -84,6 +76,19 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             } while (board.getIsolatedEntrance() != -1);
 
+            for (var j = 1; j < board.roomList.length; j++) {
+                for (var i = 0; i < board.roomList[j].entrances.length; i++) {
+                    var numWalls = 0;
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Wall") numWalls++;
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1].tileType == "Wall") numWalls++;
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Wall") numWalls++;
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1].tileType == "Wall") numWalls++;
+                    if (numWalls >= 3) {
+                        board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y, new Wall(this.gameManager));
+                    }
+                }
+            }
+            console.log("Created level with " + board.roomList.length + " rooms.");
             return board;
 
 
