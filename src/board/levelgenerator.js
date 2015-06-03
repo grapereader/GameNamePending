@@ -76,7 +76,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             } while (board.getIsolatedEntrance() != -1);
 
-            for (var j = 1; j < board.roomList.length; j++) {
+            for (var j = 0; j < board.roomList.length; j++) {
                 for (var i = 0; i < board.roomList[j].entrances.length; i++) {
                     var numWalls = 0;
                     if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Wall") numWalls++;
