@@ -33,7 +33,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                         if (this.entrances[i] == 1 || this.entrances[i] == 3) {
                             this.entrances[i] = this.entrances[i] ^ 2;
                         }
-                        this.entranceLocations[i][0] = this.height - (this.entranceLocations[i][0] + 1);
+                        this.entranceLocations[i][1] = this.height - (this.entranceLocations[i][1] + 1);
                     }
                     break;
                 case false:
@@ -41,7 +41,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                         if (this.entrances[i] == 2 || this.entrances[i] == 4) {
                             this.entrances[i] = this.entrances[i] ^ 6;
                         }
-                        this.entranceLocations[i][1] = this.width - (this.entranceLocations[i][1] + 1);
+                        this.entranceLocations[i][0] = this.width - (this.entranceLocations[i][0] + 1);
                     }
                     break;
             }
@@ -105,7 +105,6 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                         this.entranceLocations[i][0] = this.entranceLocations[i][1];
                         this.entranceLocations[i][1] = (this.height - 1) - temp;
 
-                        console.log(this.entranceLocations[i][0] + "," + this.entranceLocations[i][1]);
 
                     }
                     break;

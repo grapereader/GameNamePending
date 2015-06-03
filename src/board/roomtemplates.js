@@ -53,6 +53,11 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door","tile/chest","tile/to
                 this.rooms.push(this.roomConstructor(this.roomsRaw[r]));
             }
             console.log("Loaded Template Rooms");
+
+            var test = this.roomConstructor([["Empty","Empty","Empty","Empty","Wall","Door","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Path","Wall"],["Door","Path","Path","Path","Path","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Wall","Wall"]]);
+            test.flipRoom(true);
+            console.log(test.entranceLocations[0],test.entranceLocations[1]);
+        
         },
 
         roomConstructor: function(roomCompact) {
@@ -60,6 +65,8 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door","tile/chest","tile/to
             room.width = roomCompact.length;
             room.height = roomCompact[0].length;
             room.grid = new Array(room.width);
+            room.entrances = [];
+            room.entranceLocations = [];
             for(var i = 0; i < room.width; i++){
                 room.grid[i] = new Array(room.height);
                 for(var j = 0; j < room.height; j++){

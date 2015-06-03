@@ -22,23 +22,19 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
         /**
             Returns an array of entrances that are not connected to multiple rooms
         */
-        getIsolatedEntrances: function() {
+        getIsolatedEntrance: function() {
             var isolatedEntrances = [];
-            for (var i = 0; i < width; i++) {
-                for (var j = 0; j < height; j++) {
-                    if (this.grid[i][j].tileType = "Door") {
+            for (var i = 1; i < this.gridWidth-2; i++) {
+                for (var j = 1; j < this.gridHeight-2; j++) {
+                    if (this.grid[i][j].tileType == "Door") {
                         if (this.grid[i - 1][j].tileType == "Empty" || this.grid[i + 1][j].tileType == "Empty" || this.grid[i][j - 1].tileType == "Empty" || this.grid[i][j + 1].tileType == "Empty") {
-                            var location = new Array(2);
-                            location[0] = i;
-                            location[1] = j;
-                            isolatedEntrances.push(location);
+                            return [i,j];
                         }
                     }
                 }
             }
-            return isolatedEntrances;
+            return -1;
         },
-
         initializeGrid: function(width, height) {
             var grid = new Array(width);
             for (var i = 0; i < width; i++) {
@@ -56,35 +52,35 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
 
 
         getEmptyDistance: function(x, y, direction) {
-            var distance;
+            var distance = 0;
             switch (direction) {
                 case 1:
-                    do {
-                        var i = y;
-                        i--;
+                    var i = y;
+                    do {    
+                        i=i-1;
                         distance++;
-                    } while (this.brid[x][i].tileType == "Empty" && i > 0);
+                    } while (i > 0 && this.grid[x][i].tileType == "Empty");
                     break;
                 case 2:
+                    var i = x;                
                     do {
-                        var i = x;
-                        i++;
+                        i=i+1;
                         distance++;
-                    } while (this.brid[i][y].tileType == "Empty" && i < this.gridWidth - 1);
+                    } while (i < this.gridWidth - 1 && this.grid[i][y].tileType == "Empty");
                     break;
                 case 3:
+                    var i = y;
                     do {
-                        var i = y;
-                        i++;
+                        i=i+1;
                         distance++;
-                    } while (this.brid[x][i].tileType == "Empty" && i < this.gridHeight - 1);
+                    } while (i < this.gridHeight - 1 && this.grid[x][i].tileType == "Empty");
                     break;
                 case 4:
+                    var i = x;
                     do {
-                        var i = x;
-                        i--;
+                        i=i-1;
                         distance++;
-                    } while (this.brid[i][y].tileType == "Empty" && i > 0);
+                    } while (i > 0 && this.grid[i][y].tileType == "Empty");
 
                     break;
             }
@@ -95,44 +91,44 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
             var rect = [0, 0, 0, 0]; //[x1,y1,x2,y2] where x1=<x2,y1=<y2
             switch (direction) {
                 case 1:
-                    rect[0] = x - getEmptyDistance(x, y, 4);
-                    rect[1] = y - getEmptyDistance(x, y, 1);
-                    rect[2] = x + getEmptyDistance(x, y, 2);
+                    rect[0] = x - this.getEmptyDistance(x, y, 4);
+                    rect[1] = y - this.getEmptyDistance(x, y, 1);
+                    rect[2] = x + this.getEmptyDistance(x, y, 2);
                     rect[3] = y;
                     for (var i = y; i > rect[1]; i--) {
-                        rect[0] = Math.max(x - getEmptyDistance(x, i, 4), rect[0]);
-                        rect[2] = Math.min(x + getEmptyDistance(x, i, 2), rect[2]);
+                        rect[0] = Math.max(x - this.getEmptyDistance(x, i, 4), rect[0]);
+                        rect[2] = Math.min(x + this.getEmptyDistance(x, i, 2), rect[2]);
                     }
                     break;
                 case 2:
                     rect[0] = x;
-                    rect[1] = y - getEmptyDistance(x, y, 1);
-                    rect[2] = x + getEmptyDistance(x, y, 2);
-                    rect[3] = y + getEmptyDistance(x, y, 3);
+                    rect[1] = y - this.getEmptyDistance(x, y, 1);
+                    rect[2] = x + this.getEmptyDistance(x, y, 2);
+                    rect[3] = y + this.getEmptyDistance(x, y, 3);
                     for (var i = x; i < rect[2]; i++) {
-                        rect[1] = Math.max(y - getEmptyDistance(i, y, 1), rect[1]);
-                        rect[3] = Math.min(y + getEmptyDistance(i, y, 3), rect[3]);
+                        rect[1] = Math.max(y - this.getEmptyDistance(i, y, 1), rect[1]);
+                        rect[3] = Math.min(y + this.getEmptyDistance(i, y, 3), rect[3]);
                     }
 
                     break;
                 case 3:
-                    rect[0] = x - getEmptyDistance(x, y, 4);
+                    rect[0] = x - this.getEmptyDistance(x, y, 4);
                     rect[1] = y;
-                    rect[2] = x + getEmptyDistance(x, y, 2);
-                    rect[3] = y + getEmptyDistance(x, y, 3);
+                    rect[2] = x + this.getEmptyDistance(x, y, 2);
+                    rect[3] = y + this.getEmptyDistance(x, y, 3);
                     for (var i = y; i < rect[3]; i++) {
-                        rect[0] = Math.max(x - getEmptyDistance(x, i, 4), rect[0]);
-                        rect[2] = Math.min(x + getEmptyDistance(x, i, 2), rect[2]);
+                        rect[0] = Math.max(x - this.getEmptyDistance(x, i, 4), rect[0]);
+                        rect[2] = Math.min(x + this.getEmptyDistance(x, i, 2), rect[2]);
                     }
                     break;
                 case 4:
-                    rect[0] = x - getEmptyDistance(x, y, 4);
-                    rect[1] = y - getEmptyDistance(x, y, 1);
+                    rect[0] = x - this.getEmptyDistance(x, y, 4);
+                    rect[1] = y - this.getEmptyDistance(x, y, 1);
                     rect[2] = x;
-                    rect[3] = y + getEmptyDistance(x, y, 3);
+                    rect[3] = y + this.getEmptyDistance(x, y, 3);
                     for (var i = x; i > rect[0]; i--) {
-                        rect[1] = Math.max(y - getEmptyDistance(i, y, 1), rect[1]);
-                        rect[3] = Math.min(y + getEmptyDistance(i, y, 3), rect[3]);
+                        rect[1] = Math.max(y - this.getEmptyDistance(i, y, 1), rect[1]);
+                        rect[3] = Math.min(y + this.getEmptyDistance(i, y, 3), rect[3]);
                     }
 
                     break;
