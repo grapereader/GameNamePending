@@ -24,11 +24,11 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
         */
         getIsolatedEntrance: function() {
             var isolatedEntrances = [];
-            for (var i = 1; i < this.gridWidth-2; i++) {
-                for (var j = 1; j < this.gridHeight-2; j++) {
+            for (var i = 1; i < this.gridWidth - 2; i++) {
+                for (var j = 1; j < this.gridHeight - 2; j++) {
                     if (this.grid[i][j].tileType == "Door") {
                         if (this.grid[i - 1][j].tileType == "Empty" || this.grid[i + 1][j].tileType == "Empty" || this.grid[i][j - 1].tileType == "Empty" || this.grid[i][j + 1].tileType == "Empty") {
-                            return [i,j];
+                            return [i, j];
                         }
                     }
                 }
@@ -56,29 +56,29 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
             switch (direction) {
                 case 1:
                     var i = y;
-                    do {    
-                        i=i-1;
+                    do {
+                        i = i - 1;
                         distance++;
                     } while (i > 0 && this.grid[x][i].tileType == "Empty");
                     break;
                 case 2:
-                    var i = x;                
+                    var i = x;
                     do {
-                        i=i+1;
+                        i = i + 1;
                         distance++;
                     } while (i < this.gridWidth - 1 && this.grid[i][y].tileType == "Empty");
                     break;
                 case 3:
                     var i = y;
                     do {
-                        i=i+1;
+                        i = i + 1;
                         distance++;
                     } while (i < this.gridHeight - 1 && this.grid[x][i].tileType == "Empty");
                     break;
                 case 4:
                     var i = x;
                     do {
-                        i=i-1;
+                        i = i - 1;
                         distance++;
                     } while (i > 0 && this.grid[i][y].tileType == "Empty");
 
@@ -146,16 +146,16 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
         addRoom: function(x, y, room) {
             for (var i = 0; i < room.width; i++) {
                 for (var j = 0; j < room.height; j++) {
-                    if(this.grid[i + x][j + y].tileType == "Empty"){
+                    if (this.grid[i + x][j + y].tileType == "Empty") {
                         this.setTile(i + x, j + y, room.grid[i][j]);
                     }
                 }
             }
         },
         canAddRoom: function(x, y, room) {
-            for(var i = 0; i < room.width; i++){
-                for(var j = 0; j < room.height; j++){
-                    if(this.grid[i+x][j+y].tileType != "Empty" && room.grid[i][j].tileType != "Empty"){
+            for (var i = 0; i < room.width; i++) {
+                for (var j = 0; j < room.height; j++) {
+                    if (this.grid[i + x][j + y].tileType != "Empty" && room.grid[i][j].tileType != "Empty") {
                         return false;
                     }
                 }

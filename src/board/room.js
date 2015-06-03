@@ -48,27 +48,27 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
 
         },
 
-        getClosestEntranceIndex: function(){ 
+        getClosestEntranceIndex: function() {
             var distance = 100;
             var index = 0;
-            for(var i = 0; i < this.entrances.length; i++){
+            for (var i = 0; i < this.entrances.length; i++) {
                 var olddistance = distance;
-                distance = Math.min(distance,Math.min(this.width-this.entranceLocations[i][0],this.entranceLocations[i][0]));
-                distance = Math.min(distance,Math.min(this.height-this.entranceLocations[i][1],this.entranceLocations[i][1]));
-                if(olddistance != distance){
+                distance = Math.min(distance, Math.min(this.width - this.entranceLocations[i][0], this.entranceLocations[i][0]));
+                distance = Math.min(distance, Math.min(this.height - this.entranceLocations[i][1], this.entranceLocations[i][1]));
+                if (olddistance != distance) {
                     index = i;
                 }
             }
             return index;
         },
-        getClosestEntranceDistance: function(){
+        getClosestEntranceDistance: function() {
             var distance = 100;
             var index = 0;
-            for(var i = 0; i < this.entrances.length; i++){
+            for (var i = 0; i < this.entrances.length; i++) {
                 var olddistance = distance;
-                distance = Math.min(distance,Math.min(this.width-this.entranceLocations[i][0],this.entranceLocations[i][0]));
-                distance = Math.min(distance,Math.min(this.height-this.entranceLocations[i][1],this.entranceLocations[i][1]));
-                if(olddistance != distance){
+                distance = Math.min(distance, Math.min(this.width - this.entranceLocations[i][0], this.entranceLocations[i][0]));
+                distance = Math.min(distance, Math.min(this.height - this.entranceLocations[i][1], this.entranceLocations[i][1]));
+                if (olddistance != distance) {
                     index = i;
                 }
             }
@@ -77,15 +77,14 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
         /**
             Orients the room so that the closest entrance faces the correct direction
         */
-        toBestOrientation: function(direction){
+        toBestOrientation: function(direction) {
             var bestEntranceIndex = this.getClosestEntranceIndex();
-            if(direction != this.entrances[bestEntranceIndex]){
-                if(direction > this.entrances[bestEntranceIndex]){
+            if (direction != this.entrances[bestEntranceIndex]) {
+                if (direction > this.entrances[bestEntranceIndex]) {
                     this.rotateRoom(direction - this.entrances[bestEntranceIndex]); //4-1
-                }
-                else{
+                } else {
                     this.rotateRoom(4 + (direction - this.entrances[bestEntranceIndex])); //3 //4
-                }                
+                }
             }
         },
         rotateRoom: function(direction) { //direction should equal 1 to rotate 90 degrees clockwise,2 for 180 degrees and 3 for 270 degrees
