@@ -66,13 +66,13 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 var tileY = self.tileY;
 
                 //We might as well skip movement logic if we're so far away.
-                if (Math.abs(tileX - targetX) > 30 && Math.abs(tileY - targetY) > 30){
+                if (Math.abs(tileX - targetX) > 30 || Math.abs(tileY - targetY) > 30){
                     self.walk(0, 0);
                     return;
                 }
 
-                if ((Math.abs(tileX - targetX) > 10 && Math.abs(tileY - targetY) > 10) ||
-                    (Math.abs(tileX - self.homeX) > 20 && Math.abs(tileX - self.homeX) > 20)) {
+                if ((Math.abs(tileX - targetX) > 5 || Math.abs(tileY - targetY) > 5) ||
+                    (Math.abs(tileX - self.homeX) > 20 || Math.abs(tileX - self.homeX) > 20)) {
                     targetX = self.homeX;
                     targetY = self.homeY;
                 }
