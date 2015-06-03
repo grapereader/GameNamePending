@@ -403,6 +403,64 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                         ["Empty", "Wall", "Path", "Path", "Path", "Path", "Wall", "Path", "Path", "Path", "Wall", "Wall"],
                         ["Empty", "Empty", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Door", "Wall", "Wall", "Empty"]
                     ],
+                    "10Entrances": [
+                        ["Wall", "Wall", "Door", "Wall", "Wall", "Wall", "Door", "Wall", "Wall", "Wall", "Door", "Wall", "Wall"],
+                        ["Wall", "Wall", "Path", "Path", "Path", "Wall", "Path", "Wall", "Path", "Path", "Path", "Wall", "Wall"],
+                        ["Door", "Path", "Wall", "Path", "Path", "Wall", "Path", "Wall", "Path", "Path", "Wall", "Path", "Door"],
+                        ["Wall", "Path", "Path", "Wall", "Path", "Wall", "Path", "Wall", "Path", "Wall", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Wall"],
+                        ["Wall", "Wall", "Wall", "Wall", "Path", "Path", "Path", "Path", "Path", "Wall", "Wall", "Wall", "Wall"],
+                        ["Door", "Path", "Path", "Path", "Path", "Path", "Torch", "Path", "Path", "Path", "Path", "Path", "Door"],
+                        ["Wall", "Wall", "Wall", "Wall", "Path", "Path", "Path", "Path", "Path", "Wall", "Wall", "Wall", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Wall", "Path", "Wall", "Path", "Wall", "Path", "Wall", "Path", "Path", "Wall"],
+                        ["Door", "Path", "Wall", "Path", "Path", "Wall", "Path", "Wall", "Path", "Path", "Wall", "Path", "Door"],
+                        ["Wall", "Wall", "Path", "Path", "Path", "Wall", "Path", "Wall", "Path", "Path", "Path", "Wall", "Wall"],
+                        ["Wall", "Wall", "Door", "Wall", "Wall", "Wall", "Door", "Wall", "Wall", "Wall", "Door", "Wall", "Wall"]
+                    ],
+                    "Mothership": [
+                        ["Wall", "Wall", "Door", "Wall", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Door", "Wall"],
+                        ["Door", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Path", "Wall"],
+                        ["Wall", "Wall", "Wall", "Wall", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty", "Wall", "Path", "Wall"],
+                        ["Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Wall", "Path", "Wall"],
+                        ["Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Door", "Path", "Door"],
+                        ["Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Wall", "Path", "Wall"],
+                        ["Wall", "Wall", "Wall", "Wall", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty", "Wall", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Path", "Wall"],
+                        ["Door", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Door", "Wall"],
+                        ["Wall", "Wall", "Door", "Wall", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty", "Empty"]
+                    ],
+                    "HollowRoom": [
+                        ["Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty", "Wall", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty", "Wall", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Door", "Empty", "Empty", "Empty", "Empty", "Empty", "Wall", "Path", "Path", "Door"],
+                        ["Wall", "Path", "Path", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty", "Wall", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty", "Wall", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Wall"],
+                        ["Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall"]
+                    ],
+                    "6Entrances": [
+                        ["Wall", "Wall", "Door", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Door"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty"],
+                        ["Door", "Path", "Path", "Path", "Door", "Empty", "Empty", "Empty", "Empty", "Empty"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Empty", "Empty", "Empty", "Empty", "Empty"],
+                        ["Wall", "Path", "Path", "Path", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall"],
+                        ["Wall", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Door"],
+                        ["Wall", "Wall", "Door", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall"]
+                    ]
                 }
                 /**this.rooms = [];
                 for(r in this.roomsRaw){

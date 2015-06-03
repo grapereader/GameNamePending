@@ -26,7 +26,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                 var entranceX = isolatedEntrance[0];
                 var entranceY = isolatedEntrance[1];
                 //console.log((Math.sqrt(Math.pow(board.gridWidth/2-entranceX, 2) + Math.pow(board.gridHeight/2-entranceY, 2)) / 100 + gamma + Math.random()));
-                if ((Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) / 120 + gamma + Math.random()) > 2) { //Door will be removed                        
+                if ((Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) / 50 + gamma + Math.random()) > 2) { //Door will be removed                        
                     board.setTile(entranceX, entranceY, new Wall(this.gameManager));
                 } else {
                     //Determines which side of the entrance needs a room

@@ -168,7 +168,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             var right = Math.floor(this.x / 64) + 1;
             var top = Math.ceil(this.y / 64) - 1;
             var bot = Math.floor(this.y / 64) + 1;
-            var LEVELEDITING = true;
+            var LEVELEDITING = false;
             if (LEVELEDITING) {
                 this.editor.update(currentX, currentY);
             } else {
