@@ -22,6 +22,20 @@ define(["lib/heap"], function(Heap) {
                 }
             }
         },
+        reset: function() {
+            //Resetting the existing node grid is faster than
+            //reconstructing it every path calculation.
+            for (var x = 0; x < this.nodes.length; x++) {
+                for (var y = 0; y < this.nodes[x].length; y++) {
+                    var node = this.nodes[x][y];
+                    node.opened = false;
+                    node.closed = false;
+                    node.g = 0;
+                    node.f = 0;
+                    node.parent = null;
+                }
+            }
+        },
         getNodeAt: function(x, y) {
             return this.nodes[x][y];
         },
@@ -79,14 +93,17 @@ define(["lib/heap"], function(Heap) {
     });
 
     var Finder = Class({
-        constructor: function() {
-
+        constructor: function(board) {
+            this.grid = new Grid(board.grid);
         },
         getPath: function(x, y, dx, dy, board) {
             var open = new Heap(function(a, b) {
                 return a.f - b.f;
             });
-            var grid = new Grid(board.grid);
+
+            var grid = this.grid;
+            grid.reset();
+
             var start = grid.getNodeAt(x, y);
             var dest = grid.getNodeAt(dx, dy);
 

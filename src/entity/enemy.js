@@ -65,6 +65,9 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 var tileX = self.tileX;
                 var tileY = self.tileY;
 
+                //We might as well skip movement logic if we're so far away.
+                if (Math.abs(tileX - targetX) > 30 && Math.abs(tileY - targetY) > 30) return;
+
                 if ((Math.abs(tileX - targetX) > 10 && Math.abs(tileY - targetY) > 10) ||
                     (Math.abs(tileX - self.homeX) > 20 && Math.abs(tileX - self.homeX) > 20)) {
                     targetX = self.homeX;
@@ -74,9 +77,8 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 var path = false;
 
                 if (targetX != tileX || targetY != tileY) {
-                    var board = self.gameManager.board;
-                    var finder = new Pathfinder();
-                    path = finder.getPath(tileX, tileY, targetX, targetY, board);
+                    var finder = self.gameManager.board.getPathfinder();
+                    path = finder.getPath(tileX, tileY, targetX, targetY);
                 }
 
                 if (path !== false && path.length > 1) {

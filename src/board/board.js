@@ -1,4 +1,4 @@
-define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], function(Tile, Wall, Path, Door, ViewObject) {
+define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "ai/pathfinder"], function(Tile, Wall, Path, Door, ViewObject, PathFinder) {
     var Board = Class(ViewObject, {
         constructor: function(gameManager, boardWidth, boardHeight) {
             Board.$super.call(this, gameManager.scene);
@@ -58,6 +58,10 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
                 }
             }
             return tiles;
+        },
+        getPathfinder: function() {
+            if (this.pathfinder === undefined) this.pathfinder = new PathFinder(this);
+            return this.pathfinder;
         },
         getEmptyDistance: function(x, y, direction) {
             var distance = 0;
