@@ -86,6 +86,10 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     if (numWalls >= 3) {
                         board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y, new Wall(this.gameManager));
                     }
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Door") board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y, new Door(this.gameManager));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1].tileType == "Door") board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1, new Door(this.gameManager));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Door") board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y, new Door(this.gameManager));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1].tileType == "Door") board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1, new Door(this.gameManager));                  
                 }
             }
             console.log("Created level with " + board.roomList.length + " rooms.");
