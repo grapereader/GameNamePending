@@ -1,12 +1,14 @@
-define(["view/viewobject", "util/helpers"], function(ViewObject, Helpers) {
+define(["view/viewobject", "util/helpers", "util/animgroup"], function(ViewObject, Helpers, AnimGroup) {
 
     var Tile = Class({
         constructor: function(gameManager) {
             this.gameManager = gameManager;
-            this.clipping = false;
+            this.clipping = true;
             this.tileType = "Empty";
-            this.tileSprite = new PIXI.Sprite.fromImage("assets/sprites/blank.png");
-            this.animations = [];
+            this.container = new PIXI.Container();
+            this.tileX = 0;
+            this.tileY = 0;
+            this.animGroup = new AnimGroup();
         },
         update: function() {},
         createSprite: function(spriteLocation) {
@@ -16,10 +18,18 @@ define(["view/viewobject", "util/helpers"], function(ViewObject, Helpers) {
             //sprite.anchor.x = 0.5;
             //sprite.anchor.y = 0.5;
 
-            sprite.x = 100;
-            sprite.y = 100;
-
             return sprite;
+        },
+        setPosition: function(tileX, tileY) {
+            this.container.x = tileX * 64;
+            this.container.y = tileY * 64;
+            this.tileX = tileX;
+            this.tileY = tileY;
+            return this;
+        },
+        translate: function(x, y) {
+            this.setPosition(this.tileX + x, this.tileY + y);
+            return this;
         },
         /**
             Add an animation (util/anim) to the Tile. Potientally useful for animated decorations.
@@ -27,26 +37,14 @@ define(["view/viewobject", "util/helpers"], function(ViewObject, Helpers) {
         toJSON: function() {
             var tile = {
                 type: this.tileType,
-                x: this.tileSprite.x,
-                y: this.tileSprite.y,
+                x: this.container.x,
+                y: this.container.y,
             };
             return tile;
         },
         fromJSON: function(tileInfo) {
-            this.tileSprite.x = tileInfo.x;
-            this.tileSprite.y = tileInfo.y;
-
-        },
-        addAnimationLayer: function(animation) {
-            this.animations.push(animation);
-        },
-        removeAnimationLayer: function(animation) {
-            this.animations.splice(this.animations.indexOf(animation), 1);
-        },
-        setAnimation: function(anim) {
-            for (var i = 0; i < this.animations.length; i++) {
-                this.animations[i].setAnimation(anim);
-            }
+            this.container.x = tileInfo.x;
+            this.container.y = tileInfo.y;
         }
     });
 

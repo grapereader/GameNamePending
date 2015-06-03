@@ -5,8 +5,6 @@ define(["view/viewobject", "util/animgroup", "util/timer"], function(ViewObject,
             Entity.$super.call(this, gameManager.scene);
             this.gameManager = gameManager;
 
-            this.health = 100;
-
             this.dx = 0;
             this.dy = 0;
 

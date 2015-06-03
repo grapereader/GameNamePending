@@ -24,11 +24,11 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
         */
         getIsolatedEntrance: function() {
             var isolatedEntrances = [];
-            for (var i = 1; i < this.gridWidth - 2; i++) {
-                for (var j = 1; j < this.gridHeight - 2; j++) {
-                    if (this.grid[i][j].tileType == "Door") {
-                        if (this.grid[i - 1][j].tileType == "Empty" || this.grid[i + 1][j].tileType == "Empty" || this.grid[i][j - 1].tileType == "Empty" || this.grid[i][j + 1].tileType == "Empty") {
-                            return [i, j];
+            for (var x = 1; x < this.gridWidth - 2; x++) {
+                for (var y = 1; y < this.gridHeight - 2; y++) {
+                    if (this.grid[x][y].tileType == "Door") {
+                        if (this.grid[x - 1][y].tileType == "Empty" || this.grid[x + 1][y].tileType == "Empty" || this.grid[x][y - 1].tileType == "Empty" || this.grid[x][y + 1].tileType == "Empty") {
+                            return [x, y];
                         }
                     }
                 }
@@ -37,10 +37,10 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
         },
         initializeGrid: function(width, height) {
             var grid = new Array(width);
-            for (var i = 0; i < width; i++) {
-                grid[i] = new Array(height);
-                for (var j = 0; j < height; j++) {
-                    grid[i][j] = new Tile(this.gameManager);
+            for (var x = 0; x < width; x++) {
+                grid[x] = new Array(height);
+                for (var y = 0; y < height; y++) {
+                    grid[x][y] = new Tile(this.gameManager, x, y);
                 }
             }
             return grid;
@@ -49,8 +49,16 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
             this.enemies.push(e);
             this.enemyContainer.addChild(e.container);
         },
-
-
+        getWalkableTiles: function() {
+            var tiles = [];
+            for (var x = 0; x < this.grid.length; x++) {
+                for (var y = 0; y < this.grid[x].length; y++) {
+                    var tile = this.grid[x][y];
+                    if (tile.clipping === false) tiles.push(tile);
+                }
+            }
+            return tiles;
+        },
         getEmptyDistance: function(x, y, direction) {
             var distance = 0;
             switch (direction) {
@@ -135,19 +143,19 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
             }
             return rect;
         },
-        setTile: function(x, y, tile) {
-            if (this.grid[x][y] instanceof Tile) this.removeChild(this.grid[x][y].tileSprite);
-            tile.tileSprite.x = x * tile.tileSprite.width;
-            tile.tileSprite.y = y * tile.tileSprite.height;
+        setTile: function(tile) {
+            var x = tile.tileX;
+            var y = tile.tileY;
+            if (this.grid[x][y] instanceof Tile) this.removeChild(this.grid[x][y].container);
             this.grid[x][y] = tile;
-            this.addChild(tile.tileSprite);
+            this.addChild(tile.container);
         },
         //Creates Room at coordinates x,y down and to the right.
         addRoom: function(x, y, room) {
-            for (var i = 0; i < room.width; i++) {
-                for (var j = 0; j < room.height; j++) {
-                    if (this.grid[i + x][j + y].tileType == "Empty") {
-                        this.setTile(i + x, j + y, room.grid[i][j]);
+            for (var rx = 0; rx < room.width; rx++) {
+                for (var ry = 0; ry < room.height; ry++) {
+                    if (this.grid[rx + x][ry + y].tileType == "Empty") {
+                        this.setTile(room.grid[rx][ry].setPosition(rx + x, ry + y));
                     }
                 }
             }
@@ -175,7 +183,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
                 }
             }
             /**
-             
+
              */
 
     });

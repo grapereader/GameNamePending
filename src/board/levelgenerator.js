@@ -1,4 +1,4 @@
-define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/window", "board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates"], function(Player, ItemManager, Helpers, InventoryScreen, Window, Board, Wall, Path, Door, Room, Tile, RoomTemplates) {
+define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates", "entity/enemyutils"], function(Helpers, Board, Wall, Path, Door, Room, Tile, RoomTemplates, EnemyUtils) {
 
     var LevelGenerator = Class({
         constructor: function(gameManager) {
@@ -13,14 +13,14 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             this.board.addRoom(67, 67, this.createTestRoom());
             return this.board;
         },
-        generateLevel: function(gamma) { //Gamma is the tuning variable for the probability of the doors being deleted as they get further from the center. 
+        generateLevel: function(gamma) { //Gamma is the tuning variable for the probability of the doors being deleted as they get further from the center.
             var board = new Board(this.gameManager, 200, 200);
             var centralRoom = this.generateRandomRoom(4, -1, -1, board); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
             centralRoom.x = Math.floor((board.gridWidth / 2) - (centralRoom.width / 2));
             centralRoom.y = Math.floor((board.gridHeight / 2) - (centralRoom.height / 2));
             board.addRoom(Math.floor((board.gridWidth / 2) - (centralRoom.width / 2)), Math.floor((board.gridHeight / 2) - (centralRoom.height / 2)), centralRoom);
             board.roomList.push(centralRoom);
-            //return board; 
+            //return board;
             do { //Main Algorithm adding rooms to entrances randomly closing more doors based on their distance from the center of the level
                 var isolatedEntrance = board.getIsolatedEntrance();
                 //Removes Entrances from board
@@ -28,8 +28,8 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                 var entranceX = isolatedEntrance[0];
                 var entranceY = isolatedEntrance[1];
                 //console.log((Math.sqrt(Math.pow(board.gridWidth/2-entranceX, 2) + Math.pow(board.gridHeight/2-entranceY, 2)) / 100 + gamma + Math.random()));
-                if ((Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) / 50 + gamma + Math.random()) > 2) { //Door will be removed                        
-                    board.setTile(entranceX, entranceY, new Wall(this.gameManager));
+                if ((Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) / 50 + gamma + Math.random()) > 2) { //Door will be removed
+                    board.setTile(new Wall(this.gameManager).setPosition(entranceX, entranceY));
                 } else {
                     //Determines which side of the entrance needs a room
                     //var rect;
@@ -60,7 +60,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     var minimumEntrances = Math.max(-1, 4 - (0.1 * Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) + Math.random()));
                     var room = this.generateRandomRoom(minimumEntrances, (direction == 1 || direction == 3) ? direction ^ 2 : direction ^ 6, [entranceX, entranceY], board);
                     if (room == -1) {
-                        board.setTile(entranceX, entranceY, new Wall(this.gameManager));
+                        board.setTile(new Wall(this.gameManager).setPosition(entranceX, entranceY));
                     } else {
                         board.addRoom(room.x, room.y, room);
 
@@ -84,20 +84,31 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Wall") numWalls++;
                     if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1].tileType == "Wall") numWalls++;
                     if (numWalls >= 3) {
-                        board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y, new Wall(this.gameManager));
+                        board.setTile(new Wall(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y));
                     }
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Door") board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y, new Door(this.gameManager));
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1].tileType == "Door") board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1, new Door(this.gameManager));
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Door") board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y, new Door(this.gameManager));
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1].tileType == "Door") board.setTile(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1, new Door(this.gameManager));                  
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Door") board.setTile(new Door(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1].tileType == "Door") board.setTile(new Door(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Door") board.setTile(new Door(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1].tileType == "Door") board.setTile(new Door(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1));
                 }
             }
+
             console.log("Created level with " + board.roomList.length + " rooms.");
+
+            console.log("Adding enemies...");
+            var tiles = board.getWalkableTiles();
+
+            var enemies = 100;
+            for (var i = 0; i < enemies; i++) {
+                var t = Math.floor(Math.random() * tiles.length);
+                var tile = tiles[t];
+                var enemy = EnemyUtils.getLeveledEnemy(this.gameManager, tile.tileX, tile.tileY, 1);
+                board.addEnemy(enemy);
+                tiles.splice(t, 1);
+            }
+
+
             return board;
-
-
-
-
         },
         generateRandomRoom: function(minEntrances, requiredDirection, entranceLocation, board) {
             var room;
@@ -141,7 +152,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                                         break;
                                 }
                                 if (board.canAddRoom(room.x, room.y, room)) {
-                                    board.setTile(room.x + room.entranceLocations[i][0], room.y + room.entranceLocations[i][1], new Path(this.gameManager));
+                                    board.setTile(new Path(this.gameManager).setPosition(room.x + room.entranceLocations[i][0], room.y + room.entranceLocations[i][1]));
                                     return room;
                                 } else {
                                     requirementsMet = false;
@@ -171,9 +182,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                     } else {
                         temp = new Tile(this.gameManager);
                     }
-                    temp.tileSprite.x = i * temp.tileSprite.width;
-                    temp.tileSprite.y = j * temp.tileSprite.height;
-                    this.grid[i][j] = temp.toJSON();
+                    this.grid[i][j] = temp.setPosition(i, j).toJSON();
                 }
             }
             var room = {

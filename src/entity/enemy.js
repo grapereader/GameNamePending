@@ -1,11 +1,16 @@
 define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/anim"], function(Entity, Timer, Pathfinder, Helpers, Animation) {
 
     var Enemy = Class(Entity, {
-        constructor: function(gameManager, homeX, homeY, attack, walkSpeed, dropMap, spritesheet) {
+        constructor: function(gameManager, homeX, homeY, level, data) {
             Enemy.$super.call(this, gameManager);
-            this.attack = attack;
-            this.walkSpeed = walkSpeed;
-            this.dropMap = dropMap;
+            this.level = level;
+            //This will need to be balanced!
+            this.attack = data.attack;
+            this.attack.damage *= level;
+            this.walkSpeed = data.walkSpeed * Math.sqrt(level);
+            this.dropMap = data.dropMap;
+            this.health = data.health;
+            this.armour = data.armour;
 
             this.homeX = this.tileX = this.x = homeX;
             this.homeY = this.tileY = this.y = homeY;
@@ -21,7 +26,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
 
             var standSpeed = 2;
             var actionSpeed = 5;
-            var useSpeed = 4 * attack.speed;
+            var useSpeed = 4 * this.attack.speed;
 
             var anims = {
                 "stand-left": Helpers.animBuilder("stand-left", 2, standSpeed),
@@ -46,7 +51,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 "walk-down": Helpers.animBuilder("walk-down", 4, actionSpeed)
             };
 
-            this.animGroup.addAnimationLayer(new Animation(spritesheet, anims, this.sprite));
+            this.animGroup.addAnimationLayer(new Animation(data.spritesheet, anims, this.sprite));
             this.animGroup.addAnimationLayer(new Animation("ironsword", anims, tempSprite));
             this.animGroup.setAnimation("stand-down");
 

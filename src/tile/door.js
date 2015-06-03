@@ -1,8 +1,7 @@
 define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Animation) {
     var Door = Class(Tile, {
         constructor: function(gameManager) {
-            Door.$super.call(this, gameManager.scene);
-            this.gameManager = gameManager;
+            Door.$super.call(this, gameManager);
             this.isShut = false;
             this.clipping = false;
             this.tileType = "Door";
@@ -14,7 +13,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
                 "close": Helpers.animBuilder("close", 2, doorSpeed)
             }
             this.currentAnimation = new Animation("door", anims, this.baseSprite);**/
-            this.tileSprite = this.closedSprite;
+            this.container.addChild(this.closedSprite);
         },
 
         update: function() {

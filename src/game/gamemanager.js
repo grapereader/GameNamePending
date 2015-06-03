@@ -32,11 +32,6 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             this.levelgenerator = new LevelGenerator(this);
             this.board = this.levelgenerator.generateLevel(0);
             this.itemManager = new ItemManager();
-            this.board.addEnemy(new Enemy(this, 5, 5, {
-                damage: 5,
-                speed: 2,
-                range: 0
-            }, 64 * 2, {}, "male-race-1"));
 
             this.player = new Player(this, saveData);
             var spawnPoint = this.board.roomList[0].getRandomSpawnableLocation();
