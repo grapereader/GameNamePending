@@ -47,6 +47,47 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
             }
 
         },
+
+        getClosestEntranceIndex: function(){ 
+            var distance = 100;
+            var index = 0;
+            for(var i = 0; i < this.entrances.length; i++){
+                var olddistance = distance;
+                distance = Math.min(distance,Math.min(this.width-this.entranceLocations[i][0],this.entranceLocations[i][0]));
+                distance = Math.min(distance,Math.min(this.height-this.entranceLocations[i][1],this.entranceLocations[i][1]));
+                if(olddistance != distance){
+                    index = i;
+                }
+            }
+            return index;
+        },
+        getClosestEntranceDistance: function(){
+            var distance = 100;
+            var index = 0;
+            for(var i = 0; i < this.entrances.length; i++){
+                var olddistance = distance;
+                distance = Math.min(distance,Math.min(this.width-this.entranceLocations[i][0],this.entranceLocations[i][0]));
+                distance = Math.min(distance,Math.min(this.height-this.entranceLocations[i][1],this.entranceLocations[i][1]));
+                if(olddistance != distance){
+                    index = i;
+                }
+            }
+            return distance;
+        },
+        /**
+            Orients the room so that the closest entrance faces the correct direction
+        */
+        toBestOrientation: function(direction){
+            var bestEntranceIndex = this.getClosestEntranceIndex();
+            if(direction != this.entrances[bestEntranceIndex]){
+                if(direction > this.entrances[bestEntranceIndex]){
+                    this.rotateRoom(direction - this.entrances[bestEntranceIndex]); //4-1
+                }
+                else{
+                    this.rotateRoom(4 + (direction - this.entrances[bestEntranceIndex])); //3 //4
+                }                
+            }
+        },
         rotateRoom: function(direction) { //direction should equal 1 to rotate 90 degrees clockwise,2 for 180 degrees and 3 for 270 degrees
 
             if (direction != 2) {
@@ -100,7 +141,6 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                 case 3:
                     for (var i = 0; i < this.entrances.length; i++) {
                         this.entrances[i] = (this.entrances[i] == 1) ? 4 : this.entrances[i] - 1;
-                        console.log(this.entranceLocations[i][0] + "," + this.entranceLocations[i][1]);
                         var temp = this.entranceLocations[i][0];
                         this.entranceLocations[i][0] = this.entranceLocations[i][1];
                         this.entranceLocations[i][1] = (this.height - 1) - temp;

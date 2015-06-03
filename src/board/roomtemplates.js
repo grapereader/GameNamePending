@@ -54,9 +54,6 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door","tile/chest","tile/to
             }
             console.log("Loaded Template Rooms");
 
-            var test = this.roomConstructor([["Empty","Empty","Empty","Empty","Wall","Door","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Path","Wall"],["Door","Path","Path","Path","Path","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Wall","Wall"]]);
-            test.flipRoom(true);
-            console.log(test.entranceLocations[0],test.entranceLocations[1]);
         
         },
 

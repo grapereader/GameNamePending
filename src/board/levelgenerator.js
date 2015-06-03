@@ -15,7 +15,8 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
         },
         generateLevel: function(gamma) { //Gamma is the tuning variable for the probability of the doors being deleted as they get further from the center. 
             var board = new Board(this.gameManager, 150, 150);
-            var centralRoom = this.generateRandomRoom(-1, -1, -1, -1); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
+            var centralRoom = this.generateRandomRoom(-1, 4, -1, -1); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
+            console.log(centralRoom);
             board.addRoom(Math.floor((board.gridWidth / 2) - (centralRoom.width / 2)), Math.floor((board.gridHeight / 2) - (centralRoom.height / 2)), centralRoom);
             console.log(centralRoom);
             //return board; 
@@ -80,27 +81,44 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
         generateRandomRoom: function(rect, minEntrances, requiredDirection, entranceLocation) { //pass -1 to have requirements ignored, will return room in correct orientation
             var room;
             var roomList = this.roomTemplates.rooms;
-            console.log("requiredDirection: " + requiredDirection);
+            //console.log("requiredDirection: " + requiredDirection);
+
+            var minimumSpace = 100;
+            if(rect != -1 || entranceLocation != -1){
+                switch(requiredDirection){
+                    case 1:
+                    case 3:
+                        minimumSpace = Math.min(rect[2] - entranceLocation[0], entranceLocation[0] - rect[0]);
+                        break;
+                    case 2:
+                    case 4:                 
+                        minimumSpace = Math.min(rect[3] - entranceLocation[1], entranceLocation[1] - rect[1]); 
+                        break;
+                }
+            }
             while (roomList.length > 0) {
                 do {
                     if (roomList.length == 0) {
-                        console.log("#@$@$#@$@#$@#$@#$@#$@#$No Rooms of correct dimensions");
+                        //console.log("#@$@$#@$@#$@#$@#$@#$@#$No Rooms of correct dimensions");
                         return -1;
                     }
                     room = roomList.splice(Math.floor(Math.random() * roomList.length), 1)[0];
-                } while (rect != -1 && ((room.width > (rect[2] - rect[0]) || room.height > (rect[3] - rect[1])) || room.entrances.length < minEntrances));
+                    if(requiredDirection != -1){
+                        room.toBestOrientation(requiredDirection);                    
+                    }
+                } while (rect != -1 && ((room.width > (rect[2] - rect[0]) || room.height > (rect[3] - rect[1]) || room.getClosestEntranceDistance() > minimumSpace)) || room.entrances.length < minEntrances); //getbestorientation and closest door
                 var roomBackup = room;
                 for (var j = 0; j < 4; j++) {
                     for (var i = 0; i < room.entrances.length; i++) {
                         if (room.entrances[i] == requiredDirection || requiredDirection == -1) {
-                            console.log(room.entrances[i],room.entranceLocations[i]);
+                            //console.log(room.entrances[i],room.entranceLocations[i]);
                             if (room.entrances[i] == 1 || room.entrances[i] == 3) {
 
                                 if(entranceLocation == -1){
                                     return room;
                                 }
-                                if (room.entranceLocations[i][0] > (room.width - 1) - room.entranceLocations[i][0] && entranceLocation[0] - rect[0] < rect[2] - entranceLocation[0]) {
-                                    console.log("flipped across vertical line");
+                                if (room.entranceLocations[i][0] > (room.width - 1) - room.entranceLocations[i][0] && entranceLocation[0] - rect[0] < rect[2] - entranceLocation[0] && entranceLocation[0] - (room.entranceLocations[i][0]) + room.height < rect[2] && entranceLocation[0] - (room.entranceLocations[i][0]) > rect[0]) {
+                                    //console.log("flipped across vertical line");
                                     room.flipRoom(false);
                                 }
                                 if (((room.width - 1) - room.entranceLocations[i][0] <= rect[2] - entranceLocation[0] && room.entranceLocations[i][0] <= entranceLocation[0] - rect[0])) {
@@ -121,7 +139,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
                                 if(entranceLocation == -1){
                                     return room;
                                 }
-                                if (room.entranceLocations[i][1] > (room.height - 1) - room.entranceLocations[i][1] && entranceLocation[1] - rect[1] < rect[3] - entranceLocation[1]) {
+                                if (room.entranceLocations[i][1] > (room.height - 1) - room.entranceLocations[i][1] && entranceLocation[1] - rect[1] < rect[3] - entranceLocation[1] && entranceLocation[1] - (room.entranceLocations[i][1]) + room.height < rect[3] && entranceLocation[1] - (room.entranceLocations[i][1]) > rect[1]) {
                                     room.flipRoom(true);
                                 }
                                 if (((room.height - 1) - room.entranceLocations[i][1] <= rect[3] - entranceLocation[1] && room.entranceLocations[i][1] <= entranceLocation[1] - rect[1])||entranceLocation == -1) {
