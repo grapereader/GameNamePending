@@ -83,7 +83,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                     self.y = self.tileY * 64;
 
                     self.walk(
-                        (next[0] - self.tileX) * self.walkSpeed, (next[1] - self.tileY) * self.walkSpeed
+                        (next.x - self.tileX) * self.walkSpeed, (next.y - self.tileY) * self.walkSpeed
                     );
                 } else {
                     self.walk(0, 0);

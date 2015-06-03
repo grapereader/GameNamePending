@@ -131,12 +131,10 @@ define(["lib/heap"], function(Heap) {
 
         },
         reconstruct: function(node) {
-            var path = [
-                [node.x, node.y]
-            ];
+            var path = [{x: node.x, y: node.y}];
             while (node.parent) {
                 node = node.parent;
-                path.push([node.x, node.y]);
+                path.push({x: node.x, y: node.y});
             }
             return path.reverse();
         },
