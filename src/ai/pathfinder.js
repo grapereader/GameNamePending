@@ -39,9 +39,13 @@ define(["lib/heap"], function(Heap) {
         getNodeAt: function(x, y) {
             return this.nodes[x][y];
         },
-        walkableAt: function(x, y) {
+        validPosition: function(x, y) {
             if (x >= this.nodes.length || x < 0 || y >= this.nodes[x].length || y < 0) return false;
-            return !this.getNodeAt(x, y).c;
+            return true;
+        },
+        walkableAt: function(x, y) {
+            if (this.validPosition(x, y)) return !this.getNodeAt(x, y).c;
+            return false;
         },
         getNeighbors: function(x, y) {
             //console.log("Get neighbors " + x + ", " + y);
@@ -97,6 +101,7 @@ define(["lib/heap"], function(Heap) {
             this.grid = new Grid(board.grid);
         },
         getPath: function(x, y, dx, dy, board) {
+            if (!this.grid.validPosition(x, y)) return false;
             var open = new Heap(function(a, b) {
                 return a.f - b.f;
             });
