@@ -7,7 +7,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
             this.gridHeight = boardHeight;
             //Must get added to the root scene above the main container.
             this.enemyContainer = new PIXI.Container();
-
+            this.roomList = [];
             this.tiles = {
                 "wall": 0,
                 "path": 1,
@@ -146,9 +146,21 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject"], 
         addRoom: function(x, y, room) {
             for (var i = 0; i < room.width; i++) {
                 for (var j = 0; j < room.height; j++) {
-                    this.setTile(i + x, j + y, room.grid[i][j]);
+                    if(this.grid[i + x][j + y].tileType == "Empty"){
+                        this.setTile(i + x, j + y, room.grid[i][j]);
+                    }
                 }
             }
+        },
+        canAddRoom: function(x, y, room) {
+            for(var i = 0; i < room.width; i++){
+                for(var j = 0; j < room.height; j++){
+                    if(this.grid[i+x][j+y].tileType != "Empty" && room.grid[i][j].tileType != "Empty"){
+                        return false;
+                    }
+                }
+            }
+            return true;
         },
         update: function() {
                 Board.$superp.update.call(this);

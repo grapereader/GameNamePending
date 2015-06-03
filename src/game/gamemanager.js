@@ -39,7 +39,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             }, 64 * 2, {}, "male-race-1"));
 
             this.player = new Player(this, saveData);
-            this.player.setLocation(75 * 64, 75 * 64);
+            this.player.setLocation(100 * 64, 100 * 64);
             this.scene.addObject(this.player.container, 2);
             this.scene.addObject(this.board.container, 0);
             this.scene.addObject(this.board.enemyContainer, 1);

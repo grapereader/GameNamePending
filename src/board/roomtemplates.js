@@ -48,15 +48,25 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door","tile/chest","tile/to
                 "shortHallwayCorner":[["Empty","Empty","Wall","Door","Wall"],["Empty","Empty","Wall","Path","Wall"],["Wall","Wall","Wall","Path","Wall"],["Door","Path","Path","Path","Wall"],["Wall","Wall","Wall","Wall","Wall"]],
                 "mediumHallwayCorner":[["Empty","Empty","Empty","Empty","Wall","Door","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Empty","Empty","Empty","Empty","Wall","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Path","Wall"],["Door","Path","Path","Path","Path","Path","Wall"],["Wall","Wall","Wall","Wall","Wall","Wall","Wall"]]
             }
-            this.rooms = [];
+            /**this.rooms = [];
             for(r in this.roomsRaw){
                 this.rooms.push(this.roomConstructor(this.roomsRaw[r]));
-            }
-            console.log("Loaded Template Rooms");
+            }*/
+            //console.log("Loaded Template Rooms");
 
         
         },
-
+        getRooms: function(){
+            this.rooms = [];
+            for(r in this.roomsRaw){
+                this.rooms.push(this.roomConstructor(this.roomsRaw[r]));
+            }           
+            var temp = new Array(this.rooms.length);
+            for(var i = 0; i < this.rooms.length; i++){
+                temp[i] = this.rooms[i];
+            }
+            return temp;
+        },
         roomConstructor: function(roomCompact) {
             var room = new Room(this.gameManager);
             room.width = roomCompact.length;
