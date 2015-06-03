@@ -150,7 +150,8 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
         setTile: function(tile) {
             var x = tile.tileX;
             var y = tile.tileY;
-            if (this.grid[x][y] instanceof Tile) this.removeChild(this.grid[x][y].container);
+            if (this.grid[x][y] instanceof Tile && this.grid[x][y].added) this.removeChild(this.grid[x][y].container);
+            tile.added = true;
             this.grid[x][y] = tile;
             this.addChild(tile.container);
         },
