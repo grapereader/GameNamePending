@@ -54,7 +54,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
             for (var x = 0; x < this.grid.length; x++) {
                 for (var y = 0; y < this.grid[x].length; y++) {
                     var tile = this.grid[x][y];
-                    if (tile.clipping === false) tiles.push(tile);
+                    if (tile.clipping === false && tile.tileType !== "Empty") tiles.push(tile);
                 }
             }
             return tiles;
@@ -150,10 +150,10 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
         setTile: function(tile) {
             var x = tile.tileX;
             var y = tile.tileY;
-            if (this.grid[x][y] instanceof Tile && this.grid[x][y].added) this.removeChild(this.grid[x][y].container);
+            if (this.grid[x][y].container !== undefined && this.grid[x][y] instanceof Tile && this.grid[x][y].added) this.removeChild(this.grid[x][y].container);
             tile.added = true;
             this.grid[x][y] = tile;
-            this.addChild(tile.container);
+            if (this.grid[x][y].container !== undefined) this.addChild(tile.container);
         },
         //Creates Room at coordinates x,y down and to the right.
         addRoom: function(x, y, room) {

@@ -4,6 +4,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             Door.$super.call(this, gameManager);
             this.isShut = false;
             this.clipping = false;
+            this.container = new PIXI.Container();
             this.tileType = "Door";
             this.openSprite = this.createSprite("logs");
             this.closedSprite = this.createSprite("logs");
@@ -19,15 +20,8 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
         update: function() {
             Door.$superp.update.call(this);
         },
-        /**if(!this.currentAnimation.isFinished){
-                var delta = this.gameManager.game.deltaTime;
-                currentAnimation.stepAnimation(delta);
-            }8/
 
-        },
-        /**
-            Function that opens and closes the door
-        */
+
         use: function() {
             if (this.currentAnimation.isFinished) {
                 if (this.isShut) {

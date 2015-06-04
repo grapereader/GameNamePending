@@ -27,7 +27,7 @@ define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "b
                 //console.log(isolatedEntrances);
                 var entranceX = isolatedEntrance[0];
                 var entranceY = isolatedEntrance[1];
-                //console.log((Math.sqrt(Math.pow(board.gridWidth/2-entranceX, 2) + Math.pow(board.gridHeight/2-entranceY, 2)) / 100 + gamma + Math.random()));
+                console.log((Math.sqrt(Math.pow(board.gridWidth/2-entranceX, 2) + Math.pow(board.gridHeight/2-entranceY, 2)) / 100 + gamma + Math.random()));
                 if ((Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) / 50 + gamma + Math.random()) > 2) { //Door will be removed
                     board.setTile(new Wall(this.gameManager).setPosition(entranceX, entranceY));
                 } else {

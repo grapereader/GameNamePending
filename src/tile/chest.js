@@ -6,6 +6,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.clipping = true;
             this.tileType = "Chest";
             this.openSprite = this.createSprite("grass1");
+            this.container = new PIXI.Container();
             this.closedSprite = this.createSprite("grass1");
             var chestSpeed = 4;
             /**var anims = {
@@ -19,7 +20,6 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
         update: function() {
             Chest.$superp.update.call(this);
         },
-
         use: function() {
             if (this.currentAnimation.isFinished) {
                 if (this.hasTreasure) {

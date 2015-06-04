@@ -30,7 +30,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
 
             var self = this;
             this.levelgenerator = new LevelGenerator(this);
-            this.board = this.levelgenerator.generateLevel(0.25);
+            this.board = this.levelgenerator.generateLevel(1);
             this.itemManager = new ItemManager();
 
             this.player = new Player(this, saveData);

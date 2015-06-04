@@ -6,7 +6,6 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
             this.scene = gameManager.scene;
             this.clipping = true;
             this.tileType = "Empty";
-            this.container = new PIXI.Container();
             this.tileX = 0;
             this.tileY = 0;
             this.x = 0;
@@ -30,8 +29,10 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
             return sprite;
         },
         setPosition: function(tileX, tileY) {
-            this.container.x = this.x = tileX * 64;
-            this.container.y = this.y = tileY * 64;
+            if(this.container !== undefined){
+                this.container.x = this.x = tileX * 64;
+                this.container.y = this.y = tileY * 64;
+            }
             this.tileX = tileX;
             this.tileY = tileY;
             return this;
@@ -55,6 +56,7 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
             this.container.x = tileInfo.x;
             this.container.y = tileInfo.y;
         }
+
     });
 
     return Tile;
