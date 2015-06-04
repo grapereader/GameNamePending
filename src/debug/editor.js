@@ -3,23 +3,26 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
     var Editor = Class({
         constructor: function(gameManager) {
             this.gameManager = gameManager;
+            this.editingAreaSize = 19;
         },
         update: function(currentX, currentY) {
 
             var keys = this.gameManager.game.keymap;
 
-            if (keys.isKeyDown("debug.Tile")) this.gameManager.board.setTile(currentX, currentY, new Tile(this.gameManager));
-            if (keys.isKeyDown("debug.Wall")) this.gameManager.board.setTile(currentX, currentY, new Wall(this.gameManager));
-            if (keys.isKeyDown("debug.Path")) this.gameManager.board.setTile(currentX, currentY, new Path(this.gameManager));
-            if (keys.isKeyDown("debug.Door")) this.gameManager.board.setTile(currentX, currentY, new Door(this.gameManager));
-            if (keys.isKeyDown("debug.Chest")) this.gameManager.board.setTile(currentX, currentY, new Chest(this.gameManager));
-            if (keys.isKeyDown("debug.Torch")) this.gameManager.board.setTile(currentX, currentY, new Torch(this.gameManager));
+            if (keys.isKeyDown("debug.Tile")) this.gameManager.board.setTile(new Tile(this.gameManager).setPosition(currentX,currentY));
+            if (keys.isKeyDown("debug.Wall")) this.gameManager.board.setTile(new Wall(this.gameManager).setPosition(currentX,currentY));
+            if (keys.isKeyDown("debug.Path")) this.gameManager.board.setTile(new Path(this.gameManager).setPosition(currentX,currentY));
+            if (keys.isKeyDown("debug.Door")) this.gameManager.board.setTile(new Door(this.gameManager).setPosition(currentX,currentY));
+            if (keys.isKeyDown("debug.Chest")) this.gameManager.board.setTile(new Chest(this.gameManager).setPosition(currentX,currentY));
+            if (keys.isKeyDown("debug.Torch")) this.gameManager.board.setTile(new Torch(this.gameManager).setPosition(currentX,currentY));
             if (keys.isKeyDown("debug.Export")) {
-                var greatestX = 68;
-                var greatestY = 68;
+                var editingAreaSize = this.editingAreaSize;
 
-                for (var i = 68; i < 81; i++) {
-                    for (var j = 68; j < 81; j++) {
+                var greatestX = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2);
+                var greatestY = Math.floor(this.gameManager.board.gridHeight / 2) - Math.floor(editingAreaSize / 2);
+
+                for (var i = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); i < Math.floor(this.gameManager.board.gridWidth / 2) + Math.floor(editingAreaSize / 2) + 1; i++) {
+                    for (var j = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); j < Math.floor(this.gameManager.board.gridWidth / 2) + Math.floor(editingAreaSize / 2) + 1; j++) {
                         if (this.gameManager.board.grid[i][j].tileType != "Empty") {
                             greatestX = Math.max(greatestX, i);
                             greatestY = Math.max(greatestY, j);
@@ -28,9 +31,9 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                 }
 
                 var output = "[";
-                for (var i = 68; i <= greatestX; i++) {
+                for (var i = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); i <= greatestX; i++) {
                     output += "[";
-                    for (var j = 68; j <= greatestY; j++) {
+                    for (var j = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); j <= greatestY; j++) {
                         output += "\"" + this.gameManager.board.grid[i][j].tileType + "\"";
                         if (j != greatestY) {
                             output += ",";
@@ -47,11 +50,20 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                 window.prompt("Copy to clipboard: Ctrl+C, Enter", output);
             }
             if (keys.isKeyDown("debug.Clear")) {
-                for (var i = 68; i < 81; i++) {
-                    for (var j = 68; j < 81; j++) {
-                        this.gameManager.board.setTile(i, j, new Tile(this.gameManager));
+                var editingAreaSize = this.editingAreaSize;
+                for (var i = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); i < Math.floor(this.gameManager.board.gridWidth / 2) + Math.floor(editingAreaSize / 2) + 1; i++) {
+                    for (var j = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); j < Math.floor(this.gameManager.board.gridWidth / 2) + Math.floor(editingAreaSize / 2) + 1; j++) {
+                        var tile = new Tile(this.gameManager).setPosition(i,j);
+                        if (keys.isKeyDown("debug.Tile")) tile = new Tile(this.gameManager).setPosition(i,j);
+                        if (keys.isKeyDown("debug.Wall")) tile = new Wall(this.gameManager).setPosition(i,j);
+                        if (keys.isKeyDown("debug.Path")) tile = new Path(this.gameManager).setPosition(i,j);
+                        if (keys.isKeyDown("debug.Door")) tile = new Door(this.gameManager).setPosition(i,j);
+                        if (keys.isKeyDown("debug.Chest")) tile = new Chest(this.gameManager).setPosition(i,j);
+                        if (keys.isKeyDown("debug.Torch")) tile = new Torch(this.gameManager).setPosition(i,j);
+                        this.gameManager.board.setTile(tile);
                     }
                 }
+
             }
         }
     });
