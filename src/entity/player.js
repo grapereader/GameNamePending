@@ -80,6 +80,23 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             }
 
             this.animGroup.setAnimation("stand-down");
+
+            var board = this.gameManager.board;
+            board.container.interactive = true;
+            board.container.on("mousemove", function(e) {
+                var mx = e.data.global.x;
+                var my = e.data.global.y;
+                var gx = mx - (self.gameManager.game.gameWidth / 2);
+                var gy = my - (self.gameManager.game.gameHeight / 2);
+                var slope = (self.gameManager.game.gameHeight / 2) / (self.gameManager.game.gameWidth / 2);
+                var expectedY = slope * gx;
+                var expectedInverse = -expectedY;
+                if ((gy > expectedY && gx > 0) || (gy > expectedInverse && gx <= 0)) self.dir = 2;
+                else if (gy < expectedInverse && gy > expectedY && gx < 0) self.dir = 1;
+                else if ((gy < expectedY && gx < 0) || (gy < expectedInverse && gx > 0)) self.dir = 3;
+                else if (gy > expectedInverse && gy < expectedY && gx > 0) self.dir = 0;
+                self.updateAnim();
+            });
         },
         setLocation: function(x, y) {
             this.x = x;
@@ -89,6 +106,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 this.y + (this.height / 2) - this.gameManager.game.gameHeight / 2
             );
         },
+        updateDir: function() {},
         equipItem: function(item) {
             var location = false;
             if (item.type === Item.TYPES.WEAPON) {
