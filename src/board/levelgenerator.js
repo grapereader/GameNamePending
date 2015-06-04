@@ -14,7 +14,7 @@ define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "b
             return this.board;
         },
         generateLevel: function(gamma) { //Gamma is the tuning variable for the probability of the doors being deleted as they get further from the center.
-            var board = new Board(this.gameManager, 200, 200);
+            var board = new Board(this.gameManager, 150, 150);
             var centralRoom = this.generateRandomRoom(4, -1, -1, board); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
             centralRoom.x = Math.floor((board.gridWidth / 2) - (centralRoom.width / 2));
             centralRoom.y = Math.floor((board.gridHeight / 2) - (centralRoom.height / 2));
@@ -57,7 +57,7 @@ define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "b
                     }
                     //console.log(rect);
                     //return board;
-                    var minimumEntrances = Math.max(-1, 4 - (0.1 * Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) + Math.random()));
+                    var minimumEntrances = Math.max(-1, 3 - (0.15 * Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) + Math.random()));
                     var room = this.generateRandomRoom(minimumEntrances, (direction == 1 || direction == 3) ? direction ^ 2 : direction ^ 6, [entranceX, entranceY], board);
                     if (room == -1) {
                         board.setTile(new Wall(this.gameManager).setPosition(entranceX, entranceY));
