@@ -100,6 +100,7 @@ define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "b
 
             var enemies = 100;
             for (var i = 0; i < enemies; i++) {
+                if (tiles.length <= 0) break;
                 var t = Math.floor(Math.random() * tiles.length);
                 var tile = tiles[t];
                 var enemy = EnemyUtils.getLeveledEnemy(this.gameManager, tile.tileX, tile.tileY, 1);
