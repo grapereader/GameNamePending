@@ -5,8 +5,8 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             Enemy.$super.call(this, gameManager);
             this.level = level;
             //This will need to be balanced!
-            this.attack = data.attack;
-            this.attack.damage *= level;
+            this.attackData = data.attack;
+            this.attackData.damage *= level;
             this.walkSpeed = data.walkSpeed * Math.sqrt(level);
             this.dropMap = data.dropMap;
             this.health = data.health;
@@ -26,7 +26,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
 
             var standSpeed = 2;
             var actionSpeed = 5;
-            var useSpeed = 4 * this.attack.speed;
+            var useSpeed = 4 * this.attackData.speed;
 
             var anims = {
                 "stand-left": Helpers.animBuilder("stand-left", 2, standSpeed),
@@ -100,7 +100,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 }
             });
 
-            this.attackTimer = new Timer(1000 / this.attack.speed, true, function() {
+            this.attackTimer = new Timer(1000 / this.attackData.speed, true, function() {
                 var player = self.gameManager.player;
                 player.attack(0);
             });
@@ -119,7 +119,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
 
             var xDiff = Math.abs(player.tileX - this.tileX);
             var yDiff = Math.abs(player.tileY - this.tileY);
-            if (xDiff <= this.attack.range && yDiff <= this.attack.range) {
+            if (xDiff <= this.attackData.range && yDiff <= this.attackData.range) {
                 this.walk(0, 0);
                 var anim = "use-left";
                 if (player.y < this.y) anim = "use-up";

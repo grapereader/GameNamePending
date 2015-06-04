@@ -136,6 +136,19 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 if (this.dir === 3) this.animGroup.setAnimation("use-up");
                 this.animGroup.locked = true;
                 this.attacking = true;
+
+                for (var x = -1; x <= 1; x++) {
+                    for (var y = -1; y <= 1; y++) {
+                        var mapX = x + this.tileX;
+                        var mapY = y + this.tileY;
+                        var enemies = this.gameManager.board.getEnemiesAt(mapX, mapY);
+                        for (var i = 0; i < enemies.length; i++) {
+                            if (this.equips.item !== false) {
+                                enemies[i].attack(this.equips.item.damage);
+                            }
+                        }
+                    }
+                }
             }
 
             if (this.attacking && this.animGroup.isFinished()) {

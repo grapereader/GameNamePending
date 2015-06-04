@@ -49,6 +49,14 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
             this.enemies.push(e);
             this.enemyContainer.addChild(e.container);
         },
+        getEnemiesAt: function(x, y) {
+            var enemies = [];
+            for (var i = 0; i < this.enemies.length; i++) {
+                var enemy = this.enemies[i];
+                if (enemy.tileX === x && enemy.tileY === y) enemies.push(enemy);
+            }
+            return enemies;
+        },
         getWalkableTiles: function() {
             var tiles = [];
             for (var x = 0; x < this.grid.length; x++) {
