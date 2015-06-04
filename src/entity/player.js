@@ -84,13 +84,19 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             var board = this.gameManager.board;
             board.container.interactive = true;
             board.container.on("mousemove", function(e) {
-                var mx = e.data.global.x;
-                var my = e.data.global.y;
-                var gx = mx - (self.gameManager.game.gameWidth / 2);
-                var gy = my - (self.gameManager.game.gameHeight / 2);
-                var slope = (self.gameManager.game.gameHeight / 2) / (self.gameManager.game.gameWidth / 2);
+                var gx = e.data.global.x - (self.gameManager.game.gameWidth / 2);
+                var gy = e.data.global.y - (self.gameManager.game.gameHeight / 2);
+                var gameHeight = self.gameManager.game.gameHeight;
+                var gameWidth = self.gameManager.game.gameWidth;
+                var playerX = self.sx;
+                var playerY = self.sy;
+                var translateY = gameHeight / 2 - (playerY + 32);
+                var translateX = gameWidth / 2 - (playerX + 32);
+                var slope = (gameHeight / 2) / (gameWidth / 2);
                 var expectedY = slope * gx;
-                var expectedInverse = -expectedY;
+                var expectedInverse = -expectedY - translateY;
+                expectedY -= translateY;
+                gx += translateX;
                 if ((gy > expectedY && gx > 0) || (gy > expectedInverse && gx <= 0)) self.dir = 2;
                 else if (gy < expectedInverse && gy > expectedY && gx < 0) self.dir = 1;
                 else if ((gy < expectedY && gx < 0) || (gy < expectedInverse && gx > 0)) self.dir = 3;
