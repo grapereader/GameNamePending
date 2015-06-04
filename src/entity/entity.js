@@ -41,20 +41,22 @@ define(["view/viewobject", "util/animgroup", "util/timer"], function(ViewObject,
             Preferred way to move the entity, since it sets the corresponding animation.
         */
         walk: function(dx, dy) {
-            if (dx > 0 && dy === 0) this.dir = 0;
-            else if (dx < 0 && dy === 0) this.dir = 1;
-            else if (dy > 0) this.dir = 2;
-            else if (dy < 0) this.dir = 3;
-
             if (dx !== this.dx || dy !== this.dy) {
-                this.updateAnim(dx, dy);
                 this.dx = dx;
                 this.dy = dy;
+                this.updateDir();
+                this.updateAnim();
                 //console.log("Moving " + dx + ", " + dy);
             }
         },
-        updateAnim: function(dx, dy) {
-            if (dx === 0 && dy === 0) {
+        updateDir: function() {
+            if (this.dx > 0 && this.dy === 0) this.dir = 0;
+            else if (this.dx < 0 && this.dy === 0) this.dir = 1;
+            else if (this.dy > 0) this.dir = 2;
+            else if (this.dy < 0) this.dir = 3;
+        },
+        updateAnim: function() {
+            if (this.dx === 0 && this.dy === 0) {
                 if (this.dir === 0) this.animGroup.setAnimation("stand-right");
                 else if (this.dir === 1) this.animGroup.setAnimation("stand-left");
                 else if (this.dir === 2) this.animGroup.setAnimation("stand-down");
