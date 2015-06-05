@@ -84,25 +84,34 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             var board = this.gameManager.board;
             board.container.interactive = true;
             board.container.on("mousemove", function(e) {
-                var gx = e.data.global.x - (self.gameManager.game.gameWidth / 2);
-                var gy = e.data.global.y - (self.gameManager.game.gameHeight / 2);
-                var gameHeight = self.gameManager.game.gameHeight;
-                var gameWidth = self.gameManager.game.gameWidth;
-                var playerX = self.sx;
-                var playerY = self.sy;
-                var translateY = gameHeight / 2 - (playerY + 32);
-                var translateX = gameWidth / 2 - (playerX + 32);
-                var slope = (gameHeight / 2) / (gameWidth / 2);
-                var expectedY = slope * gx;
-                var expectedInverse = -expectedY - translateY;
-                expectedY -= translateY;
-                gx += translateX;
-                if ((gy > expectedY && gx > 0) || (gy > expectedInverse && gx <= 0)) self.dir = 2;
-                else if (gy < expectedInverse && gy > expectedY && gx < 0) self.dir = 1;
-                else if ((gy < expectedY && gx < 0) || (gy < expectedInverse && gx > 0)) self.dir = 3;
-                else if (gy > expectedInverse && gy < expectedY && gx > 0) self.dir = 0;
+                var angle = self.getAngle(e.data.global.x, e.data.global.y);
+                if (angle < (1 * Math.PI) / 4 || angle > (7 * Math.PI) / 4) self.dir = 0;
+                else if (angle < (3 * Math.PI) / 4 && angle > (1 * Math.PI) / 4) self.dir = 2;
+                else if (angle < (5 * Math.PI) / 4 && angle > (3 * Math.PI) / 4) self.dir = 1;
+                else if (angle < (7 * Math.PI) / 4 && angle > (5 * Math.PI) / 4) self.dir = 3;
                 self.updateAnim();
             });
+        },
+        /**
+            Given a position in screen space, returns an angle relative to the player.
+        */
+        getAngle: function(x, y) {
+            var gameHeight = this.gameManager.game.gameHeight;
+            var gameWidth = this.gameManager.game.gameWidth;
+
+            var playerX = this.sx;
+            var playerY = this.sy;
+
+            var translateY = gameHeight / 2 - (playerY + 32);
+            var translateX = gameWidth / 2 - (playerX + 32);
+
+            var centeredX = x - (gameWidth / 2) + translateX;
+            var centeredY = y - (gameHeight / 2) + translateY;
+
+            var angle = Math.atan(centeredY / centeredX);
+            if (centeredX < 0) angle += Math.PI;
+            else if (centeredX > 0 && centeredY < 0) angle += Math.PI * 2;
+            return angle;
         },
         setLocation: function(x, y) {
             this.x = x;
