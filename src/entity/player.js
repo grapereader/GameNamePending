@@ -93,29 +93,15 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             });
 
             board.container.on("mousedown", function(e) {
-                if (self.canAttack) {
-                    self.canAttack = false;
-                    self.attackCooldownTimer.started = true;
-                    if (self.dir === 0) self.animGroup.setAnimation("use-right");
-                    if (self.dir === 1) self.animGroup.setAnimation("use-left");
-                    if (self.dir === 2) self.animGroup.setAnimation("use-down");
-                    if (self.dir === 3) self.animGroup.setAnimation("use-up");
-                    self.animGroup.locked = true;
-                    self.attacking = true;
+                self.mouseDown = true;
+            });
 
-                    for (var x = -1; x <= 1; x++) {
-                        for (var y = -1; y <= 1; y++) {
-                            var mapX = x + self.tileX;
-                            var mapY = y + self.tileY;
-                            var enemies = self.gameManager.board.getEnemiesAt(mapX, mapY);
-                            for (var i = 0; i < enemies.length; i++) {
-                                if (self.equips.item !== false) {
-                                    enemies[i].attack(self.equips.item.damage);
-                                }
-                            }
-                        }
-                    }
-                }
+            board.container.on("mouseup", function(e) {
+                self.mouseDown = false;
+            });
+
+            board.container.on("mouseout", function(e) {
+                self.mouseDown = false;
             });
         },
         /**
@@ -186,6 +172,30 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             this.updateMovement(keys);
         },
         updateAttack: function(keys, delta) {
+            if (this.mouseDown && this.canAttack) {
+                this.canAttack = false;
+                this.attackCooldownTimer.started = true;
+                if (this.dir === 0) this.animGroup.setAnimation("use-right");
+                if (this.dir === 1) this.animGroup.setAnimation("use-left");
+                if (this.dir === 2) this.animGroup.setAnimation("use-down");
+                if (this.dir === 3) this.animGroup.setAnimation("use-up");
+                this.animGroup.locked = true;
+                this.attacking = true;
+
+                for (var x = -1; x <= 1; x++) {
+                    for (var y = -1; y <= 1; y++) {
+                        var mapX = x + this.tileX;
+                        var mapY = y + this.tileY;
+                        var enemies = this.gameManager.board.getEnemiesAt(mapX, mapY);
+                        for (var i = 0; i < enemies.length; i++) {
+                            if (this.equips.item !== false) {
+                                enemies[i].attack(this.equips.item.damage);
+                            }
+                        }
+                    }
+                }
+            }
+
             if (this.attacking && this.animGroup.isFinished()) {
                 this.animGroup.locked = false;
                 this.attacking = false;
