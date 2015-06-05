@@ -67,8 +67,6 @@ define(function() {
         stepAnimation: function(deltaTime) {
             if (this.paused === true) return;
             this.elapsed += deltaTime;
-            this.changed = false;
-
             if (this.elapsed > this.animData[this.activeAnimation].speed) {
                 this.elapsed = 0;
                 this.changed = true;
@@ -89,6 +87,7 @@ define(function() {
                 if (this.changed) {
                     this.sprite.texture = texture;
                     this.sprite.scale.x = (animData.flip ? -1 : 1) * Math.abs(this.sprite.scale.x);
+                    this.changed = false;
                 }
                 return texture;
             }
