@@ -27,7 +27,7 @@ define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "b
                 //console.log(isolatedEntrances);
                 var entranceX = isolatedEntrance[0];
                 var entranceY = isolatedEntrance[1];
-                console.log((Math.sqrt(Math.pow(board.gridWidth/2-entranceX, 2) + Math.pow(board.gridHeight/2-entranceY, 2)) / 100 + gamma + Math.random()));
+                //console.log((Math.sqrt(Math.pow(board.gridWidth/2-entranceX, 2) + Math.pow(board.gridHeight/2-entranceY, 2)) / 100 + gamma + Math.random()));
                 if ((Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) / 50 + gamma + Math.random()) > 2) { //Door will be removed
                     board.setTile(new Wall(this.gameManager).setPosition(entranceX, entranceY));
                 } else {
@@ -94,6 +94,14 @@ define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "b
             }
 
             console.log("Created level with " + board.roomList.length + " rooms.");
+
+            //This seems to be the only way I can get mouse events to propagate properly
+            //when the empty areas of the board are clicked...
+            var emptyBack = new PIXI.Graphics();
+            emptyBack.beginFill(0x555555);
+            emptyBack.drawRect(0, 0, board.gridWidth * 64, board.gridHeight * 64);
+            emptyBack.endFill();
+            board.container.addChildAt(emptyBack, 0);
 
             console.log("Adding enemies...");
             var tiles = board.getWalkableTiles();
