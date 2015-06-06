@@ -64,11 +64,27 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             var overlay = new PIXI.Graphics();
             this.container.addChild(overlay);
 
-            var tooltip = new PIXI.Text("Test", {
+            var tooltip = new PIXI.Container();
+            tooltip.visible = false;
+
+            var tooltipGraphics = new PIXI.Graphics();
+            tooltip.addChild(tooltipGraphics);
+
+            var tooltipTitle = new PIXI.Text("", {
                 font: Helpers.getFont(16),
                 fill: "white"
             });
-            tooltip.visible = false;
+            tooltip.addChild(tooltipTitle);
+
+            var tooltipDesc = new PIXI.Text("", {
+                font: Helpers.getFont(14),
+                fill: "white",
+                wordWrap: true,
+                wordWrapWidth: 150
+            });
+            tooltipDesc.y = 20;
+            tooltip.addChild(tooltipDesc);
+
             this.container.addChild(tooltip);
 
             var self = this;
@@ -88,14 +104,16 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                 tooltip.x = mx + 15;
                 tooltip.y = my + 15;
                 var item = self.getItemAt(mx, my);
-                if (item !== false) tooltip.text = item.item.name;
-
+                if (item !== false) {
+                    tooltipTitle.text = item.item.name;
+                    tooltipDesc.text = item.item.description;
+                }
                 if (tooltip.visible) {
-                    overlay.clear();
-                    overlay.beginFill(0x000000, 0.5);
+                    tooltipGraphics.clear();
+                    tooltipGraphics.beginFill(0x000000, 0.5);
                     var pad = 2;
-                    overlay.drawRect(tooltip.x - pad, tooltip.y - pad, tooltip.width + (2 * pad), tooltip.height + (2 * pad));
-                    overlay.endFill();
+                    tooltipGraphics.drawRect(-pad, -pad, Math.max(150, tooltip.width + (2 * pad)), tooltip.height + (2 * pad));
+                    tooltipGraphics.endFill();
                 }
             });
         },
