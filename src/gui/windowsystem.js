@@ -1,8 +1,8 @@
 define(["gui/windowobject"], function(WindowObject) {
 
     var WindowSystem = Class(WindowObject, {
-        constructor: function(eventElement) {
-            WindowSystem.$super.call(this);
+        constructor: function(gameManager, eventElement) {
+            WindowSystem.$super.call(this, gameManager);
             var self = this;
             eventElement.addEventListener("contextmenu", function(e) {
                 e.preventDefault();

@@ -17,14 +17,10 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             this.sprite.x = tileX * 32;
             this.sprite.y = tileY * 32;
 
-            this.contextMenu = {
-                "Test": function() {
+            this.addDoubleClickListener(function(e) {
+                console.log(item.name + " double clicked");
+            });
 
-                },
-                "Test 2": function() {
-
-                }
-            }
             this.addChild(this.sprite);
         },
         update: function() {

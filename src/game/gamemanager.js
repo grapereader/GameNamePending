@@ -57,7 +57,7 @@ define(["entity/player", "item/manager", "util/helpers", "gui/inventory", "gui/w
             var testWindow2 = new Window(this, 300, 300, "Inventory 2");
             testWindow2.addChild(testInv2);
             testWindow2.setPosition(0, 100);
-            this.windowSystem = new WindowSystem(document.getElementById("canvas-wrapper"));
+            this.windowSystem = new WindowSystem(this, document.getElementById("canvas-wrapper"));
             this.windowSystem.addChild(testWindow);
             this.windowSystem.addChild(testWindow2);
             this.scene.addObject(this.windowSystem.container, 8);
