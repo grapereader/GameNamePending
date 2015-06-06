@@ -165,6 +165,15 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
             }
             return grid;
         },
+        getWalkableTiles: function() {
+            var walkable = [];
+            for (var x = 0; x < this.grid.length; x++) {
+                for (var y = 0; y < this.grid[x].length; y++) {
+                    if (!this.grid[x][y].clipping) walkable.push(this.grid[x][y]);
+                }
+            }
+            return walkable;
+        },
         //Set the tile at position x,y by passing the stringified tile info.
         setTile: function(x, y, tileInfo) {
             this.grid[x][y] = parseJSONTile(tileInfo);

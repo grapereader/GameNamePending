@@ -29,13 +29,21 @@ define(["entity/enemy"], function(Enemy) {
         }
     ];
 
-    var EnemyUtils = {
-        getLeveledEnemy: function(gameManager, tileX, tileY, level) {
-            var data = enemies[Math.floor(Math.random() * enemies.length)];
-            return new Enemy(gameManager, tileX, tileY, level, data);
+    var EnemySpawner = Class({
+        constructor: function(gameManager) {
+            this.gameManager = gameManager;
+            this.enemyPointer = 0;
+            this.level = 1;
+        },
+        nextRandom: function() {
+            this.enemyPointer = Math.floor(Math.random() * enemies.length);
+        },
+        getLeveledEnemy: function(tileX, tileY) {
+            var data = enemies[this.enemyPointer];
+            return new Enemy(this.gameManager, tileX, tileY, this.level, data);
         }
-    }
+    });
 
-    return EnemyUtils;
+    return EnemySpawner;
 
 });

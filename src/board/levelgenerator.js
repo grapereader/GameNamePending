@@ -1,4 +1,4 @@
-define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates", "entity/enemyutils"], function(Helpers, Board, Wall, Path, Door, Room, Tile, RoomTemplates, EnemyUtils) {
+define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates", "entity/enemyspawner"], function(Helpers, Board, Wall, Path, Door, Room, Tile, RoomTemplates, EnemySpawner) {
 
     var LevelGenerator = Class({
         constructor: function(gameManager) {
@@ -104,18 +104,25 @@ define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "b
             board.container.addChildAt(emptyBack, 0);
 
             console.log("Adding enemies...");
-            var tiles = board.getWalkableTiles();
-
-            var enemies = 100;
-            for (var i = 0; i < enemies; i++) {
-                if (tiles.length <= 0) break;
-                var t = Math.floor(Math.random() * tiles.length);
-                var tile = tiles[t];
-                var enemy = EnemyUtils.getLeveledEnemy(this.gameManager, tile.tileX, tile.tileY, 1);
-                board.addEnemy(enemy);
-                tiles.splice(t, 1);
+            var enemySpawner = new EnemySpawner(this.gameManager);
+            var rooms = board.roomList;
+            var spawned = 0;
+            for (var r = 0; r < rooms.length; r++) {
+                enemySpawner.nextRandom();
+                var room = rooms[r];
+                var walkable = room.getWalkableTiles();
+                var enemies = Math.floor(Math.random() * (walkable.length / 10));
+                spawned += enemies;
+                for (var i = 0; i < enemies; i++) {
+                    var t = Math.floor(Math.random() * walkable.length);
+                    var tile = walkable[t];
+                    var enemy = enemySpawner.getLeveledEnemy(tile.tileX, tile.tileY);
+                    spawned++;
+                    board.addEnemy(enemy);
+                    walkable.splice(t, 1);
+                }
             }
-
+            console.log("Spawned " + spawned + " enemies.");
 
             return board;
         },
