@@ -14,9 +14,6 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             this.tileX = tileX;
             this.tileY = tileY;
 
-            this.sprite.x = tileX * 32;
-            this.sprite.y = tileY * 32;
-
             var self = this;
 
             this.addDoubleClickListener(function(e) {
@@ -24,19 +21,34 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                     parent.itemActivate(self.item);
                 }
             });
-
             this.addChild(this.sprite);
+
+            var graphics = new PIXI.Graphics();
+            graphics.lineStyle(3, 0x0, 0.5);
+            graphics.drawRect(0, 0, 32, 32);
+            graphics.visible = false;
+            this.addChild(graphics);
+
+            this.container.on("mouseover", function() {
+                graphics.visible = true;
+            });
+
+            this.container.on("mouseout", function() {
+                graphics.visible = false;
+            });
+
+            this.setPosition(tileX * 32, tileY * 32);
         },
         update: function() {
             InventoryItem.$superp.update.call(this);
             //Similar transition as the View's on item move
             var period = this.gameManager.game.deltaTime / 17;
 
-            var dx = (this.tileX * 32 - this.sprite.x) * period;
-            var dy = (this.tileY * 32 - this.sprite.y) * period;
+            var dx = (this.tileX * 32 - this.container.x) * period;
+            var dy = (this.tileY * 32 - this.container.y) * period;
 
-            this.sprite.x += dx / 20;
-            this.sprite.y += dy / 20;
+            this.container.x += dx / 20;
+            this.container.y += dy / 20;
         },
         moveTo: function(tileX, tileY) {
             this.tileX = tileX;
@@ -54,6 +66,18 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             this.width = Math.min(inventory.items.length, 4);
             this.height = Math.ceil(inventory.items.length / 4);
 
+            var background = new PIXI.Graphics();
+            background.beginFill(0x0, 0.2);
+            background.drawRect(0, 0, 300, 32 * this.height);
+            background.endFill();
+            background.lineStyle(1, 0x0, 0.2);
+            for (var x = 0; x < this.width; x++) {
+                for (var y = 0; y < this.height; y++) {
+                    background.drawRect(x * 32, y * 32, 32, 32);
+                }
+            }
+            this.container.addChild(background);
+
             for (var i = 0; i < inventory.items.length; i++) {
                 if (inventory.items[i] === false) continue;
                 var x = i % 4;
@@ -64,9 +88,6 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                 //This could be really bad for functionality. :P We shall see
                 item.moveTo(x, y);
             }
-
-            var overlay = new PIXI.Graphics();
-            this.container.addChild(overlay);
 
             var tooltip = new PIXI.Container();
             tooltip.visible = false;
@@ -94,13 +115,6 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             var self = this;
             this.container.interactive = true;
             var over = false;
-            this.container.on("mouseover", function(e) {
-                tooltip.visible = true;
-            })
-            this.container.on("mouseout", function(e) {
-                tooltip.visible = false;
-                overlay.clear();
-            })
             this.container.on("mousemove", function(e) {
                 var pos = e.data.getLocalPosition(self.container);
                 var mx = pos.x;
@@ -111,6 +125,9 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                 if (item !== false) {
                     tooltipTitle.text = item.item.name;
                     tooltipDesc.text = item.item.description;
+                    tooltip.visible = true;
+                } else {
+                    tooltip.visible = false;
                 }
                 if (tooltip.visible) {
                     tooltipGraphics.clear();
