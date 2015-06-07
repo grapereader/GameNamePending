@@ -189,7 +189,8 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             this.updateMovement(keys);
         },
         updateAttack: function(keys, delta) {
-            if (this.mouseDown && this.canAttack) {
+            var item = this.equips.item;
+            if (this.mouseDown && this.canAttack && item !== false) {
                 this.canAttack = false;
                 this.attackCooldownTimer.started = true;
                 if (this.dir === 0) this.animGroup.setAnimation("use-right");
@@ -205,7 +206,12 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                         var mapY = y + this.tileY;
                         var enemies = this.gameManager.board.getEnemiesAt(mapX, mapY);
                         for (var i = 0; i < enemies.length; i++) {
-                            if (this.equips.item !== false) {
+                            var enemy = enemies[i];
+                            var xDiff = enemy.x - this.x;
+                            var yDiff = enemy.y - this.y;
+                            var dist = Math.sqrt((xDiff * xDiff) + (yDiff * yDiff));
+
+                            if (dist <= item.range) {
                                 enemies[i].attack(this.equips.item.damage);
                             }
                         }

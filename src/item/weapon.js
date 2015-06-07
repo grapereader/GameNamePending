@@ -5,6 +5,7 @@ define(["item/item"], function(Item) {
             Weapon.$super.call(this, Item.TYPES.WEAPON, name, description, rarity, affixes, framesNamespace);
             this.attackSpeed = weaponData.attackSpeed;
             this.damage = weaponData.damage;
+            this.range = weaponData.range;
             this.criticalChance = weaponData.criticalChance;
             this.criticalDamage = weaponData.criticalDamage;
         }

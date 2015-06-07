@@ -8,6 +8,7 @@ define(["item/item", "item/weapon", "item/affixes", "item/armour"], function(Ite
             return new Weapon("Test Weapon", "This is a weapon", Item.RARITY.COMMON, [], "ironsword", {
                 damage: 1,
                 attackSpeed: 0.5, //Attack speed is in seconds/hit
+                range: 64, //Radius in pixels
                 criticalChance: 1,
                 criticalDamage: 1
             });
