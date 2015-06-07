@@ -16,6 +16,8 @@ define(function() {
         },
         addAnimationLayer: function(animation) {
             this.animations.push(animation);
+            this.setAnimation(this.active);
+            this.reset();
         },
         removeAnimationLayer: function(animation) {
             this.animations.splice(this.animations.indexOf(animation), 1);

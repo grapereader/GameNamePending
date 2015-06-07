@@ -1,7 +1,7 @@
 define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
 
     var InventoryItem = Class(WindowObject, {
-        constructor: function(gameManager, item, invId, tileX, tileY) {
+        constructor: function(gameManager, item, invId, tileX, tileY, parent) {
             InventoryItem.$super.call(this, gameManager);
 
             this.item = item;
@@ -17,8 +17,12 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             this.sprite.x = tileX * 32;
             this.sprite.y = tileY * 32;
 
+            var self = this;
+
             this.addDoubleClickListener(function(e) {
-                console.log(item.name + " double clicked");
+                if (parent.itemActivate !== undefined) {
+                    parent.itemActivate(self.item);
+                }
             });
 
             this.addChild(this.sprite);
@@ -54,7 +58,7 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                 if (inventory.items[i] === false) continue;
                 var x = i % 4;
                 var y = Math.floor(i / 4);
-                var item = new InventoryItem(gameManager, inventory.items[i], i, 0, 0);
+                var item = new InventoryItem(gameManager, inventory.items[i], i, 0, 0, this);
                 this.addChild(item);
                 //Move to instead of set so we get a swaggin animnation on open.
                 //This could be really bad for functionality. :P We shall see

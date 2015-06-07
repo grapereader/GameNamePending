@@ -152,6 +152,8 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             this.equipAnims[location] = anim;
             this.animGroup.addAnimationLayer(anim);
 
+            this.sprites[location].visible = true;
+
             if (item.type === Item.TYPES.WEAPON) {
                 var spd = (1000 * (item.attackSpeed / 4)) / 2;
                 var dirs = ["left", "right", "up", "down"];
@@ -161,6 +163,21 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 this.attackCooldownTimer.period = item.attackSpeed * 1000;
             }
             console.log("Equipped item " + item.name);
+        },
+        unEquipItem: function(item) {
+            for (e in this.equips) {
+                if (this.equips[e] === item) {
+                    this.equips[e] = false;
+                    this.sprites[e].visible = false;
+                    break;
+                }
+            }
+        },
+        isEquipped: function(item) {
+            for (e in this.equips) {
+                if (this.equips[e] === item) return true;
+            }
+            return false;
         },
         update: function() {
             Player.$superp.update.call(this);

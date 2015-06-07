@@ -56,6 +56,7 @@ define(function() {
             }
         },
         reset: function() {
+            this.elapsed = 0;
             this.activeFrame = 0;
             this.changed = true;
             this.finished = false;
