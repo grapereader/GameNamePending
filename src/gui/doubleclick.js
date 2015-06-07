@@ -1,6 +1,6 @@
 define(function() {
 
-    var RATE = 200;
+    var RATE = 300;
 
     var DoubleClick = Class({
         constructor: function(container, handle) {
