@@ -69,11 +69,11 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             this.attackCooldownTimer.started = false;
             this.canAttack = true;
 
-            var testWeapon = gameManager.itemManager.generateWeapon();
+            var testWeapon = gameManager.itemFactory.generateWeapon();
             this.inventory.items[0] = testWeapon;
             this.equipItem(testWeapon);
 
-            var testArmour = gameManager.itemManager.generateArmours();
+            var testArmour = gameManager.itemFactory.generateArmours();
             for (var i = 0; i < testArmour.length; i++) {
                 this.inventory.items[i + 1] = testArmour[i];
                 this.equipItem(testArmour[i]);

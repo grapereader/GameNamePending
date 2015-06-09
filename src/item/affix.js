@@ -1,25 +1,14 @@
 define(function() {
 
     var Affix = Class({
-        constructor: function(id, type, name, description, rarity, handlers, buffs) {
-            this.id = id;
-            this.type = type;
+        constructor: function(name, description, data) {
             this.name = name;
             this.description = description;
-            this.rarity = rarity;
-            this.handlers = handlers;
-            this.buffs = buffs;
-
-            for (b in this.buffs) {
-                var buff = this.buffs[b];
-                this.description = this.description.replace("!{" + b + "}", buff.val + (buff.type === "%" ? "%" : ""));
-            }
-
-            //console.log("Created affix " + this.description);
+            this.data = data;
         }
     });
 
-    Affix.Type = {
+    Affix.TYPES = {
         ANY: 0,
         WEAPON: 1,
         ARMOUR: 2

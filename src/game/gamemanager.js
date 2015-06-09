@@ -1,4 +1,4 @@
-define(["entity/player", "item/manager", "util/helpers", "gui/playerinvwindow", "gui/windowsystem", "board/board", "entity/enemy", "board/levelgenerator"], function(Player, ItemManager, Helpers, PlayerInventoryWindow, WindowSystem, Board, Enemy, LevelGenerator) {
+define(["entity/player", "item/factory/itemfactory", "util/helpers", "gui/playerinvwindow", "gui/windowsystem", "board/board", "entity/enemy", "board/levelgenerator"], function(Player, ItemFactory, Helpers, PlayerInventoryWindow, WindowSystem, Board, Enemy, LevelGenerator) {
     /**
         This is the meat of the game logic.
 
@@ -31,7 +31,19 @@ define(["entity/player", "item/manager", "util/helpers", "gui/playerinvwindow", 
             var self = this;
             this.levelgenerator = new LevelGenerator(this);
             this.board = this.levelgenerator.generateLevel(1);
-            this.itemManager = new ItemManager();
+            this.itemFactory = new ItemFactory();
+
+            //Testing weapon/armour generation...
+            console.log("Any item...");
+            for (var i = 0; i < 5; i++) {
+                var item = this.itemFactory.getItem(false);
+                console.log(item);
+            }
+            console.log("Only weapons...");
+            for (var i = 0; i < 5; i++) {
+                var item = this.itemFactory.getItem(0);
+                console.log(item);
+            }
 
             this.player = new Player(this, saveData);
             var spawnPoint = this.board.roomList[0].getRandomSpawnableLocation();
