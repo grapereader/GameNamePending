@@ -92,8 +92,16 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                     self.x = self.tileX * 64;
                     self.y = self.tileY * 64;
 
+                    var xDiff = next.x - self.tileX;
+                    var yDiff = next.y - self.tileY;
+
+                    var walkSpeed = self.walkSpeed;
+                    //Hypotenusal speed adjust
+                    if (xDiff !== 0 && yDiff !== 0) walkSpeed /= 1.41;
+                    self.walkTimer.period = 1000 / (walkSpeed / 64);
+
                     self.walk(
-                        (next.x - self.tileX) * self.walkSpeed, (next.y - self.tileY) * self.walkSpeed
+                        xDiff * walkSpeed, yDiff * walkSpeed
                     );
                 } else {
                     self.walk(0, 0);
