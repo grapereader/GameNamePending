@@ -1,4 +1,4 @@
-define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/torch", "board/room", "view/viewobject"], function(Tile, Wall, Path, Door, Chest, Torch, Room, ViewObject) {
+define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/torch", "board/room"], function(Tile, Wall, Path, Door, Chest, Torch, Room) {
 
     var RoomTemplates = Class({
         constructor: function(gameManager) {

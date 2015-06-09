@@ -1,4 +1,4 @@
-define(["util/helpers", "board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates", "entity/enemyspawner"], function(Helpers, Board, Wall, Path, Door, Room, Tile, RoomTemplates, EnemySpawner) {
+define(["board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates", "entity/enemyspawner"], function(Board, Wall, Path, Door, Room, Tile, RoomTemplates, EnemySpawner) {
 
     var LevelGenerator = Class({
         constructor: function(gameManager) {
