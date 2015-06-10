@@ -6,6 +6,14 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
 
             this.inventory = new Inventory(16, saveData.inventory, {});
 
+            var shadowGraphics = new PIXI.Graphics();
+            shadowGraphics.beginFill(0x0, 0.07);
+            for (var i = 0; i < 16; i++) {
+                shadowGraphics.drawEllipse(32, 48, i, (i / 16) * 10);
+            }
+            shadowGraphics.endFill();
+            this.addChild(shadowGraphics);
+
             this.sprites = {
                 "base": Helpers.createSprite(),
                 "hands": Helpers.createSprite(),
