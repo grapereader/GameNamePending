@@ -39,7 +39,7 @@ define(function() {
             return sprite;
         },
         getFont: function(size) {
-            return size + "px Poiret One";
+            return (size) + "px TheFont";
         }
     };
 

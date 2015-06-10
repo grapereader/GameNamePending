@@ -41,6 +41,9 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
                 },
                 google: {
                     families: ['Poiret One']
+                },
+                custom: {
+                    families: ["TheFont"]
                 }
             });
 
@@ -54,6 +57,7 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
                 .add(Helpers.item("ironhelm"))
                 .add(Helpers.item("ironlegs"))
                 .add(Helpers.sprite("world/tiles-1/tiles-1.sheet"))
+                .add(Helpers.sprite("world/tiles-2/tiles-2.sheet"))
                 .add(Helpers.sprite("blank.png"))
                 .add(Helpers.sprite("placeholder.png"))
                 .add(Helpers.sprite("temp_bg.jpg"))
