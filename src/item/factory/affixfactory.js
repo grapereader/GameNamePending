@@ -7,8 +7,9 @@ define(["item/factory/templatefactory", "item/affix"], function(TemplateFactory,
 
             this.templates = [
                 {
-                    rarity: 1.0,
-                    group: Affix.TYPES.WEAPON,
+                    groups: {
+                        weapon: 1.0
+                    },
                     data: {
                         name: "Bonus Damage",
                         desc: "This is a test affix, bonus !{damage} damage",
@@ -18,8 +19,9 @@ define(["item/factory/templatefactory", "item/affix"], function(TemplateFactory,
                     }
                 },
                 {
-                    rarity: 1.0,
-                    group: Affix.TYPES.WEAPON,
+                    groups: {
+                        weapon: 1.0
+                    },
                     data: {
                         name: "Bonus Attack Speed",
                         desc: "This is a test affix, bonus !{attackSpeed} attack speed",
@@ -29,8 +31,9 @@ define(["item/factory/templatefactory", "item/affix"], function(TemplateFactory,
                     }
                 },
                 {
-                    rarity: 1.0,
-                    group: Affix.TYPES.WEAPON,
+                    groups: {
+                        weapon: 1.0
+                    },
                     data: {
                         name: "Damage player",
                         desc: "This is a test affix, damages player on activate",
@@ -43,8 +46,8 @@ define(["item/factory/templatefactory", "item/affix"], function(TemplateFactory,
                 }
             ]
         },
-        getAffix: function(type) {
-            var template = this.getTemplateOfGroup(type);
+        getAffix: function(constraints) {
+            var template = this.getTemplate(constraints);
             if (template === false) return false;
             var data = template.data;
 

@@ -36,12 +36,12 @@ define(["entity/player", "item/factory/itemfactory", "util/helpers", "gui/player
             //Testing weapon/armour generation...
             console.log("Any item...");
             for (var i = 0; i < 5; i++) {
-                var item = this.itemFactory.getItem(false);
+                var item = this.itemFactory.getItem("all");
                 console.log(item);
             }
             console.log("Only weapons...");
             for (var i = 0; i < 5; i++) {
-                var item = this.itemFactory.getItem(0);
+                var item = this.itemFactory.getItem("weapon");
                 console.log(item);
             }
 

@@ -26,8 +26,13 @@ define(["item/factory/templatefactory", "item/factory/affixfactory", "item/item"
 
             this.templates = [
                 {
-                    rarity: 1.0,
-                    group: Item.TYPES.WEAPON,
+                    groups: {
+                        all: 1.0,
+                        weapon: 1.0,
+                        shit: 1.0,
+                        shitWeapon: 1.0
+                    },
+                    type: Item.TYPES.WEAPON,
                     data: {
                         name: "!{adjective} Iron Dagger",
                         desc: "Looks like it's about to fall apart",
@@ -43,8 +48,13 @@ define(["item/factory/templatefactory", "item/factory/affixfactory", "item/item"
                     }
                 },
                 {
-                    rarity: 1.0,
-                    group: Item.TYPES.ARMOUR,
+                    groups: {
+                        all: 1.0,
+                        armour: 1.0,
+                        shit: 1.0,
+                        shitArmour: 1.0
+                    },
+                    type: Item.TYPES.ARMOUR,
                     data: {
                         name: "!{adjective} Iron Helm",
                         desc: "Smells like death in here",
@@ -57,8 +67,13 @@ define(["item/factory/templatefactory", "item/factory/affixfactory", "item/item"
                     }
                 },
                 {
-                    rarity: 1.0,
-                    group: Item.TYPES.ARMOUR,
+                    groups: {
+                        all: 1.0,
+                        armour: 1.0,
+                        shit: 1.0,
+                        shitArmour: 1.0
+                    },
+                    type: Item.TYPES.ARMOUR,
                     data: {
                         name: "!{adjective} Iron Chestplate",
                         desc: "A size too small",
@@ -71,8 +86,13 @@ define(["item/factory/templatefactory", "item/factory/affixfactory", "item/item"
                     }
                 },
                 {
-                    rarity: 1.0,
-                    group: Item.TYPES.ARMOUR,
+                    groups: {
+                        all: 1.0,
+                        armour: 1.0,
+                        shit: 1.0,
+                        shitArmour: 1.0
+                    },
+                    type: Item.TYPES.ARMOUR,
                     data: {
                         name: "!{adjective} Iron Leggings",
                         desc: "I can barely walk in these things",
@@ -85,8 +105,13 @@ define(["item/factory/templatefactory", "item/factory/affixfactory", "item/item"
                     }
                 },
                 {
-                    rarity: 1.0,
-                    group: Item.TYPES.ARMOUR,
+                    groups: {
+                        all: 1.0,
+                        armour: 1.0,
+                        shit: 1.0,
+                        shitArmour: 1.0
+                    },
+                    type: Item.TYPES.ARMOUR,
                     data: {
                         name: "!{adjective} Iron Boots",
                         desc: "Ew. Smells like the feet of 43 other people",
@@ -99,8 +124,13 @@ define(["item/factory/templatefactory", "item/factory/affixfactory", "item/item"
                     }
                 },
                 {
-                    rarity: 1.0,
-                    group: Item.TYPES.ARMOUR,
+                    groups: {
+                        all: 1.0,
+                        armour: 1.0,
+                        shit: 1.0,
+                        shitArmour: 1.0
+                    },
+                    type: Item.TYPES.ARMOUR,
                     data: {
                         name: "!{adjective} Iron Gauntlets",
                         desc: "Might as well be oven mitts",
@@ -114,12 +144,8 @@ define(["item/factory/templatefactory", "item/factory/affixfactory", "item/item"
                 }
             ]
         },
-        getItem: function(type) {
-            if (type === false) {
-                var template = this.getTemplate();
-            } else {
-                var template = this.getTemplateOfGroup(type);
-            }
+        getItem: function(constraints) {
+            var template = this.getTemplate(constraints);
 
             if (template === false) return false;
 
@@ -144,7 +170,7 @@ define(["item/factory/templatefactory", "item/factory/affixfactory", "item/item"
             }
 
             var classes = [Weapon, Armour];
-            return new classes[template.group](name, desc, info.rarity, [], spritesheet, itemData);
+            return new classes[template.type](name, desc, info.rarity, [], spritesheet, itemData);
         },
         processText: function(rarity, text) {
             var randWord = function(words) {

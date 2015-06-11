@@ -6,10 +6,19 @@ define(function() {
             //and, optionally, a use-case defined "group" property
             this.templates = [];
         },
-        getTemplate: function() {
+        getAllTemplates: function(group) {
+            var templates = [];
+            for (var i = 0; i < this.templates.length; i++) {
+                var t = this.templates[i];
+                if (group in t.groups) templates.push(t);
+            }
+            return templates;
+        },
+        getTemplate: function(group) {
+            var templates = this.getAllTemplates(group);
             do {
-                var template = this.templates[Math.floor(Math.random() * this.templates.length)];
-            } while (template.rarity < Math.random());
+                var template = templates[Math.floor(Math.random() * templates.length)];
+            } while (template.groups[group].rarity < Math.random());
             return template;
         },
         /*
