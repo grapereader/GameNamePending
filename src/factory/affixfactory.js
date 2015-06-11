@@ -1,4 +1,4 @@
-define(["item/factory/templatefactory", "item/affix"], function(TemplateFactory, Affix) {
+define(["factory/templatefactory", "item/affix"], function(TemplateFactory, Affix) {
 
     var AffixFactory = Class(TemplateFactory, {
         constructor: function (gameManager) {
