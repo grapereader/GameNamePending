@@ -46,8 +46,8 @@ define(["item/factory/templatefactory", "item/affix"], function(TemplateFactory,
                 }
             ]
         },
-        getAffix: function(constraints) {
-            var template = this.getTemplate(constraints);
+        getAffix: function(group) {
+            var template = this.getTemplate(group);
             if (template === false) return false;
             var data = template.data;
 

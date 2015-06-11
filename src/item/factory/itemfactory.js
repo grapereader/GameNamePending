@@ -144,8 +144,8 @@ define(["item/factory/templatefactory", "item/factory/affixfactory", "item/item"
                 }
             ]
         },
-        getItem: function(constraints) {
-            var template = this.getTemplate(constraints);
+        getItem: function(group) {
+            var template = this.getTemplate(group);
 
             if (template === false) return false;
 
