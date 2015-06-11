@@ -33,6 +33,15 @@ define(function() {
             targetInv.items[targetIndex] = this.items[srcIndex];
             this.items[srcIndex] = otherItem;
             return true;
+        },
+        addItem: function(item) {
+            for (var i = 0; i < this.items.length; i++) {
+                if (this.items[i] === false) {
+                    this.items[i] = item;
+                    return true;
+                }
+            }
+            return false;
         }
     });
 
