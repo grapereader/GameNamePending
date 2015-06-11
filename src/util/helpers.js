@@ -39,7 +39,7 @@ define(function() {
             return sprite;
         },
         getFont: function(size) {
-            return (size) + "px TheFont";
+            return (size + 3) + "px TheFont";
         }
     };
 

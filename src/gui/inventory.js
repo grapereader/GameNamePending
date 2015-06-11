@@ -105,7 +105,7 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                 font: Helpers.getFont(14),
                 fill: "white",
                 wordWrap: true,
-                wordWrapWidth: 150
+                wordWrapWidth: 200
             });
             tooltipDesc.y = 20;
             tooltip.addChild(tooltipDesc);
@@ -133,7 +133,7 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                     tooltipGraphics.clear();
                     tooltipGraphics.beginFill(0x000000, 0.5);
                     var pad = 2;
-                    tooltipGraphics.drawRect(-pad, -pad, Math.max(150, tooltip.width + (2 * pad)), tooltip.height + (2 * pad));
+                    tooltipGraphics.drawRect(-pad, -pad, Math.max(200, tooltip.width + (2 * pad)), tooltip.height + (2 * pad));
                     tooltipGraphics.endFill();
                 }
             });
