@@ -50,8 +50,8 @@ define(["factory/templatefactory", "entity/enemy"], function(TemplateFactory, En
                 }
             ];
         },
-        nextRandom: function(group) {
-            this.currentTemplate = this.getTemplate(group);
+        nextRandom: function(confines) {
+            this.currentTemplate = this.getTemplate(confines);
         },
         getLeveledEnemy: function(tileX, tileY) {
             var data = this.currentTemplate.data;

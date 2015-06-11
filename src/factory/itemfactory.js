@@ -29,8 +29,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                     groups: {
                         all: 1.0,
                         weapon: 1.0,
-                        shit: 1.0,
-                        shitWeapon: 1.0
+                        shit: 1.0
                     },
                     type: Item.TYPES.WEAPON,
                     data: {
@@ -52,8 +51,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                         all: 1.0,
                         armour: 1.0,
                         shit: 1.0,
-                        shitArmour: 1.0,
-                        armourHead: 1.0
+                        head: 1.0
                     },
                     type: Item.TYPES.ARMOUR,
                     data: {
@@ -72,8 +70,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                         all: 1.0,
                         armour: 1.0,
                         shit: 1.0,
-                        shitArmour: 1.0,
-                        armourChest: 1.0
+                        chest: 1.0
                     },
                     type: Item.TYPES.ARMOUR,
                     data: {
@@ -92,8 +89,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                         all: 1.0,
                         armour: 1.0,
                         shit: 1.0,
-                        shitArmour: 1.0,
-                        armourLegs: 1.0
+                        legs: 1.0
                     },
                     type: Item.TYPES.ARMOUR,
                     data: {
@@ -112,8 +108,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                         all: 1.0,
                         armour: 1.0,
                         shit: 1.0,
-                        shitArmour: 1.0,
-                        armourBoots: 1.0
+                        boots: 1.0
                     },
                     type: Item.TYPES.ARMOUR,
                     data: {
@@ -132,8 +127,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                         all: 1.0,
                         armour: 1.0,
                         shit: 1.0,
-                        shitArmour: 1.0,
-                        armourGloves: 1.0
+                        gloves: 1.0
                     },
                     type: Item.TYPES.ARMOUR,
                     data: {
@@ -149,8 +143,8 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                 }
             ]
         },
-        getItem: function(group) {
-            var template = this.getTemplate(group);
+        getItem: function(confines) {
+            var template = this.getTemplate(confines);
 
             if (template === false) return false;
 
