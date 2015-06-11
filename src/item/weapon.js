@@ -8,6 +8,17 @@ define(["item/item"], function(Item) {
             this.range = weaponData.range;
             this.criticalChance = weaponData.criticalChance;
             this.criticalDamage = weaponData.criticalDamage;
+
+            var d = this.description;
+
+            d += "\n\n";
+            d += "Damage: " + this.damage.toFixed(2) + "\n";
+            d += "Speed: " + this.attackSpeed.toFixed(2) + "\n";
+            d += "Range: " + this.range.toFixed(2) + "\n";
+            d += "Crit %: " + this.criticalChance.toFixed(2) + "\n";
+            d += "Crit Damage: " + this.criticalDamage.toFixed(2);
+
+            this.description = d;
         }
     });
 

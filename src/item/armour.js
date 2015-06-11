@@ -5,6 +5,13 @@ define(["item/item"], function(Item) {
             Armour.$super.call(this, Item.TYPES.ARMOUR, name, description, rarity, affixes, framesNamespace);
             this.armourType = armourData.type;
             this.armour = armourData.armour;
+
+            var d = this.description;
+
+            d += "\n\n";
+            d += "Armour: " + this.armour.toFixed(2);
+
+            this.description = d;
         }
     });
 
