@@ -70,12 +70,6 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             background.beginFill(0x0, 0.2);
             background.drawRect(0, 0, 300, 32 * this.height);
             background.endFill();
-            background.lineStyle(1, 0x0, 0.2);
-            for (var x = 0; x < this.width; x++) {
-                for (var y = 0; y < this.height; y++) {
-                    background.drawRect(x * 32, y * 32, 32, 32);
-                }
-            }
             this.container.addChild(background);
 
             for (var i = 0; i < inventory.items.length; i++) {
