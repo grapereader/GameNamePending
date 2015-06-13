@@ -1,4 +1,4 @@
-define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwindow", "gui/windowsystem", "board/board", "board/levelgenerator"], function(Player, ItemFactory, Helpers, PlayerInventoryWindow, WindowSystem, Board, LevelGenerator) {
+define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwindow", "gui/windowsystem", "board/board", "board/levelgenerator", "item/itemdrop"], function(Player, ItemFactory, Helpers, PlayerInventoryWindow, WindowSystem, Board, LevelGenerator, ItemDrop) {
     /**
         This is the meat of the game logic.
 
@@ -50,7 +50,15 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
             this.player.setLocation(spawnPoint[0] * 64, spawnPoint[1] * 64);
             this.scene.addObject(this.player.container, 2);
             this.scene.addObject(this.board.container, 0);
-            this.scene.addObject(this.board.enemyContainer, 1);
+            this.scene.addObject(this.board.objectContainer, 1);
+
+            for (var i = 0; i < 16; i++) {
+                var testDrop = new ItemDrop(this, this.itemFactory.getItem("all"),
+                    {x: this.player.x, y: this.player.y},
+                    {x: this.player.x + ((Math.random() * 512) - 256), y: this.player.y + ((Math.random() * 512) - 256)}
+                );
+                this.board.addItemDrop(testDrop);
+            }
 
             this.fpsText = new PIXI.Text("FPS", {
                 font: "24px Arial"
