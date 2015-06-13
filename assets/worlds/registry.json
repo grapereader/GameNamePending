@@ -1,8 +1,0 @@
-{
-    "worlds": [
-        {
-            "name": "main",
-            "tilemap": "main.json"
-        }
-    ]
-}
