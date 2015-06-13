@@ -1,4 +1,4 @@
-define(["view/viewobject"], function(ViewObject) {
+define(["view/viewobject", "util/helpers"], function(ViewObject, Helpers) {
 
     var ItemDrop = Class(ViewObject, {
         constructor: function(gameManager, item, from, to) {
@@ -14,10 +14,30 @@ define(["view/viewobject"], function(ViewObject) {
             this.sprite.scale.y = 2;
             this.sprite.anchor.x = 0.5;
             this.sprite.anchor.y = 0.5;
-            this.sprite.x = 32;
-            this.sprite.y = 32;
+            this.sprite.x = 16;
+            this.sprite.y = 16;
 
             this.addChild(this.sprite);
+
+            this.nameContainer = new PIXI.Container();
+            this.nameContainer.visible = false;
+
+            var text = new PIXI.Text(item.name, {
+                font: Helpers.getFont(16),
+                fill: "white"
+            });
+
+            var textBack = new PIXI.Graphics();
+            textBack.beginFill(0x0, 0.5);
+            textBack.drawRect(0, 0, text.width, text.height);
+            textBack.endFill();
+
+            this.nameContainer.addChild(textBack);
+            this.nameContainer.addChild(text);
+
+            this.nameContainer.x = -(text.width / 2) + 16;
+
+            this.addChild(this.nameContainer);
 
             this.x = from.x;
             this.y = from.y;
@@ -33,6 +53,12 @@ define(["view/viewobject"], function(ViewObject) {
             var delta = this.gameManager.game.deltaTime;
 
             this.timer += delta;
+
+            if (this.gameManager.game.keymap.isKeyDown("view.drops")) {
+                this.nameContainer.visible = true;
+            } else {
+                this.nameContainer.visible = false;
+            }
 
             if (!this.dropped) {
                 var x = this.timer / 100;
@@ -51,7 +77,7 @@ define(["view/viewobject"], function(ViewObject) {
                 }
             } else {
                 var x = (this.timer / 500) + this.oscOffset;
-                this.y = this.to.y + (Math.sin(x) * 10);
+                this.sprite.y = 32 + 10 + (Math.sin(x) * 10);
             }
         }
     });
