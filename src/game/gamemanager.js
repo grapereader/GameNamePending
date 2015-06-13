@@ -33,18 +33,6 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
             this.board = this.levelgenerator.generateLevel(1);
             this.itemFactory = new ItemFactory();
 
-            //Testing weapon/armour generation...
-            console.log("Any item...");
-            for (var i = 0; i < 5; i++) {
-                var item = this.itemFactory.getItem("all");
-                console.log(item);
-            }
-            console.log("Only weapons...");
-            for (var i = 0; i < 5; i++) {
-                var item = this.itemFactory.getItem("weapon");
-                console.log(item);
-            }
-
             this.player = new Player(this, saveData);
             var spawnPoint = this.board.roomList[0].getRandomSpawnableLocation();
             this.player.setLocation(spawnPoint[0] * 64, spawnPoint[1] * 64);
