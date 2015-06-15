@@ -13,7 +13,7 @@ define(["item/item"], function(Item) {
 
             d += "\n\n";
             d += "Damage: " + this.damage.toFixed(2) + "\n";
-            d += "Speed: " + this.attackSpeed.toFixed(2) + "\n";
+            d += "Speed: " + this.attackSpeed.toFixed(2) + " sec/swing\n";
             d += "Range: " + this.range.toFixed(2) + "\n";
             d += "Crit %: " + this.criticalChance.toFixed(2) + "\n";
             d += "Crit Damage: " + this.criticalDamage.toFixed(2);
