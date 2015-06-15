@@ -27,6 +27,25 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
             this.templates = [
                 {
                     groups: {
+                        test: 1.0
+                    },
+                    type: Item.TYPES.WEAPON,
+                    data: {
+                        name: "Godly test weapon",
+                        desc: "Smite thee",
+                        rarity: Item.RARITY.SHIT,
+                        sprite: "sword",
+                        stats: {
+                            damage: [1, 2],
+                            attackSpeed: 0.1,
+                            range: 64,
+                            criticalChance: 1,
+                            criticalDamage: 1
+                        }
+                    }
+                },
+                {
+                    groups: {
                         all: 1.0,
                         weapon: 1.0,
                         shit: 1.0

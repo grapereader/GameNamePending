@@ -40,14 +40,6 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
             this.scene.addObject(this.board.container, 0);
             this.scene.addObject(this.board.objectContainer, 1);
 
-            for (var i = 0; i < 16; i++) {
-                var testDrop = new ItemDrop(this, this.itemFactory.getItem("all"),
-                    {x: this.player.x, y: this.player.y},
-                    {x: this.player.x + ((Math.random() * 512) - 256), y: this.player.y + ((Math.random() * 512) - 256)}
-                );
-                this.board.addItemDrop(testDrop);
-            }
-
             this.fpsText = new PIXI.Text("FPS", {
                 font: "24px Arial"
             });

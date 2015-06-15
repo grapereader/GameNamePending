@@ -22,10 +22,22 @@ define(["factory/templatefactory", "entity/enemy"], function(TemplateFactory, En
                             speed: 2,
                             range: 0
                         },
-                        health: 100,
+                        health: 10,
                         armour: 10,
                         walkSpeed: 128,
-                        dropMap: []
+                        dropMap: [
+                            {
+                                rarity: 1.0,
+                                confines: ["all"],
+                                count: [0, 2]
+                            },
+                            {
+                                //Results in a greater chance of dropping a shit weapon.
+                                rarity: 0.1,
+                                confines: ["weapon", "shit"],
+                                count: 1
+                            }
+                        ]
                     }
                 },
                 {
@@ -42,10 +54,17 @@ define(["factory/templatefactory", "entity/enemy"], function(TemplateFactory, En
                             speed: 4,
                             range: 0
                         },
-                        health: 200,
+                        health: 20,
                         armour: 20,
                         walkSpeed: 256,
-                        dropMap: []
+                        dropMap: [
+                            {
+                                //Will always drop one armour
+                                chance: 1.0,
+                                confines: ["armour"],
+                                count: 1
+                            }
+                        ]
                     }
                 }
             ];

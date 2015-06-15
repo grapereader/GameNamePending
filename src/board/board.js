@@ -198,8 +198,12 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
                     }
                 }
 
-                for (var i = 0; i < this.enemies.length; i++) {
+                for (var i = this.enemies.length - 1; i >= 0; i--) {
                     this.enemies[i].update();
+                    if (this.enemies[i].pendingRemoval) {
+                        this.objectContainer.removeChild(this.enemies[i].container);
+                        this.enemies.splice(i, 1);
+                    }
                 }
 
                 for (var i = 0; i < this.itemDrops.length; i++) {

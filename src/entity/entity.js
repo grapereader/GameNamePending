@@ -1,4 +1,4 @@
-define(["view/viewobject", "util/animgroup", "util/timer"], function(ViewObject, AnimGroup, Timer) {
+define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop"], function(ViewObject, AnimGroup, Timer, ItemDrop) {
 
     var Entity = Class(ViewObject, {
         constructor: function(gameManager) {
@@ -17,6 +17,8 @@ define(["view/viewobject", "util/animgroup", "util/timer"], function(ViewObject,
                 self.container.filters = null;
             });
             this.damageTimer.started = false;
+
+            this.pendingRemoval = false;
         },
         update: function() {
             Entity.$superp.update.call(this);
@@ -79,6 +81,29 @@ define(["view/viewobject", "util/animgroup", "util/timer"], function(ViewObject,
             ];
             this.colourMatrix.matrix = matrix;
             this.container.filters = [this.colourMatrix];
+
+            if (this.isDead()) {
+                if (this.dropMap !== undefined && this.dropMap.length > 0) {
+                    do {
+                        var groups = this.dropMap[Math.floor(Math.random() * this.dropMap.length)];
+                    } while (groups.rarity < Math.random());
+                    if (typeof groups.count === "number") {
+                        var count = groups.count;
+                    } else {
+                        var count = groups.count[0] + Math.round(Math.random() * (groups.count[1] - groups.count[0]));
+                    }
+                    var dropRadius = count * 64;
+                    for (var i = 0; i < count; i++) {
+                        var item = this.gameManager.itemFactory.getItem(groups.confines);
+                        var drop = new ItemDrop(this.gameManager, item,
+                            {x: this.x, y: this.y},
+                            {x: this.x + ((Math.random() * dropRadius) - (dropRadius / 2)), y: this.y + ((Math.random() * dropRadius) - (dropRadius / 2))}
+                        );
+                        this.gameManager.board.addItemDrop(drop);
+                    }
+                }
+                this.pendingRemoval = true;
+            }
         },
         isDead: function() {
             return this.health <= 0;

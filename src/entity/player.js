@@ -77,7 +77,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             this.attackCooldownTimer.started = false;
             this.canAttack = true;
 
-            var testGroups = ["weapon", "head", "chest", "legs", "boots", "gloves"];
+            var testGroups = ["test", "head", "chest", "legs", "boots", "gloves"];
             for (var i = 0; i < testGroups.length; i++) {
                 var item = this.gameManager.itemFactory.getItem(testGroups[i]);
                 this.inventory.addItem(item);
