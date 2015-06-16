@@ -1,4 +1,4 @@
-define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/anim"], function(Entity, Timer, Pathfinder, Helpers, Animation) {
+define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/anim", "ai/movemanager"], function(Entity, Timer, Pathfinder, Helpers, Animation, MoveManager) {
 
     var Enemy = Class(Entity, {
         constructor: function(gameManager, homeX, homeY, level, data) {
@@ -56,68 +56,13 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             this.animGroup.setAnimation("stand-down");
 
             var self = this;
-            this.walkTimer = new Timer(1000 / (this.walkSpeed / 64), true, function() {
-                var target = self.gameManager.player;
-
-                var targetX = target.tileX;
-                var targetY = target.tileY;
-
-                var tileX = self.tileX;
-                var tileY = self.tileY;
-
-                //We might as well skip movement logic if we're so far away.
-                if (Math.abs(tileX - targetX) > 30 || Math.abs(tileY - targetY) > 30){
-                    self.walk(0, 0);
-                    return;
-                }
-
-                if ((Math.abs(tileX - targetX) > 5 || Math.abs(tileY - targetY) > 5) ||
-                    (Math.abs(tileX - self.homeX) > 20 || Math.abs(tileX - self.homeX) > 20)) {
-                    targetX = self.homeX;
-                    targetY = self.homeY;
-                }
-
-                var path = false;
-
-                if (targetX != tileX || targetY != tileY) {
-                    var finder = self.gameManager.board.getPathfinder();
-                    path = finder.getPath(tileX, tileY, targetX, targetY);
-                }
-
-                if (path !== false && path.length > 1) {
-                    //We skip the first entry, since we are already there.
-                    var next = path[1];
-
-                    //Prevents grid drift
-                    self.x = self.tileX * 64;
-                    self.y = self.tileY * 64;
-
-                    var xDiff = next.x - self.tileX;
-                    var yDiff = next.y - self.tileY;
-
-                    var walkSpeed = self.walkSpeed;
-                    //Hypotenusal speed adjust
-                    if (xDiff !== 0 && yDiff !== 0) walkSpeed /= 1.41;
-                    self.walkTimer.period = 1000 / (walkSpeed / 64);
-
-                    self.walk(
-                        xDiff * walkSpeed, yDiff * walkSpeed
-                    );
-                } else {
-                    self.walk(0, 0);
-                }
-            });
 
             this.attackTimer = new Timer(1000 / this.attackData.speed, true, function() {
                 var player = self.gameManager.player;
                 player.attack(0);
             });
 
-            this.gridCorrectTimer = new Timer(0, false, function() {
-                self.offGrid = false;
-                self.walk(0, 0);
-            });
-            this.gridCorrectTimer.started = false;
+            this.moveManager = new MoveManager(this.gameManager, this);
         },
         update: function() {
             Enemy.$superp.update.call(this);
@@ -141,25 +86,12 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                     this.animGroup.setAnimation(anim);
                 }
                 this.attackTimer.update(delta);
-
-                if (!this.offGrid) {
-                    var x = (this.tileX * 64) - this.x;
-                    var y = (this.tileY * 64) - this.y;
-                    var time = Math.sqrt((x * x) + (y * y)) / this.walkSpeed;
-                    this.correctX = x / time;
-                    this.correctY = y / time;
-                    this.gridCorrectTimer.period = time * 1000;
-                }
-                this.offGrid = true;
-            } else if (this.offGrid) {
-                if (!this.gridCorrectTimer.started) {
-                    this.walk(this.correctX, this.correctY);
-                    this.gridCorrectTimer.started = true;
-                }
-                this.gridCorrectTimer.update(delta);
             } else {
-                this.walkTimer.update(delta);
+                var vec = this.moveManager.getMovement(player);
+                vec.multiply(this.walkSpeed);
+                this.walk(vec.x, vec.y);
             }
+
         }
     });
 
