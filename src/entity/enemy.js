@@ -117,6 +117,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 self.offGrid = false;
                 self.walk(0, 0);
             });
+            this.gridCorrectTimer.started = false;
         },
         update: function() {
             Enemy.$superp.update.call(this);

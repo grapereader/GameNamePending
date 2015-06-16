@@ -1,4 +1,4 @@
-define(["board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates", "entity/enemyspawner"], function(Board, Wall, Path, Door, Room, Tile, RoomTemplates, EnemySpawner) {
+define(["board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates", "factory/enemyfactory"], function(Board, Wall, Path, Door, Room, Tile, RoomTemplates, EnemyFactory) {
 
     var LevelGenerator = Class({
         constructor: function(gameManager) {
@@ -104,11 +104,11 @@ define(["board/board", "tile/wall", "tile/path", "tile/door", "board/room", "til
             board.container.addChildAt(emptyBack, 0);
 
             console.log("Adding enemies...");
-            var enemySpawner = new EnemySpawner(this.gameManager);
+            var enemyFactory = new EnemyFactory(this.gameManager);
             var rooms = board.roomList;
             var spawned = 0;
             for (var r = 0; r < rooms.length; r++) {
-                enemySpawner.nextRandom();
+                enemyFactory.nextRandom("generic");
                 var room = rooms[r];
                 var walkable = room.getWalkableTiles();
                 var enemies = Math.floor(Math.random() * (walkable.length / 10));
@@ -116,7 +116,7 @@ define(["board/board", "tile/wall", "tile/path", "tile/door", "board/room", "til
                 for (var i = 0; i < enemies; i++) {
                     var t = Math.floor(Math.random() * walkable.length);
                     var tile = walkable[t];
-                    var enemy = enemySpawner.getLeveledEnemy(tile.tileX, tile.tileY);
+                    var enemy = enemyFactory.getLeveledEnemy(tile.tileX, tile.tileY);
                     spawned++;
                     board.addEnemy(enemy);
                     walkable.splice(t, 1);

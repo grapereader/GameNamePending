@@ -6,7 +6,9 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
             this.gridWidth = boardWidth;
             this.gridHeight = boardHeight;
             //Must get added to the root scene above the main container.
-            this.enemyContainer = new PIXI.Container();
+            this.objectContainer = new PIXI.Container();
+            this.dropContainer = new PIXI.Container();
+            this.objectContainer.addChild(this.dropContainer);
             this.roomList = [];
             this.tiles = {
                 "wall": 0,
@@ -17,6 +19,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
             };
 
             this.enemies = [];
+            this.itemDrops = [];
             this.grid = this.initializeGrid(this.gridWidth, this.gridHeight);
         },
         /**
@@ -47,7 +50,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
         },
         addEnemy: function(e) {
             this.enemies.push(e);
-            this.enemyContainer.addChild(e.container);
+            this.objectContainer.addChild(e.container);
         },
         getEnemiesAt: function(x, y) {
             var enemies = [];
@@ -56,6 +59,10 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
                 if (enemy.tileX === x && enemy.tileY === y) enemies.push(enemy);
             }
             return enemies;
+        },
+        addItemDrop(drop) {
+            this.itemDrops.push(drop);
+            this.dropContainer.addChild(drop.container);
         },
         getWalkableTiles: function() {
             var tiles = [];
@@ -191,8 +198,16 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
                     }
                 }
 
-                for (var i = 0; i < this.enemies.length; i++) {
+                for (var i = this.enemies.length - 1; i >= 0; i--) {
                     this.enemies[i].update();
+                    if (this.enemies[i].pendingRemoval) {
+                        this.objectContainer.removeChild(this.enemies[i].container);
+                        this.enemies.splice(i, 1);
+                    }
+                }
+
+                for (var i = 0; i < this.itemDrops.length; i++) {
+                    this.itemDrops[i].update();
                 }
             }
             /**

@@ -70,12 +70,6 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             background.beginFill(0x0, 0.2);
             background.drawRect(0, 0, 300, 32 * this.height);
             background.endFill();
-            background.lineStyle(1, 0x0, 0.2);
-            for (var x = 0; x < this.width; x++) {
-                for (var y = 0; y < this.height; y++) {
-                    background.drawRect(x * 32, y * 32, 32, 32);
-                }
-            }
             this.container.addChild(background);
 
             for (var i = 0; i < inventory.items.length; i++) {
@@ -105,7 +99,7 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                 font: Helpers.getFont(14),
                 fill: "white",
                 wordWrap: true,
-                wordWrapWidth: 150
+                wordWrapWidth: 200
             });
             tooltipDesc.y = 20;
             tooltip.addChild(tooltipDesc);
@@ -133,7 +127,7 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                     tooltipGraphics.clear();
                     tooltipGraphics.beginFill(0x000000, 0.5);
                     var pad = 2;
-                    tooltipGraphics.drawRect(-pad, -pad, Math.max(150, tooltip.width + (2 * pad)), tooltip.height + (2 * pad));
+                    tooltipGraphics.drawRect(-pad, -pad, Math.max(200, tooltip.width + (2 * pad)), tooltip.height + (2 * pad));
                     tooltipGraphics.endFill();
                 }
             });

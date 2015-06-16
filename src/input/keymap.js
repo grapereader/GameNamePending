@@ -17,7 +17,10 @@ define(["save/storage"], function(Storage) {
                         "up": "KeyW",
                         "down": "KeyS"
                     },
-                    "attack": "KeyJ",
+                    "view": {
+                        "drops": "ShiftLeft",
+                        "inventory": "KeyI"
+                    },
                     "debug": {
                         "Tile": "Digit1",
                         "Wall": "Digit2",

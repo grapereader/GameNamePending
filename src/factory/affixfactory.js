@@ -1,4 +1,4 @@
-define(["item/factory/templatefactory", "item/affix"], function(TemplateFactory, Affix) {
+define(["factory/templatefactory", "item/affix"], function(TemplateFactory, Affix) {
 
     var AffixFactory = Class(TemplateFactory, {
         constructor: function (gameManager) {
@@ -46,8 +46,8 @@ define(["item/factory/templatefactory", "item/affix"], function(TemplateFactory,
                 }
             ]
         },
-        getAffix: function(group) {
-            var template = this.getTemplate(group);
+        getAffix: function(confines) {
+            var template = this.getTemplate(confines);
             if (template === false) return false;
             var data = template.data;
 

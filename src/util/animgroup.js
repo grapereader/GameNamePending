@@ -36,9 +36,9 @@ define(function() {
         },
         isFinished: function() {
             for (var i = 0; i < this.animations.length; i++) {
-                if (this.animations[i].finished === false) return false;
+                if (this.animations[i].finished === true) return true;
             }
-            return true;
+            return false;
         },
         reset: function() {
             for (var i = 0; i < this.animations.length; i++) {

@@ -77,14 +77,11 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             this.attackCooldownTimer.started = false;
             this.canAttack = true;
 
-            var testWeapon = gameManager.itemFactory.generateWeapon();
-            this.inventory.items[0] = testWeapon;
-            this.equipItem(testWeapon);
-
-            var testArmour = gameManager.itemFactory.generateArmours();
-            for (var i = 0; i < testArmour.length; i++) {
-                this.inventory.items[i + 1] = testArmour[i];
-                this.equipItem(testArmour[i]);
+            var testGroups = ["test", "head", "chest", "legs", "boots", "gloves"];
+            for (var i = 0; i < testGroups.length; i++) {
+                var item = this.gameManager.itemFactory.getItem(testGroups[i]);
+                this.inventory.addItem(item);
+                this.equipItem(item);
             }
 
             this.animGroup.setAnimation("stand-down");
