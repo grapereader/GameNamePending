@@ -21,6 +21,12 @@ define(function() {
             this.x *= num;
             this.y *= num;
             return this;
+        },
+        getAngle: function() {
+            var angle = Math.atan(this.y / this.x);
+            if (this.x < 0) angle += Math.PI;
+            else if (this.x > 0 && this.y < 0) angle += Math.PI * 2;
+            return angle;
         }
     });
 

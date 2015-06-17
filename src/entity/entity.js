@@ -1,4 +1,4 @@
-define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop"], function(ViewObject, AnimGroup, Timer, ItemDrop) {
+define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop", "math/vector"], function(ViewObject, AnimGroup, Timer, ItemDrop, Vector) {
 
     var Entity = Class(ViewObject, {
         constructor: function(gameManager) {
@@ -52,10 +52,12 @@ define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop"], fun
             }
         },
         updateDir: function() {
-            if (this.dx > 0 && this.dy === 0) this.dir = 0;
-            else if (this.dx < 0 && this.dy === 0) this.dir = 1;
-            else if (this.dy > 0) this.dir = 2;
-            else if (this.dy < 0) this.dir = 3;
+            var angle = new Vector(this.dx, this.dy).getAngle();
+
+            if (angle < (1 * Math.PI) / 4 || angle > (7 * Math.PI) / 4) this.dir = 0;
+            else if (angle < (3 * Math.PI) / 4 && angle > (1 * Math.PI) / 4) this.dir = 2;
+            else if (angle < (5 * Math.PI) / 4 && angle > (3 * Math.PI) / 4) this.dir = 1;
+            else if (angle < (7 * Math.PI) / 4 && angle > (5 * Math.PI) / 4) this.dir = 3;
         },
         updateAnim: function() {
             if (this.dx === 0 && this.dy === 0) {

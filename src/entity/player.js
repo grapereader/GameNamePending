@@ -1,4 +1,4 @@
-define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer", "debug/editor", "item/item", "item/armour"], function(Entity, Helpers, Animation, Inventory, Timer, Editor, Item, Armour) {
+define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer", "debug/editor", "item/item", "item/armour", "math/vector"], function(Entity, Helpers, Animation, Inventory, Timer, Editor, Item, Armour, Vector) {
 
     var Player = Class(Entity, {
         constructor: function(gameManager, saveData) {
@@ -125,10 +125,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             var centeredX = x - (gameWidth / 2) + translateX;
             var centeredY = y - (gameHeight / 2) + translateY;
 
-            var angle = Math.atan(centeredY / centeredX);
-            if (centeredX < 0) angle += Math.PI;
-            else if (centeredX > 0 && centeredY < 0) angle += Math.PI * 2;
-            return angle;
+            return new Vector(centeredX, centeredY).getAngle();
         },
         setLocation: function(x, y) {
             this.x = x;
