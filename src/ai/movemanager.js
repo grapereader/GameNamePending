@@ -6,6 +6,7 @@ define(["math/vector"], function(Vector) {
         constructor: function(gameManager, entity) {
             this.gameManager = gameManager;
             this.entity = entity;
+            this.path = false;
             this.prevTarget = false;
             this.nextPath = false;
         },
