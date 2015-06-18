@@ -85,8 +85,6 @@ define(["math/vector"], function(Vector) {
             var tilePixelX = currentX * 64;
             var tilePixelY = currentY * 64;
 
-            console.log(currentX + ", " + currentY);
-
             if (this.board.grid[currentX][currentY].clipping) {
                 var tileColVec = new Vector(this.x - tilePixelX, this.y - tilePixelY);
                 vec = vec.add(tileColVec.normalize());
