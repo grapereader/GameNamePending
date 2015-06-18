@@ -49,6 +49,8 @@ define(["math/vector"], function(Vector) {
                     this.nextPath = false;
                 }
 
+                if (this.path.length === 0) this.path = false;
+
                 if (this.path !== false) {
                     var walk = this.walkPath(this.path);
                     if (walk !== false) movement.add(walk);
@@ -127,6 +129,7 @@ define(["math/vector"], function(Vector) {
 
             //Remove 1 less than i since it was the ith tile that wasn't in sight
             if (i > 1) path.splice(0, i - 1);
+            else path.splice(0, 1);
 
             if (follow === false && this.nextPath !== false) {
                 vec = this.follow(this.nextPath);
