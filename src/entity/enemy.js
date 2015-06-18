@@ -88,7 +88,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 this.attackTimer.update(delta);
             } else {
                 var vec = this.moveManager.getMovement(player);
-                vec.multiply(this.walkSpeed);
+                vec = vec.multiply(this.walkSpeed);
                 this.walk(vec.x, vec.y);
             }
 

@@ -42,7 +42,7 @@ define(["math/vector"], function(Vector) {
 
             var follow = this.follow(target);
             if (follow !== false) {
-                movement.add(follow);
+                movement = movement.add(follow);
             } else {
                 if (this.prevTarget === false || this.diffTile(target, this.prevTarget) || this.path === false) {
                     this.path = this.getPath(target);
@@ -53,18 +53,46 @@ define(["math/vector"], function(Vector) {
 
                 if (this.path !== false) {
                     var walk = this.walkPath(this.path);
-                    if (walk !== false) movement.add(walk);
+                    if (walk !== false) movement = movement.add(walk);
                 }
 
             }
 
-            this.prevTarget = target;
+            movement = movement.add(this.collide());
 
+            this.prevTarget = target;
 
             return movement.normalize();
         },
         diffTile: function(target1, target2) {
             return target1.tileX !== target2.tileX || target1.tileY !== target2.tileY;
+        },
+        collide: function() {
+            var vec = new Vector(0, 0);
+            var others = this.board.enemies;
+            for (var i = 0; i < others.length; i++) {
+                var other = others[i];
+                var invDiffVector = new Vector(this.x - other.x, this.y - other.y);
+                if (invDiffVector.getMagnitude() < 32) {
+                    invDiffVector = invDiffVector.normalize();
+                    vec = vec.add(invDiffVector);
+                }
+            }
+
+            var currentX = Math.round(this.x / 64);
+            var currentY = Math.round(this.y / 64);
+
+            var tilePixelX = currentX * 64;
+            var tilePixelY = currentY * 64;
+
+            console.log(currentX + ", " + currentY);
+
+            if (this.board.grid[currentX][currentY].clipping) {
+                var tileColVec = new Vector(this.x - tilePixelX, this.y - tilePixelY);
+                vec = vec.add(tileColVec.normalize());
+            }
+
+            return vec;
         },
         follow: function(target) {
             var tx = target.x;
