@@ -27,6 +27,12 @@ define(function() {
         }
     });
 
+    Vector.fromAngle = function(angle, magnitude) {
+        var x = magnitude * Math.sin(angle);
+        var y = magnitude * Math.cos(angle);
+        return new Vector(x, y);
+    }
+
     return Vector;
 
 });

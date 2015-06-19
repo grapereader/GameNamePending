@@ -61,6 +61,7 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
                 .add(Helpers.sprite("blank.png"))
                 .add(Helpers.sprite("placeholder.png"))
                 .add(Helpers.sprite("temp_bg.jpg"))
+                .add(Helpers.sprite("projectile/temp-projectile.png"))
                 .after(SheetParser)
                 .once("complete", function() {
                     self.doneLoading("graphics assets");
