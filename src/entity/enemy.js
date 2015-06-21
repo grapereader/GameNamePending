@@ -58,22 +58,28 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             var self = this;
 
             this.attackTimer = new Timer(1000 / this.attackData.speed, true, function() {
-                var player = self.gameManager.player;
-                player.attack(0);
+                self.attackPlayer();
             });
 
             this.moveManager = new MoveManager(this.gameManager, this);
+        },
+        canAttack: function() {
+            return this.getDistVector(this.gameManager.player).getMagnitude() <= 32;
+        },
+        /**
+            Protected.
+            Meant to be overriden by additional attack implementation.
+        */
+        attackPlayer: function() {
+            this.gameManager.player.attack(0);
         },
         update: function() {
             Enemy.$superp.update.call(this);
 
             var delta = this.gameManager.game.deltaTime;
-
             var player = this.gameManager.player;
 
-            var xDiff = Math.abs(player.tileX - this.tileX);
-            var yDiff = Math.abs(player.tileY - this.tileY);
-            if (xDiff <= this.attackData.range && yDiff <= this.attackData.range) {
+            if (this.canAttack()) {
                 this.walk(0, 0);
                 var anim = "use-left";
                 if (player.y < this.y) anim = "use-up";

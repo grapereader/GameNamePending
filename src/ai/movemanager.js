@@ -121,9 +121,8 @@ define(["math/vector"], function(Vector) {
                 var tileX = Math.round(cx / 64);
                 var tileY = Math.round(cy / 64);
 
-                if (this.board.grid[tileX][tileY].clipping) return false;
+                if (this.gameManager.board.grid[tileX][tileY].clipping) return false;
             }
-
             return true;
         },
         getPath: function(target) {

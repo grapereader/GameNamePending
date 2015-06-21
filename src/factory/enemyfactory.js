@@ -1,4 +1,9 @@
-define(["factory/templatefactory", "entity/enemy"], function(TemplateFactory, Enemy) {
+define(["factory/templatefactory", "entity/enemy", "entity/rangedenemy"], function(TemplateFactory, Enemy, RangedEnemy) {
+
+    var ENEMY_TYPES = {
+        MELEE: 0,
+        RANGED: 1
+    };
 
     var EnemyFactory = Class(TemplateFactory, {
         constructor: function(gameManager) {
@@ -14,13 +19,13 @@ define(["factory/templatefactory", "entity/enemy"], function(TemplateFactory, En
                         generic: 1.0,
                         melee: 1.0
                     },
+                    type: ENEMY_TYPES.MELEE,
                     data: {
                         name: "Testing Enemy",
                         spritesheet: "male-race-1",
                         attack: {
                             damage: 5,
-                            speed: 2,
-                            range: 0
+                            speed: 2
                         },
                         health: 10,
                         armour: 10,
@@ -46,17 +51,46 @@ define(["factory/templatefactory", "entity/enemy"], function(TemplateFactory, En
                         generic: 1.0,
                         melee: 1.0
                     },
+                    type: ENEMY_TYPES.MELEE,
                     data: {
                         name: "Stupid Enemy",
                         spritesheet: "male-race-1",
                         attack: {
                             damage: 10,
-                            speed: 4,
-                            range: 0
+                            speed: 4
                         },
                         health: 20,
                         armour: 20,
                         walkSpeed: 256,
+                        dropMap: [
+                            {
+                                //Will always drop one armour
+                                chance: 1.0,
+                                confines: ["armour"],
+                                count: 1
+                            }
+                        ]
+                    }
+                },
+                {
+                    groups: {
+                        all: 1.0,
+                        generic: 1.0,
+                        ranged: 1.0
+                    },
+                    type: ENEMY_TYPES.RANGED,
+                    data: {
+                        name: "Stupid Ranged Enemy",
+                        spritesheet: "male-race-1",
+                        attack: {
+                            damage: 10,
+                            speed: 4,
+                            range: 256,
+                            projectileSpeed: 256
+                        },
+                        health: 20,
+                        armour: 20,
+                        walkSpeed: 128,
                         dropMap: [
                             {
                                 //Will always drop one armour
@@ -74,7 +108,8 @@ define(["factory/templatefactory", "entity/enemy"], function(TemplateFactory, En
         },
         getLeveledEnemy: function(tileX, tileY) {
             var data = this.currentTemplate.data;
-            return new Enemy(this.gameManager, tileX, tileY, this.level, data);
+            var classes = [Enemy, RangedEnemy];
+            return new classes[this.currentTemplate.type](this.gameManager, tileX, tileY, this.level, data);
         }
     });
 

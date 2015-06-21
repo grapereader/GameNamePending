@@ -109,6 +109,9 @@ define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop", "mat
         },
         isDead: function() {
             return this.health <= 0;
+        },
+        getDistVector: function(entity) {
+            return new Vector(entity.x - this.x, entity.y - this.y);
         }
     });
 
