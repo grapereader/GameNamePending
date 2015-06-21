@@ -94,11 +94,10 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
             this.calculateDelta();
             this.fpsMillis += this.deltaTime;
             this.fpsTicker++;
-            if (this.fpsMillis >= 1000) {
-                this.fps = this.fpsTicker;
+            if (this.fpsMillis >= 200) {
+                this.fps = 1000 / (this.fpsMillis / this.fpsTicker);
                 this.fpsMillis = 0;
-                this.fpsTicker = 0
-                    //console.log(this.fps);
+                this.fpsTicker = 0;
             }
             this.currentScene.update();
             this.currentScene.render(this.renderer);

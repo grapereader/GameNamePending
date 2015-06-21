@@ -55,7 +55,7 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
             this.player.update();
             this.board.update();
             this.windowSystem.update();
-            this.fpsText.text = "FPS: " + this.game.fps;
+            this.fpsText.text = "FPS: " + this.game.fps.toFixed(0);
         },
 
 
