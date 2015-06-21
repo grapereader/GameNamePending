@@ -43,12 +43,12 @@ define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop", "mat
             Preferred way to move the entity, since it sets the corresponding animation.
         */
         walk: function(dx, dy) {
-            if (dx !== this.dx || dy !== this.dy) {
-                this.dx = dx;
-                this.dy = dy;
-                this.updateDir();
+            this.dx = dx;
+            this.dy = dy;
+            var odir = this.dir;
+            this.updateDir();
+            if (odir !== this.dir) {
                 this.updateAnim();
-                //console.log("Moving " + dx + ", " + dy);
             }
         },
         updateDir: function() {
