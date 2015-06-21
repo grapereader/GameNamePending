@@ -15,9 +15,16 @@ define(["entity/entity", "util/helpers", "math/vector"], function(Entity, Helper
             tempSprite.texture = PIXI.utils.TextureCache[Helpers.sprite("projectile/temp-projectile.png")];
             tempSprite.rotation = velocity.getAngle();
             this.addChild(tempSprite);
+
+            this.alphaTicker = 0;
         },
         update: function() {
             Projectile.$superp.update.call(this);
+
+            if (this.alphaTicker < 150) {
+                this.container.alpha = this.alphaTicker / 150;
+                this.alphaTicker += this.gameManager.game.deltaTime;
+            }
 
             var dist = new Vector(this.x - this.initX, this.y - this.initY).getMagnitude();
             if (dist > 10 * 64) {
