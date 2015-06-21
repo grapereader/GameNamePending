@@ -6,7 +6,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.container = new PIXI.Container();
             this.tileType = "Path";
             this.container.addChild(this.createSprite("wood1"));
-        },  
+        },
         update: function() {
             Path.$superp.update.call(this);
         }

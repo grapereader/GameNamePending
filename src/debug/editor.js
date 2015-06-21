@@ -9,12 +9,12 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
 
             var keys = this.gameManager.game.keymap;
 
-            if (keys.isKeyDown("debug.Tile")) this.gameManager.board.setTile(new Tile(this.gameManager).setPosition(currentX,currentY));
-            if (keys.isKeyDown("debug.Wall")) this.gameManager.board.setTile(new Wall(this.gameManager).setPosition(currentX,currentY));
-            if (keys.isKeyDown("debug.Path")) this.gameManager.board.setTile(new Path(this.gameManager).setPosition(currentX,currentY));
-            if (keys.isKeyDown("debug.Door")) this.gameManager.board.setTile(new Door(this.gameManager).setPosition(currentX,currentY));
-            if (keys.isKeyDown("debug.Chest")) this.gameManager.board.setTile(new Chest(this.gameManager).setPosition(currentX,currentY));
-            if (keys.isKeyDown("debug.Torch")) this.gameManager.board.setTile(new Torch(this.gameManager).setPosition(currentX,currentY));
+            if (keys.isKeyDown("debug.Tile")) this.gameManager.board.setTile(new Tile(this.gameManager).setPosition(currentX, currentY));
+            if (keys.isKeyDown("debug.Wall")) this.gameManager.board.setTile(new Wall(this.gameManager).setPosition(currentX, currentY));
+            if (keys.isKeyDown("debug.Path")) this.gameManager.board.setTile(new Path(this.gameManager).setPosition(currentX, currentY));
+            if (keys.isKeyDown("debug.Door")) this.gameManager.board.setTile(new Door(this.gameManager).setPosition(currentX, currentY));
+            if (keys.isKeyDown("debug.Chest")) this.gameManager.board.setTile(new Chest(this.gameManager).setPosition(currentX, currentY));
+            if (keys.isKeyDown("debug.Torch")) this.gameManager.board.setTile(new Torch(this.gameManager).setPosition(currentX, currentY));
             if (keys.isKeyDown("debug.Export")) {
                 var editingAreaSize = this.editingAreaSize;
 
@@ -53,13 +53,13 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                 var editingAreaSize = this.editingAreaSize;
                 for (var i = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); i < Math.floor(this.gameManager.board.gridWidth / 2) + Math.floor(editingAreaSize / 2) + 1; i++) {
                     for (var j = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); j < Math.floor(this.gameManager.board.gridWidth / 2) + Math.floor(editingAreaSize / 2) + 1; j++) {
-                        var tile = new Tile(this.gameManager).setPosition(i,j);
-                        if (keys.isKeyDown("debug.Tile")) tile = new Tile(this.gameManager).setPosition(i,j);
-                        if (keys.isKeyDown("debug.Wall")) tile = new Wall(this.gameManager).setPosition(i,j);
-                        if (keys.isKeyDown("debug.Path")) tile = new Path(this.gameManager).setPosition(i,j);
-                        if (keys.isKeyDown("debug.Door")) tile = new Door(this.gameManager).setPosition(i,j);
-                        if (keys.isKeyDown("debug.Chest")) tile = new Chest(this.gameManager).setPosition(i,j);
-                        if (keys.isKeyDown("debug.Torch")) tile = new Torch(this.gameManager).setPosition(i,j);
+                        var tile = new Tile(this.gameManager).setPosition(i, j);
+                        if (keys.isKeyDown("debug.Tile")) tile = new Tile(this.gameManager).setPosition(i, j);
+                        if (keys.isKeyDown("debug.Wall")) tile = new Wall(this.gameManager).setPosition(i, j);
+                        if (keys.isKeyDown("debug.Path")) tile = new Path(this.gameManager).setPosition(i, j);
+                        if (keys.isKeyDown("debug.Door")) tile = new Door(this.gameManager).setPosition(i, j);
+                        if (keys.isKeyDown("debug.Chest")) tile = new Chest(this.gameManager).setPosition(i, j);
+                        if (keys.isKeyDown("debug.Torch")) tile = new Torch(this.gameManager).setPosition(i, j);
                         this.gameManager.board.setTile(tile);
                     }
                 }

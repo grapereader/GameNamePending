@@ -96,10 +96,13 @@ define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop", "mat
                     var dropRadius = count * 64;
                     for (var i = 0; i < count; i++) {
                         var item = this.gameManager.itemFactory.getItem(groups.confines);
-                        var drop = new ItemDrop(this.gameManager, item,
-                            {x: this.x, y: this.y},
-                            {x: this.x + ((Math.random() * dropRadius) - (dropRadius / 2)), y: this.y + ((Math.random() * dropRadius) - (dropRadius / 2))}
-                        );
+                        var drop = new ItemDrop(this.gameManager, item, {
+                            x: this.x,
+                            y: this.y
+                        }, {
+                            x: this.x + ((Math.random() * dropRadius) - (dropRadius / 2)),
+                            y: this.y + ((Math.random() * dropRadius) - (dropRadius / 2))
+                        });
                         this.gameManager.board.addItemDrop(drop);
                     }
                 }

@@ -29,7 +29,7 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
             return sprite;
         },
         setPosition: function(tileX, tileY) {
-            if(this.container !== undefined){
+            if (this.container !== undefined) {
                 this.container.x = this.x = tileX * 64;
                 this.container.y = this.y = tileY * 64;
             }

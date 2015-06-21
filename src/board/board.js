@@ -211,7 +211,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
                 }
             }
             /**
-
+             
              */
 
     });
