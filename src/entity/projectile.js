@@ -35,6 +35,9 @@ define(["entity/entity", "util/helpers", "math/vector"], function(Entity, Helper
             if (this.gameManager.board.grid[tileX][tileY].clipping) {
                 this.pendingRemoval = true;
             }
+        },
+        attack: function(e) {
+            //Disable attacking projectiles. Unless we want this...
         }
     });
 
