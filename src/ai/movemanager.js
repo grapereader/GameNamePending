@@ -1,6 +1,7 @@
 define(["math/vector"], function(Vector) {
 
     var MAX_FOLLOW = 1024;
+    var SMOOTHING = 8;
 
     var MoveManager = Class({
         constructor: function(gameManager, entity) {
@@ -9,6 +10,7 @@ define(["math/vector"], function(Vector) {
             this.path = false;
             this.prevTarget = false;
             this.nextPath = false;
+            this.last = [];
         },
         getMovement: function(target) {
             var board = this.board = this.gameManager.board;
@@ -62,7 +64,17 @@ define(["math/vector"], function(Vector) {
 
             this.prevTarget = target;
 
-            return movement.normalize();
+            movement = movement.normalize();
+
+            this.last.push(movement);
+            if (this.last.length > SMOOTHING) this.last.splice(0, 1);
+            var avg = new Vector(0, 0);
+            for (var i = 0; i < this.last.length; i++) {
+                avg = avg.add(this.last[i]);
+            }
+            avg = avg.multiply(1 / this.last.length);
+
+            return avg;
         },
         diffTile: function(target1, target2) {
             return target1.tileX !== target2.tileX || target1.tileY !== target2.tileY;

@@ -43,11 +43,10 @@ define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop", "mat
             Preferred way to move the entity, since it sets the corresponding animation.
         */
         walk: function(dx, dy) {
-            this.dx = dx;
-            this.dy = dy;
-            var odir = this.dir;
-            this.updateDir();
-            if (odir !== this.dir) {
+            if (dx !== this.dx || dy !== this.dy) {
+                this.dx = dx;
+                this.dy = dy;
+                this.updateDir();
                 this.updateAnim();
             }
         },
@@ -61,15 +60,15 @@ define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop", "mat
         },
         updateAnim: function() {
             if (this.dx === 0 && this.dy === 0) {
-                if (this.dir === 0) this.animGroup.setAnimation("stand-right");
-                else if (this.dir === 1) this.animGroup.setAnimation("stand-left");
-                else if (this.dir === 2) this.animGroup.setAnimation("stand-down");
-                else if (this.dir === 3) this.animGroup.setAnimation("stand-up");
+                if (this.dir === 0) this.animGroup.setAnimationOnce("stand-right");
+                else if (this.dir === 1) this.animGroup.setAnimationOnce("stand-left");
+                else if (this.dir === 2) this.animGroup.setAnimationOnce("stand-down");
+                else if (this.dir === 3) this.animGroup.setAnimationOnce("stand-up");
             } else {
-                if (this.dir === 0) this.animGroup.setAnimation("walk-right");
-                else if (this.dir === 1) this.animGroup.setAnimation("walk-left");
-                else if (this.dir === 2) this.animGroup.setAnimation("walk-down");
-                else if (this.dir === 3) this.animGroup.setAnimation("walk-up");
+                if (this.dir === 0) this.animGroup.setAnimationOnce("walk-right");
+                else if (this.dir === 1) this.animGroup.setAnimationOnce("walk-left");
+                else if (this.dir === 2) this.animGroup.setAnimationOnce("walk-down");
+                else if (this.dir === 3) this.animGroup.setAnimationOnce("walk-up");
             }
         },
         attack: function(damage) {

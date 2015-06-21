@@ -88,9 +88,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                     if (player.x < this.x) anim = "use-left";
                     if (player.x > this.x) anim = "use-right";
                 }
-                if (this.animGroup.active !== anim) {
-                    this.animGroup.setAnimation(anim);
-                }
+                this.animGroup.setAnimationOnce(anim);
                 this.attackTimer.update(delta);
             } else {
                 var vec = this.moveManager.getMovement(player);

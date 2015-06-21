@@ -34,6 +34,10 @@ define(function() {
                 this.animations[i].setAnimation(anim);
             }
         },
+        setAnimationOnce: function(anim) {
+            if (this.active === anim) return;
+            this.setAnimation(anim);
+        },
         isFinished: function() {
             for (var i = 0; i < this.animations.length; i++) {
                 if (this.animations[i].finished === true) return true;
