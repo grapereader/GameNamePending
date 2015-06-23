@@ -28,6 +28,10 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
                 map: false //False here can mean player is currently in lobby
             }
 
+            //Putting this in here since it would be a huge pain to refactor
+            //all the tiles to take this in constructor.
+            this.levelTheme = "tiles-2";
+
             var self = this;
             this.levelgenerator = new LevelGenerator(this);
             this.board = this.levelgenerator.generateLevel(1);

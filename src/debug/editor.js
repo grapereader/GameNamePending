@@ -1,4 +1,4 @@
-define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/torch"], function(Tile, Wall, Path, Door, Chest, Torch) {
+define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/chest", "tile/object/torch"], function(Tile, Wall, Path, Door, Chest, Torch) {
 
     var Editor = Class({
         constructor: function(gameManager) {

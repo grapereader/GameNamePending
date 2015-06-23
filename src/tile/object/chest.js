@@ -1,5 +1,5 @@
-define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Animation) {
-    var Chest = Class(Tile, {
+define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject, Helpers, Animation) {
+    var Chest = Class(TileObject, {
         constructor: function(gameManager) {
             Chest.$super.call(this, gameManager);
             this.hasTreasure = true;

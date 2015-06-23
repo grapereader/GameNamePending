@@ -1,5 +1,5 @@
-define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Animation) {
-    var Torch = Class(Tile, {
+define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject, Helpers, Animation) {
+    var Torch = Class(TileObject, {
         constructor: function(gameManager) {
             Torch.$super.call(this, gameManager);
             this.isLit = true;

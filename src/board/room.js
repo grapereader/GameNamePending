@@ -1,4 +1,4 @@
-define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/torch"], function(Tile, Wall, Path, Door, torch, chest) {
+define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/chest", "tile/object/torch"], function(Tile, Wall, Path, Door, torch, chest) {
 
     var Room = Class({
         constructor: function(gameManager) {
@@ -192,13 +192,16 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                     temp = new Path(this.gameManager);
                     break;
                 case "Door":
-                    temp = new Door(this.gameManager);
+                    temp = new Path(this.gameManager);
+                    temp.addObject(new Door(this.gameManager));
                     break;
                 case "Chest":
-                    temp = new Chest(this.gameManager);
+                    temp = new Path(this.gameManager);
+                    temp.addObject(new Chest(this.gameManager));
                     break;
                 case "Torch":
-                    temp = new Torch(this.gameManager);
+                    temp = new Path(this.gameManager);
+                    temp.addObject(new Torch(this.gameManager));
                     break;
             }
             temp.fromJSON(tileInfo);

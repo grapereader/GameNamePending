@@ -1,4 +1,4 @@
-define(["board/board", "tile/wall", "tile/path", "tile/door", "board/room", "tile/tile", "board/roomtemplates", "factory/enemyfactory"], function(Board, Wall, Path, Door, Room, Tile, RoomTemplates, EnemyFactory) {
+define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "board/roomtemplates", "factory/enemyfactory"], function(Board, Wall, Path, Room, Tile, RoomTemplates, EnemyFactory) {
 
     var LevelGenerator = Class({
         constructor: function(gameManager) {
@@ -86,10 +86,25 @@ define(["board/board", "tile/wall", "tile/path", "tile/door", "board/room", "til
                     if (numWalls >= 3) {
                         board.setTile(new Wall(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y));
                     }
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Door") board.setTile(new Path(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y));
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1].tileType == "Door") board.setTile(new Path(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1));
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Door") board.setTile(new Path(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y));
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1].tileType == "Door") board.setTile(new Path(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].hasObject("Door")) board.setTile(new Path(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1].hasObject("Door")) board.setTile(new Path(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].hasObject("Door")) board.setTile(new Path(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y));
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1].hasObject("Door")) board.setTile(new Path(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1));
+                }
+            }
+
+            for (var x = 0; x < board.gridWidth; x++) {
+                for (var y = 0; y < board.gridHeight; y++) {
+                    board.grid[x][y].setSprite(board);
+
+                    var t = board.grid[x][y];
+                    var tx = Math.floor(t.container.x / 64);
+                    var ty = Math.floor(t.container.y / 64);
+                    if (tx !== x || ty !== y) {
+                        console.log("Misplaced tile!! " + tx + ", " + x + ", " + ty + ", " + y);
+                    } else if (!t.added) {
+                        console.log("Not added");
+                    }
                 }
             }
 

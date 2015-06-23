@@ -1,4 +1,4 @@
-define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "ai/pathfinder"], function(Tile, Wall, Path, Door, ViewObject, PathFinder) {
+define(["tile/tile", "tile/wall", "tile/path", "view/viewobject", "ai/pathfinder"], function(Tile, Wall, Path, ViewObject, PathFinder) {
     var Board = Class(ViewObject, {
         constructor: function(gameManager, boardWidth, boardHeight) {
             Board.$super.call(this, gameManager.scene);
@@ -20,7 +20,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
 
             this.enemies = [];
             this.itemDrops = [];
-            this.grid = this.initializeGrid(this.gridWidth, this.gridHeight);
+            this.initializeGrid(this.gridWidth, this.gridHeight);
         },
         /**
             Returns an array of entrances that are not connected to multiple rooms
@@ -29,7 +29,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
             var isolatedEntrances = [];
             for (var x = 1; x < this.gridWidth - 2; x++) {
                 for (var y = 1; y < this.gridHeight - 2; y++) {
-                    if (this.grid[x][y].tileType == "Door") {
+                    if (this.grid[x][y].hasObject("Door")) {
                         if (this.grid[x - 1][y].tileType == "Empty" || this.grid[x + 1][y].tileType == "Empty" || this.grid[x][y - 1].tileType == "Empty" || this.grid[x][y + 1].tileType == "Empty") {
                             return [x, y];
                         }
@@ -39,14 +39,13 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
             return -1;
         },
         initializeGrid: function(width, height) {
-            var grid = new Array(width);
+            this.grid = new Array(width);
             for (var x = 0; x < width; x++) {
-                grid[x] = new Array(height);
+                this.grid[x] = new Array(height);
                 for (var y = 0; y < height; y++) {
-                    grid[x][y] = new Tile(this.gameManager, x, y);
+                    this.setTile(new Tile(this.gameManager).setPosition(x, y));
                 }
             }
-            return grid;
         },
         addEnemy: function(e) {
             this.enemies.push(e);
@@ -165,7 +164,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
         setTile: function(tile) {
             var x = tile.tileX;
             var y = tile.tileY;
-            if (this.grid[x][y].container !== undefined && this.grid[x][y] instanceof Tile && this.grid[x][y].added) this.removeChild(this.grid[x][y].container);
+            if (this.grid[x][y] !== undefined && this.grid[x][y].container !== undefined && this.grid[x][y] instanceof Tile && this.grid[x][y].added) this.removeChild(this.grid[x][y].container);
             tile.added = true;
             this.grid[x][y] = tile;
             if (this.grid[x][y].container !== undefined) this.addChild(tile.container);
@@ -211,7 +210,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "view/viewobject", "
                 }
             }
             /**
-             
+
              */
 
     });

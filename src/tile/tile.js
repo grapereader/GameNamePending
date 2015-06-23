@@ -13,18 +13,80 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
             this.width = 64;
             this.height = 64;
             this.animGroup = new AnimGroup();
+
+            this.container = new PIXI.Container();
+
+            this.objects = [];
         },
         update: function() {
+            for (var i = 0; i < this.objects.length; i++) {
+                this.objects[i].update();
+            }
+
+            if (this.test === undefined) {
+                this.test = true;
+                var text = new PIXI.Text(this.tileType, {
+                    font: Helpers.getFont(16),
+                    fill: "white"
+                });
+                this.container.addChild(text);
+            }
+
             this.sx = this.x - this.scene.view.x;
             this.sy = this.y - this.scene.view.y;
             this.cull();
         },
-        createSprite: function(spriteLocation) {
-            var sprite = new PIXI.Sprite(PIXI.utils.TextureCache["tiles-1"][spriteLocation]);
+        getNeighbors: function(board) {
+            var n = {
+                left: "Wall",
+                right: "Wall",
+                bot: "Wall",
+                top: "Wall",
+                tiles: {
+                    left: false,
+                    right: false,
+                    bot: false,
+                    top: false
+                }
+            }
+
+            if (this.tileX > 0) {
+                n.tiles.left = board.grid[this.tileX - 1][this.tileY];
+                n.left = n.tiles.left.tileType;
+            }
+
+            if (this.tileX < board.gridWidth - 1) {
+                n.tiles.right = board.grid[this.tileX + 1][this.tileY];
+                n.right = n.tiles.right.tileType;
+            }
+
+            if (this.tileY > 0) {
+                n.tiles.top = board.grid[this.tileX][this.tileY - 1];
+                n.top = n.tiles.top.tileType;
+            }
+
+            if (this.tileY < board.gridHeight - 1) {
+                n.tiles.bot = board.grid[this.tileX][this.tileY + 1];
+                n.bot = n.tiles.bot.tileType;
+            }
+
+            return n;
+        },
+        setSprite: function(board) {},
+        addObject: function(object) {
+            this.objects.push(object);
+            if (this.container !== undefined) this.container.addChild(object.container);
+        },
+        hasObject: function(tileType) {
+            for (var i = 0; i < this.objects.length; i++) {
+                if (this.objects[i].tileType === tileType) return true;
+            }
+            return false;
+        },
+        createSprite: function(spriteLocation, sheet) {
+            var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[sheet !== undefined ? sheet : this.gameManager.levelTheme][spriteLocation]);
             sprite.scale.x = 2;
             sprite.scale.y = 2;
-            //sprite.anchor.x = 0.5;
-            //sprite.anchor.y = 0.5;
 
             return sprite;
         },
@@ -41,20 +103,16 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
             this.setPosition(this.tileX + x, this.tileY + y);
             return this;
         },
-        /**
-            Add an animation (util/anim) to the Tile. Potientally useful for animated decorations.
-        */
-        toJSON: function() {
-            var tile = {
+        toData: function() {
+            var data = {
                 type: this.tileType,
-                x: this.container.x,
-                y: this.container.y,
+                x: this.tileX,
+                y: this.tileY,
             };
-            return tile;
+            return data;
         },
-        fromJSON: function(tileInfo) {
-            this.container.x = tileInfo.x;
-            this.container.y = tileInfo.y;
+        fromData: function(data) {
+            this.setPosition(data.x, data.y);
         }
 
     });

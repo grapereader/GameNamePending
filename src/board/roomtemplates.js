@@ -1,4 +1,4 @@
-define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/torch", "board/room"], function(Tile, Wall, Path, Door, Chest, Torch, Room) {
+define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/chest", "tile/object/torch", "board/room"], function(Tile, Wall, Path, Door, Chest, Torch, Room) {
 
     var RoomTemplates = Class({
         constructor: function(gameManager) {
@@ -643,13 +643,16 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/door", "tile/chest", "tile/
                             room.grid[i][j] = new Path(this.gameManager);
                             break;
                         case "Door":
-                            room.grid[i][j] = new Door(this.gameManager);
+                            room.grid[i][j] = new Path(this.gameManager);
+                            room.grid[i][j].addObject(new Door(this.gameManager));
                             break;
                         case "Chest":
-                            room.grid[i][j] = new Chest(this.gameManager);
+                            room.grid[i][j] = new Path(this.gameManager);
+                            room.grid[i][j].addObject(new Chest(this.gameManager));
                             break;
                         case "Torch":
-                            room.grid[i][j] = new Torch(this.gameManager);
+                            room.grid[i][j] = new Path(this.gameManager);
+                            room.grid[i][j].addObject(new Torch(this.gameManager));
                             break;
                     }
                 }

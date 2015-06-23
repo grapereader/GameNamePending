@@ -5,7 +5,9 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.clipping = false;
             this.container = new PIXI.Container();
             this.tileType = "Path";
-            this.container.addChild(this.createSprite("wood1"));
+        },
+        setSprite: function(board) {
+            this.container.addChild(this.createSprite("floor"));
         },
         update: function() {
             Path.$superp.update.call(this);

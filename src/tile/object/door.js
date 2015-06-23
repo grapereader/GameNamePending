@@ -1,5 +1,5 @@
-define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Animation) {
-    var Door = Class(Tile, {
+define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject, Helpers, Animation) {
+    var Door = Class(TileObject, {
         constructor: function(gameManager) {
             Door.$super.call(this, gameManager);
             this.isShut = false;
