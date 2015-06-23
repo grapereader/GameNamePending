@@ -96,15 +96,6 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
             for (var x = 0; x < board.gridWidth; x++) {
                 for (var y = 0; y < board.gridHeight; y++) {
                     board.grid[x][y].setSprite(board);
-
-                    var t = board.grid[x][y];
-                    var tx = Math.floor(t.container.x / 64);
-                    var ty = Math.floor(t.container.y / 64);
-                    if (tx !== x || ty !== y) {
-                        console.log("Misplaced tile!! " + tx + ", " + x + ", " + ty + ", " + y);
-                    } else if (!t.added) {
-                        console.log("Not added");
-                    }
                 }
             }
 
