@@ -23,7 +23,7 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
                 this.objects[i].update();
             }
 
-            if (this.test === undefined) {
+            if (this.test !== undefined) {
                 this.test = true;
                 var text = new PIXI.Text(this.tileType, {
                     font: Helpers.getFont(16),

@@ -13,27 +13,34 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             var top = n.top;
             var bot = n.bot;
 
+            var nTop = n.tiles.top.getNeighbors(board);
+            var nBot = n.tiles.bot.getNeighbors(board);
+            var nLeft = n.tiles.left.getNeighbors(board);
+            var nRight = n.tiles.right.getNeighbors(board);
+
             var layers = [];
 
             if (bot === "Empty" && top === "Path") layers.push("wall-top");
 
+            if (left === "Path") {
+                layers.push("wall-left");
+            }
+
+            if (right === "Path") {
+                layers.push("wall-right");
+            }
+
             if (bot !== "Path" && top === "Path") {
-                if (right === "Path" && left === "Path") {
-                    layers.push("wall-left");
-                    layers.push("wall-right");
-                    layers.push("wall-top");
-                } else if (right === "Path") {
+                if (right === "Path") {
                     layers.push("wall-top-corner-right");
                 } else if (left === "Path") {
                     layers.push("wall-top-corner-left");
-                } else if (left === "Wall" && right === "Wall") {
+                } else {
                     layers.push("wall-top");
                 }
             }
 
             if (top === "Wall" && left === "Path" && right === "Path" && bot === "Path") {
-                layers.push("wall-left");
-                layers.push("wall-right");
                 layers.push("wall-bottom-corner-left");
             }
 
@@ -41,16 +48,38 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
                 if (left === "Wall" && right === "Wall") layers.push("wall-middle");
             }
 
-            if (top === "Wall" && bot === "Wall" && left === "Path" && right === "Path") {
-                layers.push("wall-left");
-                layers.push("wall-right");
-            }
-
             if (top === "Path" && bot === "Path") {
                 layers.push("wall-top");
                 layers.push("wall-middle");
             }
 
+            if (right !== "Path" && top !== "Path" && left === "Path" && bot === "Path") {
+                layers.push("wall-bottom-corner-left");
+            } else if (left !== "Path" && top !== "Path" && right === "Path" && bot === "Path") {
+                layers.push("wall-bottom-corner-right");
+            } else if (bot === "Path" && top !== "Path") {
+                layers.push("wall-middle");
+            }
+
+            if (right === "Wall" && bot === "Wall") {
+                if (nRight.bot === "Path") {
+                    if (nRight.top === "Path") {
+                        layers.push("wall-right");
+                    } else {
+                        layers.push("wall-top-corner-left-stub");
+                    }
+                }
+            }
+
+            if (left === "Wall" && bot === "Wall") {
+                if (nLeft.bot === "Path") {
+                    if (nLeft.top === "Path") {
+                        layers.push("wall-left");
+                    } else {
+                        layers.push("wall-top-corner-right-stub");
+                    }
+                }
+            }
 
             for (var i = 0; i < layers.length; i++) {
                 this.container.addChild(this.createSprite(layers[i]));
