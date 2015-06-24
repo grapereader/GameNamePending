@@ -11,7 +11,7 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
             this.lights = [
                 {
                     point: this.gameManager.player,
-                    range: 700
+                    range: 512
                 }
             ];
         },
@@ -28,8 +28,10 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
 
             for (var i = 0; i < this.lights.length; i++) {
                 var light = this.lights[i];
-                var tx = Math.round(light.point.x / 64);
-                var ty = Math.round(light.point.y / 64);
+                var lx = light.point.x + 32;
+                var ly = light.point.y + 32;
+                var tx = Math.round(lx / 64);
+                var ty = Math.round(ly / 64);
 
                 var tr = Math.round(light.range / 64);
 
@@ -37,7 +39,7 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                 for (var x = Math.max(0, tx - tr); x < Math.min(grid.length, tx + tr); x++) {
                     for (var y = Math.max(0, ty - tr); y < Math.min(grid[x].length, ty + tr); y++) {
                         var o = grid[x][y];
-                        if (o.clipping) objects.push(o);
+                        if (o.tileType === "Wall" && o.clipping) objects.push(o);
                     }
                 }
                 var sides = [];
@@ -65,25 +67,31 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                     });
                 }
 
-                for (var ang = 0; ang < Math.PI * 2; ang += (Math.PI * 2) / 180) {
-                    var vec = Vector.fromAngle(ang, 1);
+                for (var k = 0; k < sides.length; k++) {
+                    var side = sides[k];
+                    var vec = new Vector(side.a.x - lx, side.a.y - ly);
 
-                    var line = {
-                        x: light.point.x + 32,
-                        y: light.point.y + 32,
-                        dir: vec,
-                        ndir: vec.normalize()
+                    for (var e = -1; e <= 1; e++) {
+                        if (e === 0) continue;
+
+                        var rvec = Vector.fromAngle(vec.getAngle() + (e * 0.01), 1);
+                        var line = {
+                            x: lx,
+                            y: ly,
+                            dir: rvec,
+                            ndir: rvec.normalize()
+                        }
+
+                        var int = this.getIntersections(sides, line);
+
+                        if (int === false) {
+                            int = line.ndir.multiply(light.range).add(new Vector(lx, ly));
+                        }
+
+                        this.graphics.moveTo(light.point.x + 32, light.point.y + 32);
+                        this.graphics.lineTo(int.x, int.y);
                     }
-                    var int = this.getIntersections(sides, line);
-
-                    if (int === false) {
-                        int = vec.multiply(light.range).add(new Vector(light.point.x + 32, light.point.y + 32));
-                    }
-
-                    this.graphics.moveTo(light.point.x + 32, light.point.y + 32);
-                    this.graphics.lineTo(int.x, int.y);
                 }
-
             }
         },
         getIntersections: function(sides, line) {
