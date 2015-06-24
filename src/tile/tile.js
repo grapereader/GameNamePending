@@ -14,8 +14,6 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
             this.height = 64;
             this.animGroup = new AnimGroup();
 
-            this.container = new PIXI.Container();
-
             this.objects = [];
         },
         update: function() {
