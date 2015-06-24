@@ -28,8 +28,8 @@ define(function() {
     });
 
     Vector.fromAngle = function(angle, magnitude) {
-        var x = magnitude * Math.sin(angle);
-        var y = magnitude * Math.cos(angle);
+        var x = magnitude * Math.cos(angle);
+        var y = magnitude * Math.sin(angle);
         return new Vector(x, y);
     }
 

@@ -1,4 +1,4 @@
-define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwindow", "gui/windowsystem", "board/board", "board/levelgenerator", "item/itemdrop"], function(Player, ItemFactory, Helpers, PlayerInventoryWindow, WindowSystem, Board, LevelGenerator, ItemDrop) {
+define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwindow", "gui/windowsystem", "board/board", "board/levelgenerator", "item/itemdrop", "lighting/lightsystem"], function(Player, ItemFactory, Helpers, PlayerInventoryWindow, WindowSystem, Board, LevelGenerator, ItemDrop, LightSystem) {
     /**
         This is the meat of the game logic.
 
@@ -54,11 +54,15 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
 
             var playerInv = new PlayerInventoryWindow(this);
             this.windowSystem.addChild(playerInv);
+
+            this.lightSystem = new LightSystem(this);
+            this.scene.addObject(this.lightSystem.container, 1);
         },
         update: function() {
             this.player.update();
             this.board.update();
             this.windowSystem.update();
+            this.lightSystem.update();
             this.fpsText.text = "FPS: " + this.game.fps.toFixed(0);
         },
 
