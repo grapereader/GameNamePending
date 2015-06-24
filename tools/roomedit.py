@@ -8,7 +8,8 @@ types = {
     "Wall": "#F00",
     "Path": "#0F0",
     "Chest": "#00F",
-    "Torch": "#FB0"
+    "Torch": "#FB0",
+    "Door": "#000"
 }
 
 for k, v in types.items():
