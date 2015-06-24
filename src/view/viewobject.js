@@ -23,8 +23,11 @@ define(["view/cullable"], function(Cullable) {
             this function; no system currently exists to automate this.
         */
         update: function() {
-            this.container.x = this.sx = this.x - this.scene.view.x;
-            this.container.y = this.sy = this.y - this.scene.view.y;
+            this.sx = this.x - this.scene.view.x;
+            this.sy = this.y - this.scene.view.y;
+
+            this.container.x = Math.floor(this.sx);
+            this.container.y = Math.floor(this.sy);
 
             this.cull();
         },
