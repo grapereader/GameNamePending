@@ -18,7 +18,7 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
         update: function() {
             LightSystem.$superp.update.call(this);
 
-            //this.recalc();
+            this.recalc();
         },
         recalc: function() {
             this.graphics.clear();
@@ -43,28 +43,26 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                 var sides = [];
                 for (var k = 0; k < objects.length; k++) {
                     var o = objects[k];
-                    sides = sides.concat([
-                        {
-                            a: {x: o.x, y: o.y},
-                            dir: {x: o.width, y: 0},
-                            ndir: {x: 1, y: 0}
-                        },
-                        {
-                            a: {x: o.x, y: o.y + o.height},
-                            dir: {x: o.width, y: 0},
-                            ndir: {x: 1, y: 0}
-                        },
-                        {
-                            a: {x: o.x, y: o.y},
-                            dir: {x: 0, y: o.height},
-                            ndir: {x: 0, y: 1}
-                        },
-                        {
-                            a: {x: o.x + o.width, y: o.y},
-                            dir: {x: 0, y: o.height},
-                            ndir: {x: 0, y: 1}
-                        }
-                    ]);
+                    sides.push({
+                        a: {x: o.x, y: o.y},
+                        dir: {x: o.width, y: 0},
+                        ndir: {x: 1, y: 0}
+                    });
+                    sides.push({
+                        a: {x: o.x, y: o.y + o.height},
+                        dir: {x: o.width, y: 0},
+                        ndir: {x: 1, y: 0}
+                    });
+                    sides.push({
+                        a: {x: o.x, y: o.y},
+                        dir: {x: 0, y: o.height},
+                        ndir: {x: 0, y: 1}
+                    });
+                    sides.push({
+                        a: {x: o.x + o.width, y: o.y},
+                        dir: {x: 0, y: o.height},
+                        ndir: {x: 0, y: 1}
+                    });
                 }
 
                 for (var ang = 0; ang < Math.PI * 2; ang += (Math.PI * 2) / 180) {
