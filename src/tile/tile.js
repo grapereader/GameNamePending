@@ -1,4 +1,4 @@
-define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, Helpers, AnimGroup) {
+define(["view/cullable", "util/helpers", "util/animgroup", "lighting/filter"], function(Cullable, Helpers, AnimGroup, LightFilter) {
 
     var Tile = Class(Cullable, {
         constructor: function(gameManager) {
@@ -14,11 +14,17 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
             this.height = 64;
             this.animGroup = new AnimGroup();
 
+            this.lightingEnabled = false;
+
             this.objects = [];
         },
         update: function() {
             for (var i = 0; i < this.objects.length; i++) {
                 this.objects[i].update();
+            }
+
+            if (this.lightingEnabled) {
+                this.filter.setLight(this.gameManager.player.sx, this.gameManager.player.sy);
             }
 
             if (this.test !== undefined) {
@@ -33,6 +39,16 @@ define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, H
             this.sx = this.x - this.scene.view.x;
             this.sy = this.y - this.scene.view.y;
             this.cull();
+        },
+        addFilter: function(filter) {
+            if (this.container.filters === undefined) this.container.filters = [];
+            this.container.filters.push(filter);
+        },
+        enableLighting: function(normalMap) {
+            this.filter = new LightFilter(this.gameManager, normalMap);
+            this.container.filters = [this.filter.filter];
+
+            this.lightingEnabled = true;
         },
         getNeighbors: function(board) {
             var n = {

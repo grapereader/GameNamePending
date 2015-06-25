@@ -16,6 +16,7 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
             ];
         },
         update: function() {
+            return;
             LightSystem.$superp.update.call(this);
 
             this.recalc();
@@ -88,8 +89,8 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                             int = line.ndir.multiply(light.range).add(new Vector(lx, ly));
                         }
 
-                        this.graphics.moveTo(light.point.x + 32, light.point.y + 32);
-                        this.graphics.lineTo(int.x, int.y);
+                        //this.graphics.moveTo(light.point.x + 32, light.point.y + 32);
+                        //this.graphics.lineTo(int.x, int.y);
                     }
                 }
             }
