@@ -63,8 +63,7 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
 
             this.moveManager = new MoveManager(this.gameManager, this);
 
-            //TODO THIS IS TEMP. Enemies should have a normal map, even if it's a central blank one.
-            this.enableLighting(PIXI.utils.TextureCache[this.gameManager.levelTheme + "-normals"]["floor"]);
+            this.enableLighting(PIXI.utils.TextureCache[Helpers.sprite("blank-normals.png")]);
         },
         canAttack: function() {
             return this.getDistVector(this.gameManager.player).getMagnitude() <= 32;

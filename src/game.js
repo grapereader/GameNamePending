@@ -60,6 +60,7 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
                 .add(Helpers.sprite("world/tiles-2/tiles-2.sheet"))
                 .add(Helpers.sprite("world/tiles-2/tiles-2-normals.sheet"))
                 .add(Helpers.sprite("blank.png"))
+                .add(Helpers.sprite("blank-normals.png"))
                 .add(Helpers.sprite("placeholder.png"))
                 .add(Helpers.sprite("temp_bg.jpg"))
                 .add(Helpers.sprite("projectile/temp-projectile.png"))

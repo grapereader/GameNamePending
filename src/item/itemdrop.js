@@ -1,6 +1,6 @@
-define(["view/viewobject", "util/helpers"], function(ViewObject, Helpers) {
+define(["view/viewobject", "util/helpers", "lighting/lightable"], function(ViewObject, Helpers, Lightable) {
 
-    var ItemDrop = Class(ViewObject, {
+    var ItemDrop = Class([ViewObject, Lightable], {
         constructor: function(gameManager, item, from, to) {
             ItemDrop.$super.call(this, gameManager.scene);
 
@@ -47,6 +47,8 @@ define(["view/viewobject", "util/helpers"], function(ViewObject, Helpers) {
             this.timer = 0;
 
             this.oscOffset = Math.random() * Math.PI * 2;
+
+            this.enableLighting(PIXI.utils.TextureCache[Helpers.sprite("blank-normals.png")]);
         },
         update: function() {
             ItemDrop.$superp.update.call(this);
@@ -79,6 +81,8 @@ define(["view/viewobject", "util/helpers"], function(ViewObject, Helpers) {
                 var x = (this.timer / 500) + this.oscOffset;
                 this.sprite.y = 32 + 10 + (Math.sin(x) * 10);
             }
+
+            this.updateLighting();
         }
     });
 
