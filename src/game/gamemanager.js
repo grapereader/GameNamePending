@@ -1,4 +1,4 @@
-define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwindow", "gui/windowsystem", "board/board", "board/levelgenerator", "item/itemdrop", "lighting/lightsystem"], function(Player, ItemFactory, Helpers, PlayerInventoryWindow, WindowSystem, Board, LevelGenerator, ItemDrop, LightSystem) {
+define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwindow", "gui/windowsystem", "board/board", "board/levelgenerator", "item/itemdrop", "lighting/lightsystem", "lighting/filtermanager"], function(Player, ItemFactory, Helpers, PlayerInventoryWindow, WindowSystem, Board, LevelGenerator, ItemDrop, LightSystem, FilterManager) {
     /**
         This is the meat of the game logic.
 
@@ -27,6 +27,8 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
                 },
                 map: false //False here can mean player is currently in lobby
             }
+
+            FilterManager.init(this);
 
             //Putting this in here since it would be a huge pain to refactor
             //all the tiles to take this in constructor.
@@ -63,6 +65,7 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
             this.board.update();
             this.windowSystem.update();
             this.lightSystem.update();
+            FilterManager.updateFilters();
             this.fpsText.text = "FPS: " + this.game.fps.toFixed(0);
         },
 

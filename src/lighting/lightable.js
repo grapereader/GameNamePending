@@ -1,4 +1,4 @@
-define(["lighting/filter"], function(LightFilter) {
+define(["lighting/filter", "lighting/filtermanager"], function(LightFilter, FilterManager) {
 
     var Lightable = Class({
         updateLighting: function() {
@@ -8,9 +8,8 @@ define(["lighting/filter"], function(LightFilter) {
             }
         },
         enableLighting: function(normalMap) {
-            this.lightFilter = new LightFilter(this.gameManager, normalMap);
+            this.lightFilter = FilterManager.getFilter(normalMap);
             this.container.filters = [this.lightFilter.filter];
-
             this.lightingEnabled = true;
         }
     });
