@@ -104,7 +104,7 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
             //This seems to be the only way I can get mouse events to propagate properly
             //when the empty areas of the board are clicked...
             var emptyBack = new PIXI.Graphics();
-            emptyBack.beginFill(0x555555);
+            emptyBack.beginFill(0x111111);
             emptyBack.drawRect(0, 0, board.gridWidth * 64, board.gridHeight * 64);
             emptyBack.endFill();
             board.container.addChildAt(emptyBack, 0);

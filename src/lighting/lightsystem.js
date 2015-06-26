@@ -16,10 +16,9 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
             ];
         },
         update: function() {
-            return;
             LightSystem.$superp.update.call(this);
 
-            this.recalc();
+            //this.recalc();
         },
         recalc: function() {
             this.graphics.clear();
