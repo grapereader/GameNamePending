@@ -1,6 +1,6 @@
-define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/anim", "ai/movemanager"], function(Entity, Timer, Pathfinder, Helpers, Animation, MoveManager) {
+define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/anim", "ai/movemanager", "lighting/lightable"], function(Entity, Timer, Pathfinder, Helpers, Animation, MoveManager, Lightable) {
 
-    var Enemy = Class(Entity, {
+    var Enemy = Class([Entity, Lightable], {
         constructor: function(gameManager, homeX, homeY, level, data) {
             Enemy.$super.call(this, gameManager);
             this.level = level;
@@ -62,6 +62,9 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             });
 
             this.moveManager = new MoveManager(this.gameManager, this);
+
+            //TODO THIS IS TEMP. Enemies should have a normal map, even if it's a central blank one.
+            this.enableLighting(PIXI.utils.TextureCache[this.gameManager.levelTheme + "-normals"]["floor"]);
         },
         canAttack: function() {
             return this.getDistVector(this.gameManager.player).getMagnitude() <= 32;
@@ -95,6 +98,8 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 vec = vec.multiply(this.walkSpeed);
                 this.walk(vec.x, vec.y);
             }
+
+            this.updateLighting();
 
         }
     });
