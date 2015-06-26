@@ -44,13 +44,13 @@ define(function() {
             //at that speed, regardless of framerate. Note that I only chose
             //this value because my previous implementation used no delta
             //and I liked the speed it went :P
-            var framePeriod = this.game.deltaTime / 17;
+            //var framePeriod = this.game.deltaTime / 17;
 
-            var dx = (this.targetX - this.x) * framePeriod;
-            var dy = (this.targetY - this.y) * framePeriod;
+            //var dx = (this.targetX - this.x) * framePeriod;
+            //var dy = (this.targetY - this.y) * framePeriod;
 
-            this.x += dx / 40;
-            this.y += dy / 40;
+            this.x = this.targetX;// += dx / 40;
+            this.y = this.targetY;// += dy / 40;
         }
     });
 
