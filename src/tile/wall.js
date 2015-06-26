@@ -5,6 +5,9 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
             this.clipping = true;
             this.container = new PIXI.Container();
             this.tileType = "Wall";
+
+            //I don't know what I'm going to do about these layered textures. Might have to apply this on the sprite level :/
+            this.enableLighting(PIXI.utils.TextureCache[this.gameManager.levelTheme + "-normals"]["wall-middle"]);
         },
         setSprite: function(board) {
             var n = this.getNeighbors(board);

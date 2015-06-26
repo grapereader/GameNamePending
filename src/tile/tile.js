@@ -24,7 +24,7 @@ define(["view/cullable", "util/helpers", "util/animgroup", "lighting/filter"], f
             }
 
             if (this.lightingEnabled) {
-                this.filter.setLight(this.gameManager.player.sx, this.gameManager.player.sy);
+                this.filter.setLight(this.gameManager.player.sx + 32, this.gameManager.player.sy + 32);
             }
 
             if (this.test !== undefined) {

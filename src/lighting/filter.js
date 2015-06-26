@@ -14,7 +14,7 @@ define(["text!lighting/shader.frag", "math/vector"], function(shader, Vector) {
                 },
                 ambientColour: {
                     type: '4f',
-                    value: [1.0, 0.2, 0.2, 0.2]
+                    value: [0.2, 0.2, 0.2, 0.2]
                 },
                 lightPos: {
                     type: '3f',
@@ -26,7 +26,7 @@ define(["text!lighting/shader.frag", "math/vector"], function(shader, Vector) {
                 },
                 lightFalloff: {
                     type: '3f',
-                    value: [1, 5, 10]
+                    value: [0, 1, 0]
                 },
                 lightSize: {
                     type: "1f",

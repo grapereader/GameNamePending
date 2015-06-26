@@ -31,6 +31,7 @@ void main() {
     vec3 ambient = ambientColour.rgb * ambientColour.a;
     float attenuation = 1.0 / (lightFalloff.x + (lightFalloff.y * dist) + (lightFalloff.z * dist * dist));
 
+    /*
     if (attenuation < 0.4) {
         attenuation = 0.0;
     } else if (attenuation < 0.6) {
@@ -40,8 +41,9 @@ void main() {
     } else {
         attenuation = 1.0;
     }
-
-    vec3 intensity = ambient + lightDiffuse;// * attenuation;
+    */
+    
+    vec3 intensity = ambient + lightDiffuse * attenuation;
     vec3 final = diffuseColour.rgb * intensity;
 
     gl_FragColor = vColor * vec4(final, diffuseColour.a);
