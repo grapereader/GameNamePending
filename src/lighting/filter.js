@@ -10,10 +10,7 @@ define(["text!lighting/shader.frag", "math/vector"], function(shader, Vector) {
                 },
                 resolution: {
                     type: '2f',
-                    value: {
-                        x: gameManager.game.gameWidth,
-                        y: gameManager.game.gameHeight
-                    }
+                    value: [gameManager.game.gameWidth, gameManager.game.gameHeight]
                 },
                 ambientColour: {
                     type: '4f',
@@ -33,14 +30,14 @@ define(["text!lighting/shader.frag", "math/vector"], function(shader, Vector) {
                 },
                 lightSize: {
                     type: "1f",
-                    value: 1024
+                    value: 64
                 }
             });
         },
         setLight: function(x, y) {
             var lpos = this.filter.uniforms.lightPos.value;
             lpos[0] = x / this.gameManager.game.gameWidth;
-            lpos[1] = y / this.gameManager.game.gameHeight;
+            lpos[1] = 1 - (y / this.gameManager.game.gameHeight);
         }
     });
 

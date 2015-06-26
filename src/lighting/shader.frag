@@ -16,12 +16,10 @@ uniform float lightSize;
 void main() {
     vec4 diffuseColour = texture2D(uSampler, vTextureCoord);
     vec3 normalMap = texture2D(normalTexture, vTextureCoord).rgb;
-    vec3 test = vec3(0.5, 0.5, 1);
-    vec3 lightDir = vec3(test.xy - (gl_FragCoord.xy / resolution.xy), test.z);
-    //vec3 lightDir = vec3(1, 1, lightPos.z);
+    vec3 lightDir = vec3(lightPos.xy - (gl_FragCoord.xy / resolution.xy), lightPos.z);
 
-    //lightDir.x /= (lightSize / resolution.x);
-    //lightDir.y /= (lightSize / resolution.y);
+    lightDir.x /= (lightSize / resolution.x);
+    lightDir.y /= (lightSize / resolution.y);
 
     float dist = length(lightDir);
     vec3 n = normalize(normalMap * 2.0 - 1.0);
