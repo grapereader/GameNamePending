@@ -33,6 +33,16 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
                 layers.push("wall-right");
             }
 
+            if (top === "Wall") {
+                if (left === "Wall" && nLeft.top === "Path") {
+                    layers.push("wall-bottom-corner-knob-right");
+                }
+
+                if (right === "Wall" && nRight.top === "Path") {
+                    layers.push("wall-bottom-corner-knob-left");
+                }
+            }
+
             if (bot !== "Path" && top === "Path") {
                 if (right === "Path") {
                     layers.push("wall-top-corner-right");
