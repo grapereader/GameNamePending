@@ -200,6 +200,26 @@
                 "y": 0
             }
         },
+        "wall-bottom-corner-knob-right": {
+            "spriteSourceSize": {
+                "w": 32,
+                "x": 0,
+                "h": 32,
+                "y": 0
+            },
+            "rotated": false,
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            },
+            "trimmed": false,
+            "frame": {
+                "w": 32,
+                "x": 384,
+                "h": 32,
+                "y": 32
+            }
+        },
         "wall-middle": {
             "spriteSourceSize": {
                 "w": 32,
@@ -258,6 +278,26 @@
                 "x": 0,
                 "h": 32,
                 "y": 64
+            }
+        },
+        "wall-bottom-corner-knob-left": {
+            "spriteSourceSize": {
+                "w": 32,
+                "x": 0,
+                "h": 32,
+                "y": 0
+            },
+            "rotated": false,
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            },
+            "trimmed": false,
+            "frame": {
+                "w": 32,
+                "x": 352,
+                "h": 32,
+                "y": 32
             }
         }
     },
