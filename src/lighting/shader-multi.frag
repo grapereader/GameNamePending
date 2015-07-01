@@ -108,8 +108,6 @@ void main() {
 
     int currPoly = 0;
 
-    vec3 test = vec3(0.0, 0.0, 0.0);
-
     for (int i = 0; i < MAX_LIGHTS; i++) {
         if (i > lightCount - 1) break;
         if (polygonLengths[i] == 0) continue;
