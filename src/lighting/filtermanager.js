@@ -13,6 +13,7 @@ define(["lighting/filter"], function(LightFilter) {
                 normalMap.uid = uidCounter++;
                 var filter = new LightFilter(gameManager, normalMap);
                 filters.push(filter);
+                filter.initializeLights(gameManager.lightSystem);
                 return filter;
             } else {
                 return filters[normalMap.uid];
@@ -21,7 +22,12 @@ define(["lighting/filter"], function(LightFilter) {
         updateFilters: function() {
             var lightSrc = gameManager.player;
             for (var i = 0; i < filters.length; i++) {
-                filters[i].setLight(lightSrc.sx + 32, lightSrc.sy + 32);
+                filters[i].updateLights(gameManager.lightSystem);
+            }
+        },
+        initializeFilters: function() {
+            for (var i = 0; i < filters.length; i++) {
+                filters[i].initializeLights(gameManager.lightSystem);
             }
         }
     }

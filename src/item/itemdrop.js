@@ -81,8 +81,6 @@ define(["view/viewobject", "util/helpers", "lighting/lightable"], function(ViewO
                 var x = (this.timer / 500) + this.oscOffset;
                 this.sprite.y = 32 + 10 + (Math.sin(x) * 10);
             }
-
-            this.updateLighting();
         }
     });
 

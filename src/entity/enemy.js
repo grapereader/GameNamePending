@@ -98,8 +98,6 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
                 this.walk(vec.x, vec.y);
             }
 
-            this.updateLighting();
-
         }
     });
 

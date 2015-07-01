@@ -28,11 +28,13 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
                 map: false //False here can mean player is currently in lobby
             }
 
-            FilterManager.init(this);
-
             //Putting this in here since it would be a huge pain to refactor
             //all the tiles to take this in constructor.
             this.levelTheme = "tiles-2";
+
+            this.lightSystem = new LightSystem(this);
+            this.scene.addObject(this.lightSystem.container, 2);
+            FilterManager.init(this);
 
             var self = this;
             this.levelgenerator = new LevelGenerator(this);
@@ -42,7 +44,7 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
             this.player = new Player(this, saveData);
             var spawnPoint = this.board.roomList[0].getRandomSpawnableLocation();
             this.player.setLocation(spawnPoint[0] * 64, spawnPoint[1] * 64);
-            this.scene.addObject(this.player.container, 2);
+            this.scene.addObject(this.player.container, 3);
             this.scene.addObject(this.board.container, 0);
             this.scene.addObject(this.board.objectContainer, 1);
 
@@ -56,9 +58,6 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
 
             var playerInv = new PlayerInventoryWindow(this);
             this.windowSystem.addChild(playerInv);
-
-            this.lightSystem = new LightSystem(this);
-            this.scene.addObject(this.lightSystem.container, 1);
         },
         update: function() {
             this.player.update();

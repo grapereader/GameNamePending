@@ -21,8 +21,6 @@ define(["view/cullable", "util/helpers", "util/animgroup", "lighting/lightable"]
                 this.objects[i].update();
             }
 
-            this.updateLighting();
-
             if (this.test !== undefined) {
                 this.test = true;
                 var text = new PIXI.Text(this.tileType, {
