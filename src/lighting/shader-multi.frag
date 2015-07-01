@@ -9,7 +9,7 @@ uniform vec2 resolution;
 uniform vec4 ambientColour;
 
 #define MAX_LIGHTS 1
-#define MAX_POLY 256
+#define MAX_POLY 144
 
 uniform int lightCount;
 uniform vec2 lightPositions[MAX_LIGHTS];

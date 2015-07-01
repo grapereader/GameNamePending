@@ -1,7 +1,7 @@
 define(["text!lighting/shader-multi.frag", "math/vector"], function(shader, Vector) {
 
     var MAX_LIGHTS = 1;
-    var MAX_POLY = 256;
+    var MAX_POLY = 144;
 
     var LightingFilter = Class({
         constructor: function(gameManager, normal) {
