@@ -38,10 +38,10 @@ vec3 getLight(vec3 normalMap, vec2 lightPos, vec4 lightColour, vec3 lightFalloff
 }
 
 bool intersect(vec2 sa, vec2 sb) {
-    float lx = gl_FragCoord.x;// / resolution.x;
-    float ly = resolution.y - gl_FragCoord.y;// / resolution.y;
+    float lx = gl_FragCoord.x;
+    float ly = resolution.y - gl_FragCoord.y;
 
-/*
+    /*
     if (lx > sa.x && lx > sb.x) return false;
     if (ly > sa.y && ly > sb.y) return false;
     if (ly < sa.y && ly < sb.y) return false;
@@ -53,16 +53,12 @@ bool intersect(vec2 sa, vec2 sb) {
     if (x > sa.x && x > sb.x) return false;
 
     return x > lx;
-
-*/
-    //sa = sa / resolution.xy;
-    //sb = sb / resolution.xy;
-
+    */
 
     //if (lx > sa.x && lx > sb.x) return false;
-    //if (lx < sa.x && lx < sb.x) return false;
-    //if (ly > sa.y && ly > sb.y) return false;
-    //if (ly < sa.y && ly < sb.y) return false;
+    if (lx < sa.x && lx < sb.x) return false;
+    if (ly > sa.y && ly > sb.y) return false;
+    if (ly < sa.y && ly < sb.y) return false;
 
     float ldx = -1.0;
     float ldy = 0.0;
@@ -85,8 +81,6 @@ bool intersect(vec2 sa, vec2 sb) {
     if (t2 < 0.0 || t2 > 1.0) return false;
 
     return true;
-
-    //return vec2(lx + ldx * t1, ly + ldy * t1);
 }
 
 float getIntersects(int currPoly, int len) {
@@ -94,7 +88,7 @@ float getIntersects(int currPoly, int len) {
 
     for (int i = 0; i < MAX_POLY; i += 2) {
         if (i < currPoly) continue;
-        if (i > (len * 2)) break;
+        if (i > (len * 2) - 2) break;
 
         vec2 sa = polygons[i];
         vec2 sb = polygons[i + 1];
@@ -113,22 +107,23 @@ void main() {
     float lights = 0.0;
 
     int currPoly = 0;
+
+    vec3 test = vec3(0.0, 0.0, 0.0);
+
     for (int i = 0; i < MAX_LIGHTS; i++) {
         if (i > lightCount - 1) break;
         if (polygonLengths[i] == 0) continue;
         float intersects = getIntersects(currPoly, polygonLengths[i]);
         currPoly += polygonLengths[i];
 
-        //if (intersects == 0.0) continue;
+        if (intersects == 0.0) continue;
         if (mod(intersects, 2.0) != 0.0) {
             lightTotal = lightTotal + getLight(normalMap, lightPositions[i], lightColours[i], lightFalloffs[i], lightSizes[i]);
             lights++;
         }
     }
 
-    //lightTotal = getLight(normalMap, lightPositions[0], lightColours[0], lightFalloffs[0], lightSizes[0]);
-
-    //lightTotal /= lights;
+    lightTotal /= lights;
 
     vec3 ambient = ambientColour.rgb * ambientColour.a;
     vec3 intensity = ambient + lightTotal;

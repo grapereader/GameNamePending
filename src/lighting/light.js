@@ -109,39 +109,43 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
 
 
             this.polygon = [];
-            var last = false;
-            for (var i = 0; i < intersects.length + 2; i++) {
+            var last = intersects[0];
+            for (var i = 1; i < intersects.length; i++) {
                 var curr = intersects[i % intersects.length];
-                if (last !== false) {
-                    var next = intersects[(i + 1) % intersects.length];
+                var next = intersects[(i + 1) % intersects.length];
 
-                    if (curr.x === last.x && curr.y === last.y) continue;
-                    if (curr.x === next.x && curr.y === next.y) continue;
+                if (curr.x === last.x && curr.y === last.y) continue;
+                if (curr.x === next.x && curr.y === next.y) continue;
 
-                    var lastAngle = new Vector(curr.x - last.x, curr.y - last.y).getAngle();
-                    var nextAngle = new Vector(next.x - curr.x, next.y - curr.y).getAngle();
-                    var diff = Math.abs(Math.abs(lastAngle) - Math.abs(nextAngle));
+                var lastAngle = new Vector(curr.x - last.x, curr.y - last.y).getAngle();
+                var nextAngle = new Vector(next.x - curr.x, next.y - curr.y).getAngle();
+                var diff = Math.abs(Math.abs(lastAngle) - Math.abs(nextAngle));
 
-                    if (i % intersects.length <= 1 || (diff > 0.1 && diff < (Math.PI * 2) - 0.2)) {
-                        var line = {
-                            a: last,
-                            b: curr
-                        };
-                        this.polygon.push(line);
-                        last = curr;
-                    }
-                } else last = curr;
+                if (diff > 0.1 && diff < (Math.PI * 2) - 0.2) {
+                    var line = {
+                        a: last,
+                        b: curr
+                    };
+                    this.polygon.push(line);
+                    last = curr;
+                }
             }
+
+            var line = {
+                a: last,
+                b: intersects[0]
+            };
+            this.polygon.push(line);
+
 
 
             /*
-
             this.sx += 32;
             this.sy += 32;
 
             this.polygon = [];
             var last = false;
-            for (var i = 0; i < 2 * Math.PI + 0.001; i += Math.PI / 16) {
+            for (var i = 0; i < 2 * Math.PI; i += (Math.random() * Math.PI / 4) + Math.PI / 16) {
                 var vec = Vector.fromAngle(i, 200);
                 if (last !== false) {
                     this.polygon.push({

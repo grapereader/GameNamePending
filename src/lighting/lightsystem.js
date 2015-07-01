@@ -2,7 +2,6 @@ define(["view/viewobject", "math/vector", "lighting/filtermanager"], function(Vi
 
     var LightSystem = Class({
         constructor: function(gameManager) {
-            //LightSystem.$super.call(this, gameManager.scene);
             this.gameManager = gameManager;
 
             this.container = new PIXI.Container();
@@ -13,37 +12,48 @@ define(["view/viewobject", "math/vector", "lighting/filtermanager"], function(Vi
             this.lights = [];
         },
         update: function() {
-            //LightSystem.$superp.update.call(this);
+            this.graphics.clear();
 
             for (var i = 0; i < this.lights.length; i++) {
                 this.lights[i].update();
             }
 
-            this.debug();
+            for (var i = 0; i < this.lights.length; i++) {
+                //this.debug(this.lights[i].polygon);
+            }
         },
         addLight: function(light) {
             this.lights.push(light);
             FilterManager.initializeFilters();
         },
-        debug: function() {
-            this.graphics.clear();
-            var alt = false;
-            for (var i = 0; i < this.lights.length; i++) {
-                //console.log(this.lights[i].polygon);
-                for (var p = 0; p < this.lights[i].polygon.length; p++) {
-                    var poly = this.lights[i].polygon[p];
-                    this.graphics.lineStyle(1, 0xFFFFFF, 1);
-                    this.graphics.moveTo(poly.a.sx, poly.a.sy);
-                    this.graphics.lineTo(poly.b.sx, poly.b.sy);
+        debug: function(polygon, offs) {
+            var alt = 0;
+            for (var p = 0; p < polygon.length; p++) {
+                var poly = polygon[p];
 
-                    this.graphics.lineStyle(1, alt ? 0xFFFFFF : 0xFF0000, 1);
-                    alt = ! alt;
-                    if (alt) {
-                        this.graphics.drawRect(poly.b.sx - 1, poly.b.sy - 1, 3, 3);
-                    } else {
-                        this.graphics.drawRect(poly.b.sx - 2, poly.b.sy - 2, 4, 4);
-                    }
+                alt = alt % 3;
+                switch(alt) {
+                    case 0:
+                        var width = 3;
+                        var colour = 0xFFFFFF;
+                        break;
+                    case 1:
+                        var width = 4;
+                        var colour = 0xFF0000;
+                        break;
+                    case 2:
+                        var width = 5;
+                        var colour = 0x00FF00;
+                        break;
                 }
+
+                if (offs === undefined) offs = 0;
+
+                this.graphics.lineStyle(1, colour, 1);
+                this.graphics.moveTo(poly.a.sx + offs, poly.a.sy + offs);
+                this.graphics.lineTo(poly.b.sx + offs, poly.b.sy + offs);
+                this.graphics.drawRect(poly.b.sx - (width / 2) + offs, poly.b.sy - (width / 2) + offs, width, width);
+                alt++;
             }
         }
     });
