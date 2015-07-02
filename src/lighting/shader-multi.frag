@@ -9,7 +9,7 @@ uniform vec2 resolution;
 uniform vec4 ambientColour;
 
 #define MAX_LIGHTS 1
-#define MAX_POLY 144
+#define MAX_POLY 72
 
 uniform int lightCount;
 uniform vec2 lightPositions[MAX_LIGHTS];
@@ -86,9 +86,9 @@ bool intersect(vec2 sa, vec2 sb) {
 float getIntersects(int currPoly, int len) {
     float intersects = 0.0;
 
-    for (int i = 0; i < MAX_POLY; i += 2) {
+    for (int i = 0; i < MAX_POLY; i++) {
         if (i < currPoly) continue;
-        if (i > (len * 2) - 2) break;
+        if (i > len - 2) break;
 
         vec2 sa = polygons[i];
         vec2 sb = polygons[i + 1];

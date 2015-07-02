@@ -109,6 +109,7 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
 
 
             this.polygon = [];
+            this.polygon.push(intersects[0]);
             var last = intersects[0];
             for (var i = 1; i < intersects.length; i++) {
                 var curr = intersects[i % intersects.length];
@@ -122,22 +123,11 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                 var diff = Math.abs(Math.abs(lastAngle) - Math.abs(nextAngle));
 
                 if (diff > 0.1 && diff < (Math.PI * 2) - 0.2) {
-                    var line = {
-                        a: last,
-                        b: curr
-                    };
-                    this.polygon.push(line);
+                    this.polygon.push(curr);
                     last = curr;
                 }
             }
-
-            var line = {
-                a: last,
-                b: intersects[0]
-            };
-            this.polygon.push(line);
-
-
+            this.polygon.push(intersects[0]);
 
             /*
             this.sx += 32;
