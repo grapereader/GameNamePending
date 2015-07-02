@@ -46,21 +46,25 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                 var o = objects[k];
                 sides.push({
                     a: {x: o.x, y: o.y},
+                    b: {x: o.x + o.width, y: o.y},
                     dir: {x: o.width, y: 0},
                     ndir: {x: 1, y: 0}
                 });
                 sides.push({
                     a: {x: o.x + o.width, y: o.y + o.height},
+                    b: {x: o.x, y: o.y + o.height},
                     dir: {x: -o.width, y: 0},
                     ndir: {x: -1, y: 0}
                 });
                 sides.push({
                     a: {x: o.x, y: o.y + o.height},
+                    b: {x: o.x, y: o.y},
                     dir: {x: 0, y: -o.height},
                     ndir: {x: 0, y: -1}
                 });
                 sides.push({
                     a: {x: o.x + o.width, y: o.y},
+                    b: {x: o.x + o.width, y: o.y + o.height},
                     dir: {x: 0, y: o.height},
                     ndir: {x: 0, y: 1}
                 });
@@ -176,29 +180,36 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
             return last;
         },
         getIntersection: function(seg, line) {
-            var lx = line.x;
-            var ly = line.y;
             var ldx = line.dir.x;
             var ldy = line.dir.y;
 
-            var sx = seg.a.x;
-            var sy = seg.a.y;
+            var sax = seg.a.x;
+            var say = seg.a.y;
+
+            var sbx = seg.b.x;
+            var sby = seg.b.y;
+
             var sdx = seg.dir.x;
             var sdy = seg.dir.y;
+
+            if (sax > line.x && sbx > line.x && ldx < 0) return false;
+            if (sax < line.x && sbx < line.x && ldx > 0) return false;
+            if (say > line.y && sby > line.y && ldy < 0) return false;
+            if (say < line.y && sby < line.y && ldy > 0) return false;
 
             if (line.ndir.x === seg.ndir.x && line.ndir.y === seg.ndir.y) {
             	return false;
             }
 
-            var t2 = (ldx * (sy - ly) + ldy * (lx - sx)) / (sdx * ldy - sdy * ldx);
-            var t1 = (sx + sdx * t2 - lx) / ldx;
+            var t2 = (ldx * (say - line.y) + ldy * (line.x - sax)) / (sdx * ldy - sdy * ldx);
+            var t1 = (sax + sdx * t2 - line.x) / ldx;
 
             if (t1 < 0) return false;
             if (t2 < 0 || t2 > 1) return false;
 
             return {
-            	x: lx + ldx * t1,
-            	y: ly + ldy * t1,
+            	x: line.x + ldx * t1,
+            	y: line.y + ldy * t1,
             	mag: t1
             };
 

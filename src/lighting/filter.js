@@ -1,7 +1,7 @@
 define(["text!lighting/shader-multi.frag", "math/vector"], function(shader, Vector) {
 
     var MAX_LIGHTS = 1;
-    var MAX_POLY = 72;
+    var MAX_POLY = 84;
 
     var LightingFilter = Class({
         constructor: function(gameManager, normal) {
@@ -94,7 +94,7 @@ define(["text!lighting/shader-multi.frag", "math/vector"], function(shader, Vect
 
                 currPoly += light.polygon.length * 2;
             }
-            //console.log(currPoly);
+            //console.log(currPoly / 2);
         }
     });
 
