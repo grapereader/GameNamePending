@@ -28,8 +28,9 @@ define(["view/viewobject", "math/vector", "lighting/filtermanager"], function(Vi
         },
         debug: function(polygon, offs) {
             var alt = 0;
-            for (var p = 0; p < polygon.length; p++) {
+            for (var p = 0; p < polygon.length - 1; p++) {
                 var poly = polygon[p];
+                var npoly = polygon[p + 1];
 
                 alt = alt % 3;
                 switch(alt) {
@@ -50,9 +51,9 @@ define(["view/viewobject", "math/vector", "lighting/filtermanager"], function(Vi
                 if (offs === undefined) offs = 0;
 
                 this.graphics.lineStyle(1, colour, 1);
-                this.graphics.moveTo(poly.a.sx + offs, poly.a.sy + offs);
-                this.graphics.lineTo(poly.b.sx + offs, poly.b.sy + offs);
-                this.graphics.drawRect(poly.b.sx - (width / 2) + offs, poly.b.sy - (width / 2) + offs, width, width);
+                this.graphics.moveTo(poly.sx + offs, poly.sy + offs);
+                this.graphics.lineTo(npoly.sx + offs, npoly.sy + offs);
+                this.graphics.drawRect(npoly.sx - (width / 2) + offs, npoly.sy - (width / 2) + offs, width, width);
                 alt++;
             }
         }

@@ -70,6 +70,30 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                 });
             }
 
+            var self = this;
+            var intersect = function(line, k) {
+                var int = self.getIntersections(sides, line);
+                var orig = int;
+
+                if (int === false) {
+                    int = line.ndir.multiply(self.range).add(new Vector(lx, ly));
+                }
+
+                var dir = new Vector(int.x - lx, int.y - ly);
+
+                var view = self.gameManager.scene.view;
+
+                int = {
+                    x: int.x,
+                    y: int.y,
+                    sx: Math.floor(int.x - view.x),
+                    sy: Math.floor(int.y - view.y),
+                    angle: dir.getAngle()
+                }
+
+                return int;
+            }
+
             for (var k = 0; k < sides.length; k++) {
                 var side = sides[k];
                 var vec = new Vector(side.a.x - lx, side.a.y - ly);
@@ -85,32 +109,26 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                         ndir: rvec.normalize()
                     }
 
-                    var int = this.getIntersections(sides, line);
-
-                    if (int === false) {
-                        int = line.ndir.multiply(this.range).add(new Vector(lx, ly));
-                    }
-
-                    var dir = new Vector(int.x - lx, int.y - ly);
-
-                    var view = this.gameManager.scene.view;
-
-                    int = {
-                        x: int.x,
-                        y: int.y,
-                        sx: Math.floor(int.x - view.x),
-                        sy: Math.floor(int.y - view.y),
-                        angle: dir.getAngle()
-                    }
-
-                    intersects.push(int);
+                    intersects.push(intersect(line));
                 }
+            }
+
+            for (var k = 0; k < Math.PI * 2; k += Math.PI / 15) {
+                var vec = Vector.fromAngle(k, this.range);
+                var line = {
+                    x: lx,
+                    y: ly,
+                    dir: vec,
+                    ndir: vec.normalize()
+                }
+                intersects.push(intersect(line, k));
             }
 
             intersects.sort(function(a, b) {
                 return a.angle - b.angle;
             });
 
+            //console.log(this.polygon);
 
             this.polygon = [];
             this.polygon.push(intersects[0]);
