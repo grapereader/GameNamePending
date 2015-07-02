@@ -1,5 +1,7 @@
 define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
 
+    var POLY_SIMPLIFY = 0.05;
+
     var Light = Class(ViewObject, {
         constructor: function(gameManager, colour, range) {
             Light.$super.call(this, gameManager.scene);
@@ -144,7 +146,7 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                 var nextAngle = new Vector(next.x - curr.x, next.y - curr.y).getAngle();
                 var diff = Math.abs(Math.abs(lastAngle) - Math.abs(nextAngle));
 
-                if (diff > 0.1 && diff < (Math.PI * 2) - 0.2) {
+                if (diff > POLY_SIMPLIFY && diff < (Math.PI * 2) - POLY_SIMPLIFY) {
                     this.polygon.push(curr);
                     last = curr;
                 }
