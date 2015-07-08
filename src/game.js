@@ -25,12 +25,12 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
 
             this.saveManager = new SaveManager();
 
-            console.log("Created new game instance.");
+            Log.info("Created new game instance.");
         },
         run: function() {
             var self = this;
 
-            console.log("Loading assets...");
+            Log.info("Loading assets...");
 
             this.toLoad = 2;
             this.loaded = 0;
@@ -40,7 +40,7 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
                     self.doneLoading("fonts");
                 },
                 google: {
-                    families: ['Poiret One']
+                    families: ["Poiret One"]
                 },
                 custom: {
                     families: ["TheFont"]
@@ -72,25 +72,25 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
         },
         doneLoading: function(group) {
             this.loaded++;
-            console.log("Loaded " + group);
+            Log.info("Loaded " + group);
             if (this.loaded >= this.toLoad) {
-                console.log("All assets have loaded.");
+                Log.info("All assets have loaded.");
                 this.startLoop();
             }
         },
         startLoop: function() {
-            console.log("Running game now...");
+            Log.info("Running game now...");
 
             this.currentScene = new Menu(this);
 
             var self = this;
 
-            requestAnimationFrame(render);
-
             function render() {
                 self.loop();
                 requestAnimationFrame(render);
             }
+
+            requestAnimationFrame(render);
         },
         loop: function() {
             this.calculateDelta();
@@ -105,7 +105,7 @@ define(["globals", "scene/menu", "util/helpers", "load/sheetparser", "input/keyb
             this.currentScene.render(this.renderer);
         },
         changeScene: function(scene) {
-            console.log("Changing scene");
+            Log.info("Changing scene");
             this.currentScene = scene;
         },
         calculateDelta: function() {

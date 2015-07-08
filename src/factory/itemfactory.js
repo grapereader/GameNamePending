@@ -11,7 +11,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                     shit: ["Rusty", "Flimsy", "Shitty"]
                 },
                 adverbs: {}
-            }
+            };
 
             this.spritesheets = {
                 shit: {
@@ -22,7 +22,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                     gloves: ["irongloves"],
                     boots: ["ironboots"]
                 }
-            }
+            };
 
             this.templates = [{
                 groups: {
@@ -152,7 +152,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
                         armour: [1, 1.2]
                     }
                 }
-            }]
+            }];
         },
         getItem: function(confines) {
             var template = this.getTemplate(confines);
@@ -186,7 +186,7 @@ define(["factory/templatefactory", "factory/affixfactory", "item/item", "item/we
             var randWord = function(words) {
                 if (words === undefined || words.length <= 0) return "";
                 return words[Math.floor(Math.random() * words.length)];
-            }
+            };
 
             var text = text.replace("!{adjective}", randWord(this.words.adjectives[rarity]));
             text = text.replace("!{adverb}", randWord(this.words.adverbs[rarity]));

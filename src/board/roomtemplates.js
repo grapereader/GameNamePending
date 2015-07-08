@@ -584,9 +584,9 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
                         ["Wall", "Path", "Wall", "Wall", "Wall", "Path", "Wall", "Wall", "Wall", "Path", "Wall", "Wall", "Wall", "Path", "Wall", "Wall", "Wall", "Path", "Wall"],
                         ["Wall", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Path", "Wall"],
                         ["Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall", "Wall"]
-                    ],
+                    ]
 
-                }
+                };
                 /**this.rooms = [];
                 for(r in this.roomsRaw){
                     this.rooms.push(this.roomConstructor(this.roomsRaw[r]));
@@ -597,7 +597,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
         },
         getRooms: function() {
             this.rooms = [];
-            for (r in this.roomsRaw) {
+            for (var r in this.roomsRaw) {
                 this.rooms.push(this.roomConstructor(this.roomsRaw[r]));
             }
             var temp = new Array(this.rooms.length);
@@ -616,15 +616,15 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
             for (var i = 0; i < room.width; i++) {
                 room.grid[i] = new Array(room.height);
                 for (var j = 0; j < room.height; j++) {
-                    if (roomCompact[i][j] == "Door") {
+                    if (roomCompact[i][j] === "Door") {
                         var direction;
-                        if (j == 0) {
+                        if (j === 0) {
                             direction = 1;
-                        } else if (j == room.height - 1) {
+                        } else if (j === room.height - 1) {
                             direction = 3;
-                        } else if (i == 0) {
+                        } else if (i === 0) {
                             direction = 4;
-                        } else if (i == room.width - 1) {
+                        } else if (i === room.width - 1) {
                             direction = 2;
                         } else {
                             direction = -1;

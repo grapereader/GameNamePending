@@ -24,7 +24,7 @@ define(function() {
             return Helpers.sprite("items/" + name + "/" + name + ".sheet");
         },
         getFileNameFromPath: function(path) {
-            return path.replace(/^.*[\\\/]/, '');
+            return path.replace(/^.*[\\\/]/, "");
         },
         createSprite: function() {
             var sprite = new PIXI.Sprite(PIXI.utils.TextureCache[Helpers.sprite("blank.png")]);

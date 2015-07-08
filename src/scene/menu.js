@@ -2,8 +2,8 @@ define(["scene/scene", "scene/gameplay"], function(Scene, Gameplay) {
     var Menu = Class(Scene, {
         constructor: function(game) {
             Menu.$super.call(this, game, 2);
-            console.log("Running menu scene...");
-            console.log("Menu scene initialized");
+            Log.info("Running menu scene...");
+            Log.info("Menu scene initialized");
 
         },
         update: function() {

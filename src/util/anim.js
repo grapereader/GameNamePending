@@ -66,7 +66,7 @@ define(function() {
             Returns the texture currently applied to the sprite.
         */
         stepAnimation: function(deltaTime) {
-            if (this.paused === true) return;
+            if (this.paused === true) return false;
             this.elapsed += deltaTime;
             if (this.elapsed > this.animData[this.activeAnimation].speed) {
                 this.elapsed = 0;

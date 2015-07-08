@@ -35,6 +35,6 @@ define(["lighting/filter"], function(LightFilter) {
             var lightSrc = gameManager.player;
             filter.setLight(lightSrc.sx + 32, lightSrc.sy + 32);
         }
-    }
+    };
 
 });

@@ -31,7 +31,7 @@ define(["save/storage"], function(Storage) {
                         "Export": "KeyX",
                         "Clear": "KeyC"
                     }
-                }
+                };
             }
         },
         isKeyDown: function(key) {

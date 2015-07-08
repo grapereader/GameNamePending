@@ -31,7 +31,7 @@ define(function() {
         var x = magnitude * Math.cos(angle);
         var y = magnitude * Math.sin(angle);
         return new Vector(x, y);
-    }
+    };
 
     return Vector;
 

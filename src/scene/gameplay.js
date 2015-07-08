@@ -10,7 +10,7 @@ define(["scene/scene", "game/gamemanager"], function(Scene, GameManager) {
             Gameplay.$super.call(this, game, 10);
 
             this.gameManager = new GameManager(game, this);
-            console.log("Initialized gameplay scene.");
+            Log.info("Initialized gameplay scene.");
         },
         update: function() {
             Gameplay.$superp.update.call(this);

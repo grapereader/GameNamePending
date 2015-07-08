@@ -30,7 +30,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
             switch (direction) {
                 case true:
                     for (var i = 0; i < this.entrances.length; i++) {
-                        if (this.entrances[i] == 1 || this.entrances[i] == 3) {
+                        if (this.entrances[i] === 1 || this.entrances[i] === 3) {
                             this.entrances[i] = this.entrances[i] ^ 2;
                         }
                         this.entranceLocations[i][1] = this.height - (this.entranceLocations[i][1] + 1);
@@ -38,7 +38,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
                     break;
                 case false:
                     for (var i = 0; i < this.entrances.length; i++) {
-                        if (this.entrances[i] == 2 || this.entrances[i] == 4) {
+                        if (this.entrances[i] === 2 || this.entrances[i] === 4) {
                             this.entrances[i] = this.entrances[i] ^ 6;
                         }
                         this.entranceLocations[i][0] = this.width - (this.entranceLocations[i][0] + 1);
@@ -52,7 +52,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
             do {
                 coords[0] = Math.floor(Math.random() * this.width);
                 coords[1] = Math.floor(Math.random() * this.height);
-            } while (this.grid[coords[0]][coords[1]].tileType != "Path");
+            } while (this.grid[coords[0]][coords[1]].tileType !== "Path");
             coords[0] = coords[0] + this.x;
             coords[1] = coords[1] + this.y;
             return coords;
@@ -64,7 +64,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
                 var olddistance = distance;
                 distance = Math.min(distance, Math.min(this.width - this.entranceLocations[i][0], this.entranceLocations[i][0]));
                 distance = Math.min(distance, Math.min(this.height - this.entranceLocations[i][1], this.entranceLocations[i][1]));
-                if (olddistance != distance) {
+                if (olddistance !== distance) {
                     index = i;
                 }
             }
@@ -77,7 +77,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
                 var olddistance = distance;
                 distance = Math.min(distance, Math.min(this.width - this.entranceLocations[i][0], this.entranceLocations[i][0]));
                 distance = Math.min(distance, Math.min(this.height - this.entranceLocations[i][1], this.entranceLocations[i][1]));
-                if (olddistance != distance) {
+                if (olddistance !== distance) {
                     index = i;
                 }
             }
@@ -88,7 +88,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
         */
         toBestOrientation: function(direction) {
             var bestEntranceIndex = this.getClosestEntranceIndex();
-            if (direction != this.entrances[bestEntranceIndex]) {
+            if (direction !== this.entrances[bestEntranceIndex]) {
                 if (direction > this.entrances[bestEntranceIndex]) {
                     this.rotateRoom(direction - this.entrances[bestEntranceIndex]); //4-1
                 } else {
@@ -98,7 +98,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
         },
         rotateRoom: function(direction) { //direction should equal 1 to rotate 90 degrees clockwise,2 for 180 degrees and 3 for 270 degrees
 
-            if (direction != 2) {
+            if (direction !== 2) {
                 var newGrid = new Array(this.height);
                 for (var i = 0; i < this.height; i++) {
                     newGrid[i] = new Array(this.width);
@@ -129,7 +129,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
             switch (direction) {
                 case 1:
                     for (var i = 0; i < this.entrances.length; i++) {
-                        this.entrances[i] = (this.entrances[i] == 4) ? 1 : this.entrances[i] + 1;
+                        this.entrances[i] = (this.entrances[i] === 4) ? 1 : this.entrances[i] + 1;
 
                         var temp = this.entranceLocations[i][0];
                         this.entranceLocations[i][0] = (this.width - 1) - this.entranceLocations[i][1];
@@ -139,7 +139,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
                     break;
                 case 2:
                     for (var i = 0; i < this.entrances.length; i++) {
-                        this.entrances[i] = (this.entrances[i] == 1 || this.entrances[i] == 3) ? this.entrances[i] ^ 2 : this.entrances[i] ^ 6;
+                        this.entrances[i] = (this.entrances[i] === 1 || this.entrances[i] === 3) ? this.entrances[i] ^ 2 : this.entrances[i] ^ 6;
 
                         this.entranceLocations[i][0] = (this.width - 1) - this.entranceLocations[i][0];
                         this.entranceLocations[i][1] = (this.height - 1) - this.entranceLocations[i][1];
@@ -148,7 +148,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
                     break;
                 case 3:
                     for (var i = 0; i < this.entrances.length; i++) {
-                        this.entrances[i] = (this.entrances[i] == 1) ? 4 : this.entrances[i] - 1;
+                        this.entrances[i] = (this.entrances[i] === 1) ? 4 : this.entrances[i] - 1;
                         var temp = this.entranceLocations[i][0];
                         this.entranceLocations[i][0] = this.entranceLocations[i][1];
                         this.entranceLocations[i][1] = (this.height - 1) - temp;
@@ -176,7 +176,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
         },
         //Set the tile at position x,y by passing the stringified tile info.
         setTile: function(x, y, tileInfo) {
-            this.grid[x][y] = parseJSONTile(tileInfo);
+            this.grid[x][y] = this.parseJSONTile(tileInfo);
         },
 
         parseJSONTile: function(tileInfo) {

@@ -7,13 +7,13 @@ define(["save/storage"], function(Storage) {
             } else {
                 this.saves = [];
             }
-            console.log("Save manager initialized");
+            Log.info("Save manager initialized");
         },
         addSave: function(save) {
             this.saves.push(save);
             this.save();
         },
-        removeSave(save) {
+        removeSave: function(save) {
             this.saves.splice(this.saves.indexOf(save), 1);
             this.save();
         },

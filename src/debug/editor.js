@@ -23,7 +23,7 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
 
                 for (var i = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); i < Math.floor(this.gameManager.board.gridWidth / 2) + Math.floor(editingAreaSize / 2) + 1; i++) {
                     for (var j = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); j < Math.floor(this.gameManager.board.gridWidth / 2) + Math.floor(editingAreaSize / 2) + 1; j++) {
-                        if (this.gameManager.board.grid[i][j].tileType != "Empty") {
+                        if (this.gameManager.board.grid[i][j].tileType !== "Empty") {
                             greatestX = Math.max(greatestX, i);
                             greatestY = Math.max(greatestY, j);
                         }
@@ -35,12 +35,12 @@ define(["tile/tile", "tile/wall", "tile/path", "tile/object/door", "tile/object/
                     output += "[";
                     for (var j = Math.floor(this.gameManager.board.gridWidth / 2) - Math.floor(editingAreaSize / 2); j <= greatestY; j++) {
                         output += "\"" + this.gameManager.board.grid[i][j].tileType + "\"";
-                        if (j != greatestY) {
+                        if (j !== greatestY) {
                             output += ",";
                         }
                     }
                     output += "]";
-                    if (i != greatestX) {
+                    if (i !== greatestX) {
                         output += ",";
                     } else {
                         output += "\n";

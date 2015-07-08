@@ -16,7 +16,7 @@ define(["view/view"], function(View) {
 
             this.view = new View(game, 0, 0, game.gameWidth, game.gameHeight);
 
-            console.log("Created new scene with " + layers + " layers");
+            Log.info("Created new scene with " + layers + " layers");
         },
         /**
             Move the object to the given layer.
@@ -40,7 +40,7 @@ define(["view/view"], function(View) {
         */
         removeObject: function(object) {
             if (object.layer !== undefined) {
-                var layer = root.getChildAt(object.layer);
+                var layer = this.root.getChildAt(object.layer);
                 layer.removeChild(object);
             }
         },

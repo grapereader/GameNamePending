@@ -30,6 +30,6 @@ define(["lighting/filter"], function(LightFilter) {
                 filters[i].initializeLights(gameManager.lightSystem);
             }
         }
-    }
+    };
 
 });

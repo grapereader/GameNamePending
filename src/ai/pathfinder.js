@@ -100,7 +100,7 @@ define(["lib/heap"], function(Heap) {
         constructor: function(board) {
             this.grid = new Grid(board.grid);
         },
-        getPath: function(x, y, dx, dy, board) {
+        getPath: function(x, y, dx, dy) {
             if (!this.grid.validPosition(x, y)) return false;
             var open = new Heap(function(a, b) {
                 return a.f - b.f;
@@ -133,7 +133,7 @@ define(["lib/heap"], function(Heap) {
                     if (n.closed) continue;
 
                     //Quick way of finding H on 45deg right ang tri
-                    g = c.g + ((n.x === c.x || n.y === c.y) ? 1 : Math.SQRT2);
+                    var g = c.g + ((n.x === c.x || n.y === c.y) ? 1 : Math.SQRT2);
 
                     if (!n.opened || g < n.g) {
                         n.parent = c;

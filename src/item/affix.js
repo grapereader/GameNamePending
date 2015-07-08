@@ -12,7 +12,7 @@ define(function() {
         ANY: 0,
         WEAPON: 1,
         ARMOUR: 2
-    }
+    };
 
     return Affix;
 

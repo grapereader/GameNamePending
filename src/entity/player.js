@@ -32,7 +32,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
 
             this.health = 200; //Temp health
 
-            for (s in this.sprites) {
+            for (var s in this.sprites) {
                 this.addChild(this.sprites[s]);
             }
             this.setSize(64, 64);
@@ -97,15 +97,15 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 self.updateAnim();
             });
 
-            board.container.on("mousedown", function(e) {
+            board.container.on("mousedown", function() {
                 self.mouseDown = true;
             });
 
-            board.container.on("mouseup", function(e) {
+            board.container.on("mouseup", function() {
                 self.mouseDown = false;
             });
 
-            board.container.on("mouseout", function(e) {
+            board.container.on("mouseout", function() {
                 self.mouseDown = false;
             });
 
@@ -142,7 +142,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
         equipItem: function(item) {
             var location = false;
             if (item.type === Item.TYPES.WEAPON) {
-                location = "item"
+                location = "item";
             } else {
                 location = Armour.EQUIP[item.armourType];
             }
@@ -167,10 +167,10 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
                 }
                 this.attackCooldownTimer.period = item.attackSpeed * 1000;
             }
-            console.log("Equipped item " + item.name);
+            Log.info("Equipped item " + item.name);
         },
         unEquipItem: function(item) {
-            for (e in this.equips) {
+            for (var e in this.equips) {
                 if (this.equips[e] === item) {
                     this.equips[e] = false;
                     this.sprites[e].visible = false;
@@ -179,7 +179,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             }
         },
         isEquipped: function(item) {
-            for (e in this.equips) {
+            for (var e in this.equips) {
                 if (this.equips[e] === item) return true;
             }
             return false;

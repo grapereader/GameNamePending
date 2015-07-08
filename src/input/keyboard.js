@@ -32,7 +32,7 @@ define(function() {
 
             element.addEventListener("keydown", function(e) {
                 var k = self.getCode(e);
-                if (self.keys.indexOf(k) == -1) self.keys.push(k);
+                if (self.keys.indexOf(k) === -1) self.keys.push(k);
                 if (!(k === 0x74 || k === 0x7B)) e.preventDefault(); //Allow F5 & F12 refresh, but nothing else
             });
 
@@ -42,13 +42,13 @@ define(function() {
                 if (!(k === 0x74 || k === 0x7B)) e.preventDefault(); //Allow F5 & F12, but nothing else
             });
 
-            element.addEventListener("blur", function(e) {
+            element.addEventListener("blur", function() {
                 self.keys = [];
             });
 
-            element.addEventListener("focusout", function(e) {
+            element.addEventListener("focusout", function() {
                 self.keys = [];
-            })
+            });
         },
         getCode: function(keyEvent) {
             if (keyEvent.code === undefined || !(keyEvent.code in KEY_CODES)) {
@@ -58,8 +58,8 @@ define(function() {
             }
         },
         isKeyDown: function(key) {
-            if (key in KEY_CODES) return this.keys.indexOf(KEY_CODES[key]) != -1;
-            return this.keys.indexOf(key) != -1;
+            if (key in KEY_CODES) return this.keys.indexOf(KEY_CODES[key]) !== -1;
+            return this.keys.indexOf(key) !== -1;
         }
     });
 

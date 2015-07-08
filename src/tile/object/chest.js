@@ -1,4 +1,4 @@
-define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject, Helpers, Animation) {
+define(["tile/object/object"], function(TileObject) {
     var Chest = Class(TileObject, {
         constructor: function(gameManager) {
             Chest.$super.call(this, gameManager);
@@ -8,7 +8,7 @@ define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject,
             this.openSprite = this.createSprite("grass1");
             this.container = new PIXI.Container();
             this.closedSprite = this.createSprite("grass1");
-            var chestSpeed = 4;
+            //var chestSpeed = 4;
             /**var anims = {
                 "open": Helpers.animBuilder("open", 2, doorSpeed),
                 "close": Helpers.animBuilder("close", 2, doorSpeed)
@@ -27,7 +27,7 @@ define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject,
                 }
                 this.hasTreasure = false;
             }
-        },
+        }
     });
 
     return Chest;

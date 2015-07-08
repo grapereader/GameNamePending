@@ -26,7 +26,7 @@ define(function() {
         LEGENDARY: 5,
         UNFRIGGINBELIEVABLE: 6,
         FAROUT: 7
-    }
+    };
 
     return Item;
 });

@@ -15,7 +15,7 @@ define(["tile/tile", "tile/wall", "tile/path", "view/viewobject", "ai/pathfinder
                 "path": 1,
                 "door": 2,
                 "chest": 3,
-                "torch": 4,
+                "torch": 4
             };
 
             this.enemies = [];
@@ -26,11 +26,11 @@ define(["tile/tile", "tile/wall", "tile/path", "view/viewobject", "ai/pathfinder
             Returns an array of entrances that are not connected to multiple rooms
         */
         getIsolatedEntrance: function() {
-            var isolatedEntrances = [];
+            //var isolatedEntrances = [];
             for (var x = 1; x < this.gridWidth - 2; x++) {
                 for (var y = 1; y < this.gridHeight - 2; y++) {
                     if (this.grid[x][y].hasObject("Door")) {
-                        if (this.grid[x - 1][y].tileType == "Empty" || this.grid[x + 1][y].tileType == "Empty" || this.grid[x][y - 1].tileType == "Empty" || this.grid[x][y + 1].tileType == "Empty") {
+                        if (this.grid[x - 1][y].tileType === "Empty" || this.grid[x + 1][y].tileType === "Empty" || this.grid[x][y - 1].tileType === "Empty" || this.grid[x][y + 1].tileType === "Empty") {
                             return [x, y];
                         }
                     }
@@ -59,7 +59,7 @@ define(["tile/tile", "tile/wall", "tile/path", "view/viewobject", "ai/pathfinder
             }
             return enemies;
         },
-        addItemDrop(drop) {
+        addItemDrop: function(drop) {
             this.itemDrops.push(drop);
             this.dropContainer.addChild(drop.container);
         },
@@ -85,28 +85,28 @@ define(["tile/tile", "tile/wall", "tile/path", "view/viewobject", "ai/pathfinder
                     do {
                         i = i - 1;
                         distance++;
-                    } while (i > 0 && this.grid[x][i].tileType == "Empty");
+                    } while (i > 0 && this.grid[x][i].tileType === "Empty");
                     break;
                 case 2:
                     var i = x;
                     do {
                         i = i + 1;
                         distance++;
-                    } while (i < this.gridWidth - 1 && this.grid[i][y].tileType == "Empty");
+                    } while (i < this.gridWidth - 1 && this.grid[i][y].tileType === "Empty");
                     break;
                 case 3:
                     var i = y;
                     do {
                         i = i + 1;
                         distance++;
-                    } while (i < this.gridHeight - 1 && this.grid[x][i].tileType == "Empty");
+                    } while (i < this.gridHeight - 1 && this.grid[x][i].tileType === "Empty");
                     break;
                 case 4:
                     var i = x;
                     do {
                         i = i - 1;
                         distance++;
-                    } while (i > 0 && this.grid[i][y].tileType == "Empty");
+                    } while (i > 0 && this.grid[i][y].tileType === "Empty");
 
                     break;
             }
@@ -173,7 +173,7 @@ define(["tile/tile", "tile/wall", "tile/path", "view/viewobject", "ai/pathfinder
         addRoom: function(x, y, room) {
             for (var rx = 0; rx < room.width; rx++) {
                 for (var ry = 0; ry < room.height; ry++) {
-                    if (this.grid[rx + x][ry + y].tileType == "Empty") {
+                    if (this.grid[rx + x][ry + y].tileType === "Empty") {
                         this.setTile(room.grid[rx][ry].setPosition(rx + x, ry + y));
                     }
                 }
@@ -182,7 +182,7 @@ define(["tile/tile", "tile/wall", "tile/path", "view/viewobject", "ai/pathfinder
         canAddRoom: function(x, y, room) {
             for (var i = 0; i < room.width; i++) {
                 for (var j = 0; j < room.height; j++) {
-                    if (this.grid[i + x][j + y].tileType != "Empty" && room.grid[i][j].tileType != "Empty") {
+                    if (this.grid[i + x][j + y].tileType !== "Empty" && room.grid[i][j].tileType !== "Empty") {
                         return false;
                     }
                 }

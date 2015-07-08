@@ -36,21 +36,21 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
                     var direction;
                     //var distanceFromEdge;
                     //console.log(entranceX,entranceY);
-                    if (board.grid[entranceX][entranceY - 1].tileType == "Empty") {
+                    if (board.grid[entranceX][entranceY - 1].tileType === "Empty") {
                         //rect = board.getEmptyRectangle(entranceX, entranceY - 1, 1);
                         direction = 1;
                         //distanceFromEdge = Math.min(entranceX - rect[0], rect[2] - entranceX);
 
-                    } else if (board.grid[entranceX + 1][entranceY].tileType == "Empty") {
+                    } else if (board.grid[entranceX + 1][entranceY].tileType === "Empty") {
                         //rect = board.getEmptyRectangle(entranceX + 1, entranceY, 2);
                         direction = 2;
                         //distanceFromEdge = Math.min(entranceY - rect[1], rect[3] - entranceY);
 
-                    } else if (board.grid[entranceX][entranceY + 1].tileType == "Empty") {
+                    } else if (board.grid[entranceX][entranceY + 1].tileType === "Empty") {
                         //rect = board.getEmptyRectangle(entranceX, entranceY + 1, 3);
                         direction = 3;
                         //distanceFromEdge = Math.min(entranceX - rect[0], rect[2] - entranceX);
-                    } else if (board.grid[entranceX - 1][entranceY].tileType == "Empty") {
+                    } else if (board.grid[entranceX - 1][entranceY].tileType === "Empty") {
                         //rect = board.getEmptyRectangle(entranceX - 1, entranceY, 4);
                         direction = 4;
                         //distanceFromEdge = Math.min(entranceY - rect[1], rect[3] - entranceY);
@@ -58,8 +58,8 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
                     //console.log(rect);
                     //return board;
                     var minimumEntrances = Math.max(-1, 3 - (0.15 * Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) + Math.random()));
-                    var room = this.generateRandomRoom(minimumEntrances, (direction == 1 || direction == 3) ? direction ^ 2 : direction ^ 6, [entranceX, entranceY], board);
-                    if (room == -1) {
+                    var room = this.generateRandomRoom(minimumEntrances, (direction === 1 || direction === 3) ? direction ^ 2 : direction ^ 6, [entranceX, entranceY], board);
+                    if (room === -1) {
                         board.setTile(new Wall(this.gameManager).setPosition(entranceX, entranceY));
                     } else {
                         board.addRoom(room.x, room.y, room);
@@ -74,15 +74,15 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
 
 
 
-            } while (board.getIsolatedEntrance() != -1);
+            } while (board.getIsolatedEntrance() !== -1);
 
             for (var j = 0; j < board.roomList.length; j++) {
                 for (var i = 0; i < board.roomList[j].entrances.length; i++) {
                     var numWalls = 0;
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Wall") numWalls++;
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1].tileType == "Wall") numWalls++;
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType == "Wall") numWalls++;
-                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1].tileType == "Wall") numWalls++;
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x - 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType === "Wall") numWalls++;
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y - 1].tileType === "Wall") numWalls++;
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x + 1][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y].tileType === "Wall") numWalls++;
+                    if (board.grid[board.roomList[j].entranceLocations[i][0] + board.roomList[j].x][board.roomList[j].entranceLocations[i][1] + board.roomList[j].y + 1].tileType === "Wall") numWalls++;
                     if (numWalls >= 3) {
                         board.setTile(new Wall(this.gameManager).setPosition(board.roomList[j].entranceLocations[i][0] + board.roomList[j].x, board.roomList[j].entranceLocations[i][1] + board.roomList[j].y));
                     }
@@ -99,7 +99,7 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
                 }
             }
 
-            console.log("Created level with " + board.roomList.length + " rooms.");
+            Log.info("Created level with " + board.roomList.length + " rooms.");
 
             //This seems to be the only way I can get mouse events to propagate properly
             //when the empty areas of the board are clicked...
@@ -109,7 +109,7 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
             emptyBack.endFill();
             board.container.addChildAt(emptyBack, 0);
 
-            console.log("Adding enemies...");
+            Log.info("Adding enemies...");
             var enemyFactory = new EnemyFactory(this.gameManager);
             var rooms = board.roomList;
             var spawned = 0;
@@ -128,7 +128,7 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
                     walkable.splice(t, 1);
                 }
             }
-            console.log("Spawned " + spawned + " enemies.");
+            Log.info("Spawned " + spawned + " enemies.");
 
             return board;
         },
@@ -137,24 +137,24 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
             var roomList = this.roomTemplates.getRooms();
             do {
                 var requirementsMet = true;
-                if (roomList.length == 0) {
+                if (roomList.length === 0) {
                     return -1;
                 }
                 room = roomList.splice(Math.floor(Math.random() * roomList.length), 1)[0];
                 if (minEntrances > room.entrances.length) {
                     requirementsMet = false;
-                } else if (requiredDirection != -1) {
+                } else if (requiredDirection !== -1) {
                     var roomBackup = room;
                     for (var j = 0; j < 12; j++) {
-                        if (j != 0) {
+                        if (j !== 0) {
                             room = roomBackup;
                             room.rotateRoom(1 + Math.floor(j / 4));
-                            if (j % 3 != 0) {
-                                room.flipRoom((j % 3 == 1) ? false : true);
+                            if (j % 3 !== 0) {
+                                room.flipRoom((j % 3 === 1) ? false : true);
                             }
                         }
                         for (var i = 0; i < room.entrances.length; i++) {
-                            if (room.entrances[i] == requiredDirection) {
+                            if (room.entrances[i] === requiredDirection) {
                                 switch (requiredDirection) {
                                     case 1:
                                         room.y = (entranceLocation[1] + 1);
@@ -196,10 +196,10 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
                 for (var j = 0; j < height; j++) {
                     var temp;
 
-                    /**if(i==Math.floor(width/2)&&j==0||i==0&&j==Math.floor(height/2)){
+                    /**if(i===Math.floor(width/2)&&j===0||i===0&&j===Math.floor(height/2)){
                         temp = new Door(this);
                     */
-                    if (i == 0 && j == 0 || i == width - 1 && j == 0 || j == height - 1 && i == 0 || j == height - 1 && i == width - 1) {
+                    if (i === 0 && j === 0 || i === width - 1 && j === 0 || j === height - 1 && i === 0 || j === height - 1 && i === width - 1) {
                         temp = new Wall(this.gameManager);
                     } else {
                         temp = new Tile(this.gameManager);

@@ -40,7 +40,7 @@ define(["factory/templatefactory", "item/affix"], function(TemplateFactory, Affi
                         }
                     }
                 }
-            }]
+            }];
         },
         getAffix: function(confines) {
             var template = this.getTemplate(confines);

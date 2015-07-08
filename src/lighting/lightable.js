@@ -10,4 +10,4 @@ define(["lighting/filter", "lighting/filtermanager"], function(LightFilter, Filt
 
     return Lightable;
 
-})
+});

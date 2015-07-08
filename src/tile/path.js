@@ -1,4 +1,4 @@
-define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Animation) {
+define(["tile/tile"], function(Tile) {
     var Path = Class(Tile, {
         constructor: function(gameManager) {
             Path.$super.call(this, gameManager);
@@ -8,7 +8,7 @@ define(["tile/tile", "util/helpers", "util/anim"], function(Tile, Helpers, Anima
 
             this.enableLighting(PIXI.utils.TextureCache[this.gameManager.levelTheme + "-normals"]["floor"]);
         },
-        setSprite: function(board) {
+        setSprite: function() {
             this.container.addChild(this.createSprite("floor"));
         },
         update: function() {

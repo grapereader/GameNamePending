@@ -46,7 +46,7 @@ define(["view/cullable", "util/helpers", "util/animgroup", "lighting/lightable"]
                     bot: false,
                     top: false
                 }
-            }
+            };
 
             if (this.tileX > 0) {
                 n.tiles.left = board.grid[this.tileX - 1][this.tileY];
@@ -105,7 +105,7 @@ define(["view/cullable", "util/helpers", "util/animgroup", "lighting/lightable"]
             var data = {
                 type: this.tileType,
                 x: this.tileX,
-                y: this.tileY,
+                y: this.tileY
             };
             return data;
         },

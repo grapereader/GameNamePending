@@ -1,4 +1,4 @@
-define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject, Helpers, Animation) {
+define(["tile/object/object"], function(TileObject) {
     var Torch = Class(TileObject, {
         constructor: function(gameManager) {
             Torch.$super.call(this, gameManager);

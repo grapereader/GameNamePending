@@ -1,4 +1,4 @@
-define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject, Helpers, Animation) {
+define(["tile/object/object"], function(TileObject) {
     var Door = Class(TileObject, {
         constructor: function(gameManager) {
             Door.$super.call(this, gameManager);
@@ -8,7 +8,7 @@ define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject,
             this.tileType = "Door";
             this.openSprite = this.createSprite("logs");
             this.closedSprite = this.createSprite("logs");
-            var doorSpeed = 4;
+            //var doorSpeed = 4;
             /**var anims = {
                 "open": Helpers.animBuilder("open", 2, doorSpeed),
                 "close": Helpers.animBuilder("close", 2, doorSpeed)
@@ -32,7 +32,7 @@ define(["tile/object/object", "util/helpers", "util/anim"], function(TileObject,
                 this.isShut = !this.isShut;
                 this.isClippable = !this.isClippable;
             }
-        },
+        }
     });
 
     return Door;

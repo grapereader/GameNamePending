@@ -13,7 +13,7 @@ define(["math/vector"], function(Vector) {
             this.last = [];
         },
         getMovement: function(target) {
-            var board = this.board = this.gameManager.board;
+            this.board = this.gameManager.board;
 
             var x = this.x = this.entity.x;
             var y = this.y = this.entity.y;
@@ -23,7 +23,7 @@ define(["math/vector"], function(Vector) {
                 y: target.y,
                 tileX: target.tileX,
                 tileY: target.tileY
-            }
+            };
 
             var homeX = this.entity.homeX * 64;
             var homeY = this.entity.homeY * 64;
@@ -35,7 +35,7 @@ define(["math/vector"], function(Vector) {
                     y: homeY,
                     tileX: this.entity.homeX,
                     tileY: this.entity.homeY
-                }
+                };
             }
 
             var movement = new Vector(0, 0);
@@ -143,7 +143,7 @@ define(["math/vector"], function(Vector) {
             var tileX = this.entity.tileX;
             var tileY = this.entity.tileY;
 
-            if (target.tileX != tileX || target.tileY != tileY) {
+            if (target.tileX !== tileX || target.tileY !== tileY) {
                 var finder = this.board.getPathfinder();
                 path = finder.getPath(tileX, tileY, target.tileX, target.tileY);
             }
@@ -157,7 +157,7 @@ define(["math/vector"], function(Vector) {
                 var target = {
                     x: p.x * 64,
                     y: p.y * 64
-                }
+                };
                 var follow = this.follow(target);
                 if (follow === false) break;
                 this.nextPath = target;

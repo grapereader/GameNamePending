@@ -1,4 +1,4 @@
-define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
+define(["view/viewobject", "math/vector", "math/lines"], function(ViewObject, Vector, Lines) {
 
     var POLY_SIMPLIFY = 0.05;
 
@@ -46,36 +46,38 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
             var sides = [];
             for (var k = 0; k < objects.length; k++) {
                 var o = objects[k];
-                sides.push({
+                sides.push(o.lightCollision);
+                /*
+                sides.push([{
                     a: {x: o.x, y: o.y},
                     b: {x: o.x + o.width, y: o.y},
                     dir: {x: o.width, y: 0},
-                    ndir: {x: 1, y: 0}
-                });
-                sides.push({
+                    ndir: {x: 1, y: 0},
+                },
+                {
                     a: {x: o.x + o.width, y: o.y + o.height},
                     b: {x: o.x, y: o.y + o.height},
                     dir: {x: -o.width, y: 0},
-                    ndir: {x: -1, y: 0}
-                });
-                sides.push({
+                    ndir: {x: -1, y: 0},
+                },
+                {
                     a: {x: o.x, y: o.y + o.height},
                     b: {x: o.x, y: o.y},
                     dir: {x: 0, y: -o.height},
-                    ndir: {x: 0, y: -1}
-                });
-                sides.push({
+                    ndir: {x: 0, y: -1},
+                },
+                {
                     a: {x: o.x + o.width, y: o.y},
                     b: {x: o.x + o.width, y: o.y + o.height},
                     dir: {x: 0, y: o.height},
-                    ndir: {x: 0, y: 1}
-                });
+                    ndir: {x: 0, y: 1},
+                }]);
+                */
             }
 
             var self = this;
-            var intersect = function(line, k) {
+            var intersect = function(line) {
                 var int = self.getIntersections(sides, line);
-                var orig = int;
 
                 if (int === false) {
                     int = line.ndir.multiply(self.range).add(new Vector(lx, ly));
@@ -91,15 +93,12 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                     sx: Math.floor(int.x - view.x),
                     sy: Math.floor(int.y - view.y),
                     angle: dir.getAngle()
-                }
+                };
 
                 return int;
-            }
+            };
 
-            for (var k = 0; k < sides.length; k++) {
-                var side = sides[k];
-                var vec = new Vector(side.a.x - lx, side.a.y - ly);
-
+            var calcSide = function(vec) {
                 for (var e = -1; e <= 1; e++) {
                     if (e === 0) continue;
 
@@ -109,9 +108,17 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                         y: ly,
                         dir: rvec,
                         ndir: rvec.normalize()
-                    }
+                    };
 
                     intersects.push(intersect(line));
+                }
+            };
+
+            for (var k = 0; k < sides.length; k++) {
+                for (var i = 0; i < sides[k].length; i++) {
+                    var side = sides[k][i];
+                    calcSide(new Vector(side.a.x - lx, side.a.y - ly));
+                    calcSide(new Vector(side.b.x - lx, side.b.y - ly));
                 }
             }
 
@@ -122,8 +129,8 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
                     y: ly,
                     dir: vec,
                     ndir: vec.normalize()
-                }
-                intersects.push(intersect(line, k));
+                };
+                intersects.push(intersect(line));
             }
 
             intersects.sort(function(a, b) {
@@ -193,46 +200,14 @@ define(["view/viewobject", "math/vector"], function(ViewObject, Vector) {
             var last = false;
 
             for (var i = 0; i < sides.length; i++) {
-                var int = this.getIntersection(sides[i], line);
-                if (int !== false && (last === false || int.mag < last.mag)) last = int;
+                for (var k = 0; k < sides[i].length; k++) {
+                    var side = sides[i][k];
+                    var int = Lines.getIntersection(side, line);
+                    if (int !== false && (last === false || int.mag < last.mag)) last = int;
+                }
             }
 
             return last;
-        },
-        getIntersection: function(seg, line) {
-            var ldx = line.dir.x;
-            var ldy = line.dir.y;
-
-            var sax = seg.a.x;
-            var say = seg.a.y;
-
-            var sbx = seg.b.x;
-            var sby = seg.b.y;
-
-            var sdx = seg.dir.x;
-            var sdy = seg.dir.y;
-
-            if (sax > line.x && sbx > line.x && ldx < 0) return false;
-            if (sax < line.x && sbx < line.x && ldx > 0) return false;
-            if (say > line.y && sby > line.y && ldy < 0) return false;
-            if (say < line.y && sby < line.y && ldy > 0) return false;
-
-            if (line.ndir.x === seg.ndir.x && line.ndir.y === seg.ndir.y) {
-            	return false;
-            }
-
-            var t2 = (ldx * (say - line.y) + ldy * (line.x - sax)) / (sdx * ldy - sdy * ldx);
-            var t1 = (sax + sdx * t2 - line.x) / ldx;
-
-            if (t1 < 0) return false;
-            if (t2 < 0 || t2 > 1) return false;
-
-            return {
-            	x: line.x + ldx * t1,
-            	y: line.y + ldy * t1,
-            	mag: t1
-            };
-
         }
     });
 

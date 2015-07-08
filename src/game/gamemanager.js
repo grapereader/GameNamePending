@@ -26,7 +26,7 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
                     item: false
                 },
                 map: false //False here can mean player is currently in lobby
-            }
+            };
 
             //Putting this in here since it would be a huge pain to refactor
             //all the tiles to take this in constructor.
@@ -36,7 +36,6 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
             this.scene.addObject(this.lightSystem.container, 2);
             FilterManager.init(this);
 
-            var self = this;
             this.levelgenerator = new LevelGenerator(this);
             this.board = this.levelgenerator.generateLevel(1);
             this.itemFactory = new ItemFactory();
@@ -66,11 +65,7 @@ define(["entity/player", "factory/itemfactory", "util/helpers", "gui/playerinvwi
             this.lightSystem.update();
             FilterManager.updateFilters();
             this.fpsText.text = "FPS: " + this.game.fps.toFixed(0);
-        },
-
-
-
-
+        }
     });
 
     return GameManager;

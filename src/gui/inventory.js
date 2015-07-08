@@ -108,7 +108,6 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
 
             var self = this;
             this.container.interactive = true;
-            var over = false;
             this.container.on("mousemove", function(e) {
                 var pos = e.data.getLocalPosition(self.container);
                 var mx = pos.x;

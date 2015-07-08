@@ -13,7 +13,7 @@ define(["gui/windowobject"], function(WindowObject) {
             child.windowSystem = this;
             WindowSystem.$superp.addChild.call(this, child);
         },
-        requestFocus(window) {
+        requestFocus: function(window) {
             this.container.removeChild(window.container);
             this.container.addChild(window.container);
         }
@@ -21,4 +21,4 @@ define(["gui/windowobject"], function(WindowObject) {
 
     return WindowSystem;
 
-})
+});
