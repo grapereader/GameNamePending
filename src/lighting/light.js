@@ -35,44 +35,13 @@ define(["view/viewobject", "math/vector", "math/lines"], function(ViewObject, Ve
 
             var tr = Math.round(this.range / 64);
 
-            var objects = [];
+            var sides = [];
+
             for (var x = Math.max(0, tx - tr); x < Math.min(grid.length, tx + tr); x++) {
                 for (var y = Math.max(0, ty - tr); y < Math.min(grid[x].length, ty + tr); y++) {
                     var o = grid[x][y];
-                    if (o.tileType === "Wall" && o.clipping) objects.push(o);
+                    if (o.tileType === "Wall" && o.clipping) sides.push(o.lightCollision);
                 }
-            }
-
-            var sides = [];
-            for (var k = 0; k < objects.length; k++) {
-                var o = objects[k];
-                sides.push(o.lightCollision);
-                /*
-                sides.push([{
-                    a: {x: o.x, y: o.y},
-                    b: {x: o.x + o.width, y: o.y},
-                    dir: {x: o.width, y: 0},
-                    ndir: {x: 1, y: 0},
-                },
-                {
-                    a: {x: o.x + o.width, y: o.y + o.height},
-                    b: {x: o.x, y: o.y + o.height},
-                    dir: {x: -o.width, y: 0},
-                    ndir: {x: -1, y: 0},
-                },
-                {
-                    a: {x: o.x, y: o.y + o.height},
-                    b: {x: o.x, y: o.y},
-                    dir: {x: 0, y: -o.height},
-                    ndir: {x: 0, y: -1},
-                },
-                {
-                    a: {x: o.x + o.width, y: o.y},
-                    b: {x: o.x + o.width, y: o.y + o.height},
-                    dir: {x: 0, y: o.height},
-                    ndir: {x: 0, y: 1},
-                }]);
-                */
             }
 
             var self = this;
@@ -118,7 +87,6 @@ define(["view/viewobject", "math/vector", "math/lines"], function(ViewObject, Ve
                 for (var i = 0; i < sides[k].length; i++) {
                     var side = sides[k][i];
                     calcSide(new Vector(side.a.x - lx, side.a.y - ly));
-                    calcSide(new Vector(side.b.x - lx, side.b.y - ly));
                 }
             }
 
