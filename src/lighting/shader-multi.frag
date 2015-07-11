@@ -69,7 +69,7 @@ bool intersect(vec2 sa, vec2 sb) {
     float sdx = sdir.x;
     float sdy = sdir.y;
 
-    vec2 ldir = normalize(vec2(1.0, 0.0));
+    vec2 ldir = vec2(1.0, 0.0);
     vec2 ndir = normalize(sdir);
 
     if (ldir.x == ndir.x && ldir.y == ndir.y) return false;
@@ -86,7 +86,7 @@ bool intersect(vec2 sa, vec2 sb) {
 float getIntersects(int currPoly, int len) {
     float intersects = 0.0;
 
-    for (int i = 0; i < MAX_POLY; i++) {
+    for (int i = 0; i < MAX_LIGHTS * MAX_POLY; i++) {
         if (i < currPoly) continue;
         if (i > len - 2) break;
 
@@ -97,6 +97,51 @@ float getIntersects(int currPoly, int len) {
     }
 
     return intersects;
+}
+
+float getClosestLineDistance(int currPoly, int len) {
+    float x = gl_FragCoord.x;
+    float y = resolution.y - gl_FragCoord.y;
+
+    float closest = 128.0;
+    float dist = closest;
+
+    for (int i = 0; i < MAX_LIGHTS * MAX_POLY; i++) {
+        if (i < currPoly) continue;
+        if (i > len - 2) break;
+
+        vec2 sa = polygons[i];
+        vec2 sb = polygons[i + 1];
+
+        if (sa.x == sb.x && sa.y == sb.y) continue;
+
+        float a = sa.y - sb.y;
+        float b = sb.x - sa.x;
+        float c = (sa.x - sb.x) * sa.y + (sb.y - sa.y) * sa.x;
+
+        vec2 point = vec2(
+            (b * (b * x - a * y) - a * c) / (a * a + b * b),
+            (a * (-b * x + a * y) - b * c) / (a * a + b * b)
+        );
+
+        if ((point.x <= sa.x + 1.0 && point.x >= sb.x - 1.0 || point.x <= sb.x + 1.0 && point.x >= sa.x - 1.0)
+        && (point.y <= sa.y + 1.0 && point.y >= sb.y - 1.0 || point.y <= sb.y + 1.0 && point.y >= sa.y - 1.0)) {
+            dist = abs(a * x + b * y + c) / sqrt(a * a + b * b);
+        } else {
+            vec2 d1 = vec2(x - sa.x, y - sa.y);
+            vec2 d2 = vec2(x - sb.x, y - sb.y);
+
+            float dist1 = length(d1);
+            float dist2 = length(d2);
+
+            if (dist1 < dist2) dist = dist1;
+            else dist = dist2;
+        }
+
+        if (dist < closest) closest = dist;
+    }
+
+    return closest;
 }
 
 void main() {
@@ -112,13 +157,23 @@ void main() {
         if (i > lightCount - 1) break;
         if (polygonLengths[i] == 0) continue;
         float intersects = getIntersects(currPoly, polygonLengths[i]);
+
+        vec3 light = vec3(0.0, 0.0, 0.0);
+
+        if (intersects != 0.0 && mod(intersects, 2.0) != 0.0) {
+            light = getLight(normalMap, lightPositions[i], lightColours[i], lightFalloffs[i], lightSizes[i]);
+            lights++;
+        } else {
+            float closest = getClosestLineDistance(currPoly, polygonLengths[i]);
+            if (closest < 128.0) {
+                light = getLight(normalMap, lightPositions[i], lightColours[i], lightFalloffs[i], lightSizes[i]) - closest / 128.0;
+                lights++;
+            }
+        }
+
         currPoly += polygonLengths[i];
 
-        if (intersects == 0.0) continue;
-        if (mod(intersects, 2.0) != 0.0) {
-            lightTotal = lightTotal + getLight(normalMap, lightPositions[i], lightColours[i], lightFalloffs[i], lightSizes[i]);
-            lights++;
-        }
+        lightTotal = lightTotal + light;
     }
 
     lightTotal /= lights;
