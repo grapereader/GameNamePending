@@ -42,7 +42,7 @@ def draw_grid():
             ty = y * 64
             canvas.create_rectangle(tx, ty, tx + 64, ty + 64, fill=types[grid[x][y]])
 
-def export():
+def export(grid):
     print(json.dumps(grid))
 
 def mouse(event):
@@ -56,23 +56,32 @@ def set_type(t):
     print("Drawing " + t + "s")
     type = t
 
-def create_button(t):
+def create_button(root, t):
     button = Button(root, text=t, command=lambda: set_type(t))
     button.pack(side=LEFT, padx=5, pady=5)
 
-while True:
-    op = menu()
-    if op == "0":
-        break
-    elif op == "1":
-        grid = json.loads(input("Enter JSON: "))
-    elif op == "2":
-        grid = [["Empty"]]
-    else:
-        print("Wat?")
-        continue
+def load_finished(root, text):
+    contents = text.get(1.0, END)
+    root.destroy()
+    grid = json.loads(contents)
+    create_editor(grid)
 
+def load_room():
+    root = Tk()
+    root.title("JSON input")
+    root.geometry("600x415")
+    root.resizable(0,0)
+    root.wm_attributes("-topmost", 1)
+
+    text = Text(root)
+    text.pack()
+    Button(root, text="Okay", command=lambda: load_finished(root, text)).pack()
+    root.mainloop()
+
+def create_editor(g):
+    global type, grid, canvas
     type = "Empty"
+    grid = g
     
     root = Tk()
     root.title("GameNamePending Room editor")
@@ -95,9 +104,19 @@ while True:
     canvas.bind("<B1-Motion>", mouse)
     
     for t in types:
-        create_button(t)
+        create_button(root, t)
     
     draw_grid()
     
     root.mainloop()
-    
+
+while True:
+    op = menu()
+    if op == "0":
+        break
+    elif op == "1":
+        load_room()
+    elif op == "2":
+        create_editor([["Empty"]])
+    else:
+        print("Wat?")
