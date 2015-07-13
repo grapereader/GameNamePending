@@ -1,5 +1,65 @@
 define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
 
+    var Box = Class(WindowObject, {
+        constructor: function(gameManager, x, y, width, height) {
+            Box.$super.call(this, gameManager);
+
+            var g = new PIXI.Graphics();
+            g.lineStyle(2, 0x0, 1);
+
+            g.moveTo(5, 2);
+            g.lineTo(width - 4, 2);
+
+            g.moveTo(width - 4, 4);
+            g.lineTo(width - 2, 4);
+
+            g.moveTo(width - 1, 5);
+            g.lineTo(width - 1, height - 4);
+
+            g.moveTo(width - 4, height - 3);
+            g.lineTo(width - 2, height - 3);
+
+            g.moveTo(width - 4, height - 1);
+            g.lineTo(5, height - 1);
+
+            g.moveTo(3, height - 3);
+            g.lineTo(5, height - 3);
+
+            g.moveTo(2, height - 4);
+            g.lineTo(2, 5);
+
+            g.moveTo(3, 4);
+            g.lineTo(5, 4);
+
+            g.lineStyle(2, 0xF2C960, 1);
+
+            g.moveTo(5, 4);
+            g.lineTo(width - 4, 4);
+
+            g.moveTo(width - 3, 5);
+            g.lineTo(width - 3, height - 4);
+
+            g.moveTo(width - 4, height - 3);
+            g.lineTo(5, height - 3);
+
+            g.moveTo(4, height - 4);
+            g.lineTo(4, 5);
+
+            g.lineStyle(0, 0, 0);
+            g.beginFill(0x8E7348, 1);
+            g.drawRect(5, 5, width - 9, height - 9);
+            g.endFill();
+
+
+            this.addChild(g);
+
+            this.setPosition(x, y);
+        }
+    });
+
+    var PADDING = 4;
+    var SIZE = 50;
+
     var InventoryItem = Class(WindowObject, {
         constructor: function(gameManager, item, invId, tileX, tileY, parent) {
             InventoryItem.$super.call(this, gameManager);
@@ -11,23 +71,38 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             this.sprite.scale.x = 2;
             this.sprite.scale.y = 2;
 
+            this.sprite.x = PADDING + (SIZE - 32) / 2 + 1;
+            this.sprite.y = PADDING + (SIZE - 32) / 2;
+
             this.tileX = tileX;
             this.tileY = tileY;
 
             var self = this;
+
+            var posX = tileX * (SIZE + PADDING * 2);
+            var posY = tileY * (SIZE + PADDING * 2);
 
             this.addDoubleClickListener(function(e) {
                 if (parent.itemActivate !== undefined) {
                     parent.itemActivate(self.item);
                 }
             });
+
+            this.addChild(new Box(gameManager, PADDING, PADDING, SIZE, SIZE));
             this.addChild(this.sprite);
 
             var graphics = new PIXI.Graphics();
             graphics.lineStyle(3, 0x0, 0.5);
-            graphics.drawRect(0, 0, 32, 32);
+            graphics.drawRect(PADDING, PADDING, SIZE, SIZE);
             graphics.visible = false;
             this.addChild(graphics);
+
+            /*
+            var test = new PIXI.Graphics();
+            test.lineStyle(1, 0x0, 1);
+            test.drawRect(0, 0, SIZE + PADDING * 2, SIZE + PADDING * 2);
+            this.addChild(test);
+            */
 
             this.container.on("mouseover", function() {
                 graphics.visible = true;
@@ -37,11 +112,12 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
                 graphics.visible = false;
             });
 
-            this.setPosition(tileX * 32, tileY * 32);
+            this.setPosition(posX, posY);
         },
         update: function() {
             InventoryItem.$superp.update.call(this);
             //Similar transition as the View's on item move
+            /*
             var period = this.gameManager.game.deltaTime / 17;
 
             var dx = (this.tileX * 32 - this.container.x) * period;
@@ -49,6 +125,8 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
 
             this.container.x += dx / 20;
             this.container.y += dy / 20;
+
+            */
         },
         moveTo: function(tileX, tileY) {
             this.tileX = tileX;
@@ -66,21 +144,20 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             this.width = Math.min(inventory.items.length, 4);
             this.height = Math.ceil(inventory.items.length / 4);
 
+            /*
             var background = new PIXI.Graphics();
             background.beginFill(0x0, 0.2);
             background.drawRect(0, 0, 300, 32 * this.height);
             background.endFill();
             this.container.addChild(background);
+            */
 
             for (var i = 0; i < inventory.items.length; i++) {
                 if (inventory.items[i] === false) continue;
                 var x = i % 4;
                 var y = Math.floor(i / 4);
-                var item = new InventoryItem(gameManager, inventory.items[i], i, 0, 0, this);
+                var item = new InventoryItem(gameManager, inventory.items[i], i, x, y, this);
                 this.addChild(item);
-                //Move to instead of set so we get a swaggin animnation on open.
-                //This could be really bad for functionality. :P We shall see
-                item.moveTo(x, y);
             }
 
             var tooltip = new PIXI.Container();
@@ -132,8 +209,8 @@ define(["util/helpers", "gui/windowobject"], function(Helpers, WindowObject) {
             });
         },
         getItemAt: function(x, y) {
-            var tileX = Math.floor(x / 32);
-            var tileY = Math.floor(y / 32);
+            var tileX = Math.floor(x / (SIZE + PADDING * 2));
+            var tileY = Math.floor(y / (SIZE + PADDING * 2));
             for (var i = 0; i < this.children.length; i++) {
                 var item = this.children[i];
                 if (item.tileX === tileX && item.tileY === tileY) return item;
