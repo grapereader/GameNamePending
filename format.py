@@ -4,19 +4,35 @@
 
 from subprocess import call
 import os
+import sys
 
-include = {
-    "dir": ["src"]
-}
+if (len(sys.argv) > 1 and sys.argv[1] == "templates"):
+    include = {
+        "dir": ["src"],
+        "file": ["roomtemplates.js"]
+    }
 
-exclude = {
-    "dir": ["lib", "pixi"],
-    "file": ["require.js"]
-}
+    exclude = {
+        "dir": [],
+        "file": []
+    }
+else:
+    include = {
+        "dir": ["src"],
+        "file": []
+    }
+
+    exclude = {
+        "dir": ["lib", "pixi"],
+        "file": ["require.js"]
+    }
 
 def is_exclude(root, file):
     for d in include["dir"]:
         if d not in root:
+            return True
+    for f in include["file"]:
+        if f not in file:
             return True
     for d in exclude["dir"]:
         if d in root:
@@ -33,5 +49,6 @@ for root, dirs, files in os.walk("."):
         if is_exclude(root, file):
             continue;
         path = os.path.join(root, file)
+        print("Formatting " + path)
         call("python ./format/js-beautify -r -n " + path, shell=True)
         formatted += 1
