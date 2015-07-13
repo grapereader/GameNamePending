@@ -15,7 +15,7 @@ define(["view/viewobject", "math/vector", "lighting/filtermanager"], function(Vi
             this.graphics.clear();
 
             for (var i = 0; i < this.lights.length; i++) {
-                this.lights[i].update();
+                //this.lights[i].update();
                 //this.debug(this.lights[i].polygon);
             }
         },
