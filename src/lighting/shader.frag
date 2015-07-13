@@ -42,7 +42,7 @@ void main() {
         attenuation = 1.0;
     }
     */
-    
+
     vec3 intensity = ambient + lightDiffuse * attenuation;
     vec3 final = diffuseColour.rgb * intensity;
 

@@ -30,7 +30,7 @@ define(["view/viewobject", "math/vector", "lighting/filtermanager"], function(Vi
                 var npoly = polygon[p + 1];
 
                 alt = alt % 3;
-                switch(alt) {
+                switch (alt) {
                     case 0:
                         var width = 3;
                         var colour = 0xFFFFFF;

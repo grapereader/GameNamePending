@@ -49,8 +49,8 @@ define(function() {
             //var dx = (this.targetX - this.x) * framePeriod;
             //var dy = (this.targetY - this.y) * framePeriod;
 
-            this.x = this.targetX;// += dx / 40;
-            this.y = this.targetY;// += dy / 40;
+            this.x = this.targetX; // += dx / 40;
+            this.y = this.targetY; // += dy / 40;
         }
     });
 

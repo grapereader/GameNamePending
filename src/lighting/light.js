@@ -159,7 +159,10 @@ define(["view/viewobject", "math/vector", "math/lines"], function(ViewObject, Ve
                 var tileX = Math.floor(cx / 64);
                 var tileY = Math.floor(cy / 64);
 
-                if (this.gameManager.board.grid[tileX][tileY].clipping) return {x: cx, y: cy};
+                if (this.gameManager.board.grid[tileX][tileY].clipping) return {
+                    x: cx,
+                    y: cy
+                };
             }
             return false;
         },

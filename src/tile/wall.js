@@ -98,17 +98,11 @@ define(["tile/tile", "util/helpers", "util/anim", "math/lines", "math/vector"], 
                 }
             }
 
-            if (layers.indexOf("wall-left") !== -1) {
-            }
+            if (layers.indexOf("wall-left") !== -1) {}
 
-            if (layers.indexOf("wall-right") !== -1) {
-            }
+            if (layers.indexOf("wall-right") !== -1) {}
 
-            if (layers.indexOf("wall-middle") !== -1
-             || layers.indexOf("wall-bottom-corner-left") !== -1
-             || layers.indexOf("wall-bottom-corner-right") !== -1
-             || layers.indexOf("wall-top") !== -1) {
-            }
+            if (layers.indexOf("wall-middle") !== -1 || layers.indexOf("wall-bottom-corner-left") !== -1 || layers.indexOf("wall-bottom-corner-right") !== -1 || layers.indexOf("wall-top") !== -1) {}
 
             for (var i = 0; i < layers.length; i++) {
                 this.container.addChild(this.createSprite(layers[i]));
@@ -120,26 +114,22 @@ define(["tile/tile", "util/helpers", "util/anim", "math/lines", "math/vector"], 
                 b: {x: this.x + this.width, y: this.y},
                 dir: {x: this.width, y: 0},
                 ndir: {x: 1, y: 0}
-            },
-            {
+            }, {
                 a: {x: this.x + this.width, y: this.y + this.height},
                 b: {x: this.x, y: this.y + this.height},
                 dir: {x: -this.width, y: 0},
                 ndir: {x: -1, y: 0}
-            },
-            {
+            }, {
                 a: {x: this.x, y: this.y + this.height},
                 b: {x: this.x, y: this.y},
                 dir: {x: 0, y: -this.height},
                 ndir: {x: 0, y: -1}
-            },
-            {
+            }, {
                 a: {x: this.x + this.width, y: this.y},
                 b: {x: this.x + this.width, y: this.y + this.height},
                 dir: {x: 0, y: this.height},
                 ndir: {x: 0, y: 1}
             }];
-
         },
         update: function() {
             Wall.$superp.update.call(this);
