@@ -1,4 +1,5 @@
-define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "board/roomtemplates", "factory/enemyfactory"], function(Board, Wall, Path, Room, Tile, RoomTemplates, EnemyFactory) {
+define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "board/roomtemplates", "factory/enemyfactory", "tile/object/exit"],
+function(Board, Wall, Path, Room, Tile, RoomTemplates, EnemyFactory, ExitObject) {
 
     var LevelGenerator = Class({
         constructor: function(gameManager) {
@@ -13,50 +14,42 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
             this.board.addRoom(67, 67, this.createTestRoom());
             return this.board;
         },
-        generateLevel: function(gamma) { //Gamma is the tuning variable for the probability of the doors being deleted as they get further from the center.
+        /*
+            Gamma is the tuning variable for the probability of
+            the doors being deleted as they get further from the center.
+        */
+        generateLevel: function(gamma) {
             var board = new Board(this.gameManager, 150, 150);
-            var centralRoom = this.generateRandomRoom(4, -1, -1, board); //Creates central room with atleast two entrances for the purposes of the algorithm not necessarily where the player will spawn
+            //Creates central room with atleast two entrances
+            //for the purposes of the algorithm not necessarily where the player will spawn
+            var centralRoom = this.generateRandomRoom(4, -1, -1, board);
             centralRoom.x = Math.floor((board.gridWidth / 2) - (centralRoom.width / 2));
             centralRoom.y = Math.floor((board.gridHeight / 2) - (centralRoom.height / 2));
             board.addRoom(Math.floor((board.gridWidth / 2) - (centralRoom.width / 2)), Math.floor((board.gridHeight / 2) - (centralRoom.height / 2)), centralRoom);
             board.roomList.push(centralRoom);
-            //return board;
-            do { //Main Algorithm adding rooms to entrances randomly closing more doors based on their distance from the center of the level
+
+            //Main Algorithm adding rooms to entrances randomly closing
+            //more doors based on their distance from the center of the level
+            do {
                 var isolatedEntrance = board.getIsolatedEntrance();
                 //Removes Entrances from board
-                //console.log(isolatedEntrances);
                 var entranceX = isolatedEntrance[0];
                 var entranceY = isolatedEntrance[1];
-                //console.log((Math.sqrt(Math.pow(board.gridWidth/2-entranceX, 2) + Math.pow(board.gridHeight/2-entranceY, 2)) / 100 + gamma + Math.random()));
                 if ((Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) / 50 + gamma + Math.random()) > 2) { //Door will be removed
                     board.setTile(new Wall(this.gameManager).setPosition(entranceX, entranceY));
                 } else {
                     //Determines which side of the entrance needs a room
-                    //var rect;
                     var direction;
-                    //var distanceFromEdge;
-                    //console.log(entranceX,entranceY);
                     if (board.grid[entranceX][entranceY - 1].tileType === "Empty") {
-                        //rect = board.getEmptyRectangle(entranceX, entranceY - 1, 1);
                         direction = 1;
-                        //distanceFromEdge = Math.min(entranceX - rect[0], rect[2] - entranceX);
-
                     } else if (board.grid[entranceX + 1][entranceY].tileType === "Empty") {
-                        //rect = board.getEmptyRectangle(entranceX + 1, entranceY, 2);
                         direction = 2;
-                        //distanceFromEdge = Math.min(entranceY - rect[1], rect[3] - entranceY);
-
                     } else if (board.grid[entranceX][entranceY + 1].tileType === "Empty") {
-                        //rect = board.getEmptyRectangle(entranceX, entranceY + 1, 3);
                         direction = 3;
-                        //distanceFromEdge = Math.min(entranceX - rect[0], rect[2] - entranceX);
                     } else if (board.grid[entranceX - 1][entranceY].tileType === "Empty") {
-                        //rect = board.getEmptyRectangle(entranceX - 1, entranceY, 4);
                         direction = 4;
-                        //distanceFromEdge = Math.min(entranceY - rect[1], rect[3] - entranceY);
                     }
-                    //console.log(rect);
-                    //return board;
+
                     var minimumEntrances = Math.max(-1, 3 - (0.15 * Math.sqrt(Math.pow(board.gridWidth / 2 - entranceX, 2) + Math.pow(board.gridHeight / 2 - entranceY, 2)) + Math.random()));
                     var room = this.generateRandomRoom(minimumEntrances, (direction === 1 || direction === 3) ? direction ^ 2 : direction ^ 6, [entranceX, entranceY], board);
                     if (room === -1) {
@@ -65,9 +58,6 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
                         board.addRoom(room.x, room.y, room);
 
                         board.roomList.push(room);
-                        //if(board.roomList.length > 1){
-                        // return board;
-                        //}
                     }
 
                 }
@@ -108,6 +98,11 @@ define(["board/board", "tile/wall", "tile/path", "board/room", "tile/tile", "boa
             emptyBack.drawRect(0, 0, board.gridWidth * 64, board.gridHeight * 64);
             emptyBack.endFill();
             board.container.addChildAt(emptyBack, 0);
+
+            var bossRoom = board.roomList[0];
+            var bossWalkable = bossRoom.getWalkableTiles();
+            var exitTile = bossWalkable[Math.floor(Math.random() * bossWalkable.length)];
+            exitTile.addObject(new ExitObject(this.gameManager));
 
             Log.info("Adding enemies...");
             var enemyFactory = new EnemyFactory(this.gameManager);

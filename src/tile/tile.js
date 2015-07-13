@@ -111,6 +111,12 @@ define(["view/cullable", "util/helpers", "util/animgroup", "lighting/lightable"]
         },
         fromData: function(data) {
             this.setPosition(data.x, data.y);
+        },
+        getInteractive: function() {
+            for (var i = 0; i < this.objects.length; i++) {
+                if (this.objects[i].interactive) return this.objects[i];
+            }
+            return false;
         }
 
     });

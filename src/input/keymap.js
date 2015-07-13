@@ -21,6 +21,9 @@ define(["save/storage"], function(Storage) {
                         "drops": "ShiftLeft",
                         "inventory": "KeyI"
                     },
+                    "interact": {
+                        "use": "KeyE"
+                    },
                     "debug": {
                         "Tile": "Digit1",
                         "Wall": "Digit2",
@@ -34,12 +37,16 @@ define(["save/storage"], function(Storage) {
                 };
             }
         },
-        isKeyDown: function(key) {
+        getKey: function(key) {
             var parts = key.split(".");
             var entry = this.map;
             for (var i = 0; i < parts.length; i++) {
                 entry = entry[parts[i]];
             }
+            return entry;
+        },
+        isKeyDown: function(key) {
+            var entry = this.getKey(key);
             return this.keyboard.isKeyDown(entry);
         }
     });

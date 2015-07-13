@@ -190,28 +190,29 @@ define(["tile/tile", "tile/wall", "tile/path", "view/viewobject", "ai/pathfinder
             return true;
         },
         update: function() {
-                Board.$superp.update.call(this);
-                for (var i = 0; i < this.gridWidth; i++) {
-                    for (var j = 0; j < this.gridHeight; j++) {
-                        this.grid[i][j].update();
-                    }
-                }
-
-                for (var i = this.enemies.length - 1; i >= 0; i--) {
-                    this.enemies[i].update();
-                    if (this.enemies[i].pendingRemoval) {
-                        this.objectContainer.removeChild(this.enemies[i].container);
-                        this.enemies.splice(i, 1);
-                    }
-                }
-
-                for (var i = 0; i < this.itemDrops.length; i++) {
-                    this.itemDrops[i].update();
+            Board.$superp.update.call(this);
+            for (var i = 0; i < this.gridWidth; i++) {
+                for (var j = 0; j < this.gridHeight; j++) {
+                    this.grid[i][j].update();
                 }
             }
-            /**
 
-             */
+            for (var i = this.enemies.length - 1; i >= 0; i--) {
+                this.enemies[i].update();
+                if (this.enemies[i].pendingRemoval) {
+                    this.objectContainer.removeChild(this.enemies[i].container);
+                    this.enemies.splice(i, 1);
+                }
+            }
+
+            for (var i = 0; i < this.itemDrops.length; i++) {
+                this.itemDrops[i].update();
+            }
+        },
+        dispose: function() {
+            //this.objectContainer.destroy(true);
+            //this.container.destroy(true);
+        }
 
     });
     return Board;

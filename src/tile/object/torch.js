@@ -15,7 +15,7 @@ define(["tile/object/object"], function(TileObject) {
         },
         use: function() {
             this.isLit = !this.isLit;
-        },
+        }
     });
 
     return Torch;

@@ -70,6 +70,30 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
 
             var self = this;
 
+            var intCont = gameManager.scene.root.getChildAt(0);
+
+            intCont.interactive = true;
+            intCont.on("mousemove", function(e) {
+                var angle = self.getAngle(e.data.global.x, e.data.global.y);
+                if (angle < (1 * Math.PI) / 4 || angle > (7 * Math.PI) / 4) self.dir = 0;
+                else if (angle < (3 * Math.PI) / 4 && angle > (1 * Math.PI) / 4) self.dir = 2;
+                else if (angle < (5 * Math.PI) / 4 && angle > (3 * Math.PI) / 4) self.dir = 1;
+                else if (angle < (7 * Math.PI) / 4 && angle > (5 * Math.PI) / 4) self.dir = 3;
+                self.updateAnim();
+            });
+
+            intCont.on("mousedown", function() {
+                self.mouseDown = true;
+            });
+
+            intCont.on("mouseup", function() {
+                self.mouseDown = false;
+            });
+
+            intCont.on("mouseout", function() {
+                self.mouseDown = false;
+            });
+
             //Attack cooldown timer speed will need to be adjusted on weapon equip
             this.attackCooldownTimer = new Timer(500, false, function() {
                 self.canAttack = true;
@@ -86,28 +110,6 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
 
             this.animGroup.setAnimation("stand-down");
 
-            var board = this.gameManager.board;
-            board.container.interactive = true;
-            board.container.on("mousemove", function(e) {
-                var angle = self.getAngle(e.data.global.x, e.data.global.y);
-                if (angle < (1 * Math.PI) / 4 || angle > (7 * Math.PI) / 4) self.dir = 0;
-                else if (angle < (3 * Math.PI) / 4 && angle > (1 * Math.PI) / 4) self.dir = 2;
-                else if (angle < (5 * Math.PI) / 4 && angle > (3 * Math.PI) / 4) self.dir = 1;
-                else if (angle < (7 * Math.PI) / 4 && angle > (5 * Math.PI) / 4) self.dir = 3;
-                self.updateAnim();
-            });
-
-            board.container.on("mousedown", function() {
-                self.mouseDown = true;
-            });
-
-            board.container.on("mouseup", function() {
-                self.mouseDown = false;
-            });
-
-            board.container.on("mouseout", function() {
-                self.mouseDown = false;
-            });
 
             this.light = new Light(gameManager, [1, 1, 1, 1], 600);
             this.gameManager.lightSystem.addLight(this.light);
@@ -192,6 +194,15 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
 
             this.updateAttack(keys, delta);
             this.updateMovement(keys);
+
+            var interactive = this.gameManager.board.grid[this.tileX][this.tileY].getInteractive();
+            if (interactive !== false) {
+                this.gameManager.showInteractionNotification(interactive.interactionMessage);
+
+                if (keys.isKeyDown("interact.use")) interactive.interact();
+            } else {
+                this.gameManager.showInteractionNotification(false);
+            }
 
             this.light.x = this.x;
             this.light.y = this.y;
