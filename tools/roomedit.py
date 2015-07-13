@@ -42,9 +42,6 @@ def draw_grid():
             ty = y * 64
             canvas.create_rectangle(tx, ty, tx + 64, ty + 64, fill=types[grid[x][y]])
 
-def export(grid):
-    print(json.dumps(grid))
-
 def mouse(event):
     tx = math.floor(event.x / 64)
     ty = math.floor(event.y / 64)
@@ -78,6 +75,19 @@ def load_room():
     Button(root, text="Okay", command=lambda: load_finished(root, text)).pack()
     root.mainloop()
 
+def export_room():
+    root = Tk()
+    root.title("JSON export")
+    root.geometry("600x390")
+    root.resizable(0,0)
+    root.wm_attributes("-topmost", 1)
+
+    text = Text(root)
+    text.pack()
+    json_string = json.dumps(grid)
+    text.insert(END, json_string)
+    root.mainloop()
+
 def create_editor(g):
     global type, grid, canvas
     type = "Empty"
@@ -90,7 +100,7 @@ def create_editor(g):
     
     menubar = Menu(root)
     file = Menu(menubar)
-    file.add_command(label="Export", command=export)
+    file.add_command(label="Export", command=export_room)
     menubar.add_cascade(label="File", menu=file)
     root.config(menu=menubar)
 
