@@ -6,14 +6,8 @@ define(["tile/tile", "util/helpers", "util/anim", "math/lines", "math/vector"], 
             this.clipping = true;
             this.container = new PIXI.Container();
             this.tileType = "Wall";
-
-            this.lightCollision = [];
-
-            this.enableLighting(PIXI.utils.TextureCache[this.gameManager.levelTheme + "-normals"]["wall-middle"]);
         },
         setSprite: function(board) {
-            this.lightCollision = [];
-
             var n = this.getNeighbors(board);
             var left = n.left;
             var right = n.right;
@@ -105,7 +99,8 @@ define(["tile/tile", "util/helpers", "util/anim", "math/lines", "math/vector"], 
             if (layers.indexOf("wall-middle") !== -1 || layers.indexOf("wall-bottom-corner-left") !== -1 || layers.indexOf("wall-bottom-corner-right") !== -1 || layers.indexOf("wall-top") !== -1) {}
 
             for (var i = 0; i < layers.length; i++) {
-                this.container.addChild(this.createSprite(layers[i]));
+                var sprite = this.createSprite(layers[i]);
+                this.container.addChild(sprite);
             }
 
 

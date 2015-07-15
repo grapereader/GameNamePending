@@ -1,6 +1,6 @@
-define(["view/cullable", "util/helpers", "util/animgroup", "lighting/lightable"], function(Cullable, Helpers, AnimGroup, Lightable) {
+define(["view/cullable", "util/helpers", "util/animgroup"], function(Cullable, Helpers, AnimGroup) {
 
-    var Tile = Class([Cullable, Lightable], {
+    var Tile = Class(Cullable, {
         constructor: function(gameManager) {
             this.gameManager = gameManager;
             this.scene = gameManager.scene;

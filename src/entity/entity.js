@@ -75,10 +75,10 @@ define(["view/viewobject", "util/animgroup", "util/timer", "item/itemdrop", "mat
             this.health -= damage;
             this.damageTimer.started = true;
             var matrix = [
-                1.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.2, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.2, 0.0, 0.0,
-                0.0, 0.0, 0.0, 0.0, 0.0
+                1.0, 0.5, 0.5, 0.0, 0.0,
+                0.0, 0.5, 0.0, 0.0, 0.0,
+                0.0, 0.0, 0.5, 0.0, 0.0,
+                0.0, 0.0, 0.0, 1.0, 0.0
             ];
             this.colourMatrix.matrix = matrix;
             this.container.filters = [this.colourMatrix];

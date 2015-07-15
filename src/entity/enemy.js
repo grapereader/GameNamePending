@@ -1,6 +1,6 @@
-define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/anim", "ai/movemanager", "lighting/lightable"], function(Entity, Timer, Pathfinder, Helpers, Animation, MoveManager, Lightable) {
+define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/anim", "ai/movemanager"], function(Entity, Timer, Pathfinder, Helpers, Animation, MoveManager) {
 
-    var Enemy = Class([Entity, Lightable], {
+    var Enemy = Class(Entity, {
         constructor: function(gameManager, homeX, homeY, level, data) {
             Enemy.$super.call(this, gameManager);
             this.level = level;
@@ -62,8 +62,6 @@ define(["entity/entity", "util/timer", "ai/pathfinder", "util/helpers", "util/an
             });
 
             this.moveManager = new MoveManager(this.gameManager, this);
-
-            this.enableLighting(PIXI.utils.TextureCache[Helpers.sprite("blank-normals.png")]);
         },
         canAttack: function() {
             return this.getDistVector(this.gameManager.player).getMagnitude() <= 32;

@@ -1,4 +1,4 @@
-define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer", "debug/editor", "item/item", "item/armour", "math/vector", "lighting/light"], function(Entity, Helpers, Animation, Inventory, Timer, Editor, Item, Armour, Vector, Light) {
+define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/timer", "debug/editor", "item/item", "item/armour", "math/vector"], function(Entity, Helpers, Animation, Inventory, Timer, Editor, Item, Armour, Vector) {
 
     var Player = Class(Entity, {
         constructor: function(gameManager, saveData) {
@@ -44,6 +44,7 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
 
             var standSpeed = 2;
             var actionSpeed = 10;
+
             this.animData = {
                 "stand-left": Helpers.animBuilder("stand-left", 2, standSpeed),
                 "stand-right": {
@@ -109,10 +110,6 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             }
 
             this.animGroup.setAnimation("stand-down");
-
-
-            this.light = new Light(gameManager, [1, 1, 1, 1], 600);
-            this.gameManager.lightSystem.addLight(this.light);
         },
         /**
             Given a position in screen space, returns an angle relative to the player.
@@ -203,9 +200,6 @@ define(["entity/entity", "util/helpers", "util/anim", "inv/inventory", "util/tim
             } else {
                 this.gameManager.showInteractionNotification(false);
             }
-
-            this.light.x = this.x;
-            this.light.y = this.y;
         },
         updateAttack: function(keys, delta) {
             var item = this.equips.item;
